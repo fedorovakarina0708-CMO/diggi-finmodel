@@ -1,0 +1,2539 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diggi — Беклог · Червень 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+:root {
+  --black:#1A1A1A; --orange:#E8560A; --orange-light:#FFF0E6;
+  --white:#FFFFFF; --g50:#F9F9F9; --g100:#F4F4F4; --g200:#E4E4E4;
+  --g400:#9A9A9A; --g600:#555;
+  --green:#1A7A1A; --green-bg:#EAF5EA;
+  --red:#C0392B; --red-bg:#FFF0EE;
+  --yellow:#9A6C00; --yellow-bg:#FFFAE6;
+  --blue:#0050A0; --blue-bg:#EAF0FF;
+  --purple:#6B1A8B; --purple-bg:#F5E8FF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--black);font-size:13px;line-height:1.5;}
+
+/* HEADER */
+.hdr{background:var(--black);border-bottom:3px solid var(--orange);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:300;}
+.logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:17px;color:var(--white);letter-spacing:3px;}
+.logo em{color:var(--orange);font-style:normal;}
+.hdr-r{display:flex;align-items:center;gap:16px;}
+.hdr-badge{background:var(--orange);color:var(--white);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;padding:3px 10px;border-radius:2px;letter-spacing:1.5px;}
+.save-w{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--g400);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.dot.dirty{background:var(--orange);}
+.btn-reset{background:transparent;border:1px solid #444;color:var(--g400);font-size:10px;padding:3px 10px;border-radius:2px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;transition:all .15s;}
+.btn-reset:hover{border-color:var(--red);color:var(--red);}
+
+/* TABS */
+.tabs{background:var(--white);border-bottom:1px solid var(--g200);display:flex;padding:0 28px;position:sticky;top:54px;z-index:200;overflow-x:auto;}
+.tab{padding:13px 16px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3px;color:var(--g400);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:7px;}
+.tab:hover{color:var(--black);}
+.tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.tab.warn-t{color:var(--red);}
+.tab.warn-t.active{color:var(--red);border-bottom-color:var(--red);}
+.tab .cnt{background:var(--g200);color:var(--g600);font-size:10px;padding:1px 7px;border-radius:10px;font-weight:700;}
+.tab.active .cnt{background:var(--orange);color:var(--white);}
+.tab.warn-t.active .cnt{background:var(--red);color:var(--white);}
+
+/* LAYOUT */
+.page{padding:24px 28px 60px;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* STRIP */
+.strip{display:grid;gap:10px;margin-bottom:22px;}
+.s5{grid-template-columns:repeat(5,1fr);}
+.s6{grid-template-columns:repeat(6,1fr);}
+.s4{grid-template-columns:repeat(4,1fr);}
+.s3{grid-template-columns:repeat(3,1fr);}
+.sc{background:var(--white);border:1px solid var(--g200);border-top:3px solid var(--g200);border-radius:4px;padding:13px 15px;}
+.sc.or{border-top-color:var(--orange);}
+.sc.rd{border-top-color:var(--red);}
+.sc.gn{border-top-color:var(--green);}
+.sc.bl{border-top-color:var(--blue);}
+.sc.bk{border-top-color:var(--black);background:var(--black);}
+.sc .sv{font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;display:block;margin-bottom:2px;}
+.sc.or .sv{color:var(--orange);}
+.sc.rd .sv{color:var(--red);}
+.sc.gn .sv{color:var(--green);}
+.sc.bl .sv{color:var(--blue);}
+.sc.bk .sv{color:var(--orange);}
+.sc .sl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--g400);}
+
+/* SEC HDR */
+.sh{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--black);border-radius:4px 4px 0 0;margin-top:20px;}
+.sh:first-of-type{margin-top:0;}
+.sh .st{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--white);}
+.sh .pill{background:var(--orange);color:var(--white);font-family:'Montserrat',sans-serif;font-weight:700;font-size:10px;padding:2px 8px;border-radius:10px;}
+.sh .ml{margin-left:auto;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--g400);}
+.sh .ml b{color:var(--orange);font-size:13px;}
+
+/* TABLE */
+.tw{background:var(--white);border:1px solid var(--g200);border-top:none;border-radius:0 0 4px 4px;overflow-x:auto;margin-bottom:4px;}
+table.t{width:100%;border-collapse:collapse;}
+table.t thead tr{background:var(--g50);border-bottom:2px solid var(--g200);}
+table.t thead th{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--g400);padding:8px 10px;text-align:left;white-space:nowrap;}
+table.t th.r,table.t td.r{text-align:right;}
+table.t th.c,table.t td.c{text-align:center;}
+table.t tbody tr{border-bottom:1px solid var(--g100);transition:background .1s;}
+table.t tbody tr:last-child{border-bottom:none;}
+table.t tbody td{padding:9px 10px;vertical-align:middle;font-size:12px;}
+table.t tbody tr:nth-child(even) td{background:var(--g50);}
+table.t tbody tr:hover td{background:var(--orange-light)!important;}
+tr.row-neg td{background:var(--red-bg)!important;}
+tr.row-warn td{background:var(--yellow-bg)!important;}
+tr.row-zero td{background:#F0F0FF!important;opacity:.85;}
+tr.tot-r td{background:var(--black)!important;color:var(--white)!important;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;padding:9px 10px;}
+
+/* SERVICE DOT */
+.svc-yes{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--green);}
+.svc-no{display:inline-block;width:10px;height:1px;background:var(--g400);}
+.svc-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;border:1px solid;font-family:'Montserrat',sans-serif;white-space:nowrap;}
+.svc-smm{background:var(--blue-bg);color:var(--blue);border-color:#B8CFF0;}
+.svc-tg{background:var(--orange-light);color:#C04000;border-color:#F0C0A0;}
+.svc-ppc{background:var(--green-bg);color:var(--green);border-color:#B0D8B0;}
+.svc-des{background:var(--purple-bg);color:var(--purple);border-color:#D0B0E8;}
+.svc-pm{background:var(--black);color:var(--white);border-color:var(--black);}
+.dash{color:var(--g400);font-size:16px;font-weight:300;}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;border:1px solid;white-space:nowrap;margin:2px 2px 2px 0;cursor:default;}
+.t-smm{background:var(--blue-bg);color:var(--blue);border-color:#B8CFF0;}
+.t-target{background:var(--orange-light);color:#C04000;border-color:#F0C0A0;}
+.t-ppc{background:var(--green-bg);color:var(--green);border-color:#B0D8B0;}
+.t-pm{background:var(--black);color:var(--white);border-color:var(--black);font-size:9px;}
+.t-miss{background:var(--red-bg);color:var(--red);border-color:#F0B0B0;}
+.tag .rm{cursor:pointer;opacity:.6;font-size:12px;margin-left:2px;line-height:1;background:none;border:none;color:inherit;padding:0;}
+.tag .rm:hover{opacity:1;}
+
+/* EDITABLE */
+input.ei{border:1px solid transparent;border-radius:2px;padding:3px 6px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;color:var(--black);background:transparent;text-align:right;transition:all .15s;}
+input.ei:hover,input.ei:focus{border-color:var(--orange);background:var(--orange-light);outline:none;}
+input.ei.zero{color:var(--g400);}
+.mini-in{border:1px solid var(--g200);border-radius:2px;padding:3px 6px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;color:var(--black);background:var(--white);text-align:right;width:74px;}
+.mini-sel{border:1px solid var(--g200);border-radius:2px;padding:3px 6px;font-family:'Inter',sans-serif;font-size:11px;color:var(--black);background:var(--white);width:120px;}
+.need-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;}
+.need-row label{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--g600);text-transform:none;letter-spacing:0;margin:0;}
+.need-row input{width:auto;}
+
+/* MONEY */
+.m{font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;white-space:nowrap;}
+.m-pos{color:var(--green);font-weight:700;}
+.m-neg{color:var(--red);font-weight:700;}
+.m-zero{color:var(--g400);}
+.pct-w{display:flex;align-items:center;gap:5px;justify-content:flex-end;}
+.pct-txt{font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;min-width:32px;text-align:right;}
+.pct-bar{width:36px;height:4px;background:var(--g200);border-radius:2px;overflow:hidden;}
+.pct-fill{height:100%;border-radius:2px;}
+
+/* PAY */
+.pay{font-size:10px;font-weight:600;padding:2px 7px;border-radius:2px;border:1px solid;font-family:'Montserrat',sans-serif;white-space:nowrap;}
+.pay-t{background:var(--blue-bg);color:var(--blue);border-color:#B0C8F0;}
+.pay-c{background:var(--green-bg);color:var(--green);border-color:#B8D8B8;}
+
+/* ROW ACTIONS */
+.ra{display:flex;gap:3px;justify-content:center;}
+.btn-ic{background:transparent;border:1px solid var(--g200);border-radius:2px;width:22px;height:22px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .12s;color:var(--g400);}
+.btn-ic:hover.del{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+.btn-ic:hover{background:var(--orange-light);border-color:var(--orange);color:var(--orange);}
+.btn-ic.del:hover{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+
+/* FILTER */
+.fb-wrap{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.fb{background:var(--white);border:1px solid var(--g200);border-radius:3px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;color:var(--g600);font-family:'Montserrat',sans-serif;transition:all .15s;}
+.fb:hover,.fb.act{background:var(--black);color:var(--white);border-color:var(--black);}
+.fb.add{color:var(--green);border-color:#B8D8B8;}
+.fb.add:hover{background:var(--green);color:var(--white);border-color:var(--green);}
+.fb.wfb{color:var(--red);border-color:#F0C8C8;}
+.fb.gn-fb{color:var(--green);border-color:#B8D8B8;}
+.fb.gn-fb.act{background:var(--green);color:var(--white);border-color:var(--green);}
+.fb.wfb.act{background:var(--red);color:var(--white);border-color:var(--red);}
+
+/* TITLE */
+.tr-{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;}
+.pt{font-family:'Montserrat',sans-serif;font-weight:800;font-size:21px;color:var(--black);line-height:1;}
+.ps{font-size:11px;color:var(--g400);margin-top:3px;}
+
+/* SPEC CARDS */
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+.spec-card{background:var(--white);border:1px solid var(--g200);border-radius:4px;overflow:hidden;}
+.spec-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--g50);border-bottom:1px solid var(--g200);}
+.spec-hdr-left{display:flex;align-items:center;gap:8px;flex:1;}
+.spec-name-txt{font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;}
+.spec-right{text-align:right;}
+.spec-amt{font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;display:block;}
+.spec-cnt{font-size:10px;color:var(--g400);}
+.spec-proj{display:flex;align-items:center;padding:8px 14px;border-bottom:1px solid var(--g100);font-size:12px;gap:8px;transition:background .1s;}
+.spec-proj:hover{background:var(--orange-light);}
+.spec-proj-name{flex:1;font-weight:500;}
+.spec-proj-load{font-size:10px;color:var(--g400);width:40px;text-align:center;}
+.spec-proj-earn{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--green);min-width:72px;text-align:right;}
+.spec-proj-del{background:transparent;border:none;cursor:pointer;color:var(--g400);font-size:14px;padding:0 2px;transition:color .12s;}
+.spec-proj-del:hover{color:var(--red);}
+.spec-foot{padding:8px 14px;background:var(--black);display:flex;justify-content:space-between;align-items:center;}
+.spec-foot-label{font-family:'Montserrat',sans-serif;font-weight:700;color:var(--g400);font-size:10px;text-transform:uppercase;letter-spacing:.5px;}
+.spec-foot-amt{color:var(--orange);font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;}
+.spec-foot-del{background:transparent;border:1px solid #444;color:var(--g400);font-size:10px;padding:2px 8px;border-radius:2px;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .15s;}
+.spec-foot-del:hover{border-color:var(--red);color:var(--red);}
+
+/* ADD PROJ ROW */
+.add-proj-row{display:flex;gap:6px;align-items:center;padding:8px 14px;border-top:1px solid var(--g100);background:var(--g50);}
+.add-proj-row select,.add-proj-row input{border:1px solid var(--g200);border-radius:3px;padding:4px 8px;font-size:11px;font-family:'Inter',sans-serif;background:var(--white);}
+.add-proj-row select{flex:1;}
+.add-proj-row input{width:65px;text-align:center;}
+.add-proj-row button{background:var(--orange);color:var(--white);border:none;padding:4px 10px;border-radius:3px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;white-space:nowrap;}
+
+/* WARN CARDS */
+.wc{background:var(--white);border:1px solid var(--g200);border-left:4px solid var(--red);border-radius:0 4px 4px 0;padding:13px 16px;display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap;}
+.wc.yw{border-left-color:var(--yellow);}
+.wc-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;min-width:160px;}
+.wc-inc{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;min-width:80px;}
+.wc-miss{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--white);border-radius:6px;width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.modal-sm{width:380px;}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--g200);background:var(--black);}
+.modal-hdr .mt{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--white);}
+.modal-x{background:transparent;border:none;color:var(--g400);font-size:20px;cursor:pointer;line-height:1;padding:0 4px;}
+.modal-x:hover{color:var(--white);}
+.modal-body{padding:20px;}
+.mfr{margin-bottom:14px;}
+.mfr label{display:block;font-size:11px;font-weight:600;color:var(--g600);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.mfr input,.mfr select{width:100%;border:1px solid var(--g200);border-radius:3px;padding:8px 10px;font-family:'Inter',sans-serif;font-size:13px;color:var(--black);background:var(--white);transition:border-color .15s;}
+.mfr input:focus,.mfr select:focus{border-color:var(--orange);outline:none;}
+.mfr select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%239A9A9A' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;}
+.m2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mdiv{border:none;border-top:1px solid var(--g200);margin:16px 0;}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid var(--g200);background:var(--g50);}
+.btn-sv{background:var(--orange);color:var(--white);border:none;padding:8px 20px;border-radius:3px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;}
+.btn-sv:hover{background:#c94808;}
+.btn-cn{background:transparent;color:var(--g600);border:1px solid var(--g200);padding:8px 16px;border-radius:3px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;cursor:pointer;}
+
+/* LEADS */
+.leads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;padding:14px;background:var(--white);border:1px solid var(--g200);border-top:none;border-radius:0 0 4px 4px;}
+.lc{border:1px solid var(--g200);border-radius:3px;border-left:3px solid var(--yellow);padding:10px 12px;background:var(--yellow-bg);}
+.lc.conf{background:var(--green-bg);border-left-color:var(--green);}
+.lc .ln{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;margin-bottom:3px;}
+.lc .la{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--yellow);}
+.lc.conf .la{color:var(--green);}
+
+/* COSTS */
+.costs-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
+.cb{background:var(--white);border:1px solid var(--g200);border-radius:4px;overflow:hidden;}
+.cb-hdr{background:var(--black);padding:9px 14px;display:flex;justify-content:space-between;align-items:center;}
+.cb-hdr .ch{font-family:'Montserrat',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--white);}
+.cb-hdr .ct{color:var(--orange);font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;}
+.cb-row{display:flex;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--g100);font-size:12px;}
+.cb-row:last-child{border-bottom:none;}
+.cb-row .cl{color:var(--g600);}
+.cb-row .cv{font-family:'Montserrat',sans-serif;font-weight:700;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:24px;background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;padding:8px 16px;border-radius:3px;border-left:3px solid var(--orange);opacity:0;transform:translateY(8px);transition:all .25s;z-index:999;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--g100);}
+::-webkit-scrollbar-thumb{background:var(--g400);border-radius:3px;}
+
+/* ══════ DESIGN REFRESH ══════ */
+:root{
+  --ink:#171310;
+  --paper:#FCFBF9;
+  --surface:#FFFFFF;
+  --line:#E9E3DE;
+  --muted:#7A726D;
+  --soft:#F6F1ED;
+  --brand:#E8560A;
+  --brand-strong:#C84708;
+  --brand-soft:#FFF0E7;
+  --shadow-sm:0 1px 2px rgba(26,26,26,.05),0 8px 24px rgba(26,26,26,.05);
+  --shadow-md:0 10px 35px rgba(26,26,26,.11);
+}
+body{
+  background:
+    linear-gradient(180deg,#fff 0,#fbf7f3 220px,#f4eee9 100%);
+  color:var(--ink);
+  font-size:13px;
+}
+.hdr{
+  height:64px;
+  padding:0 34px;
+  background:linear-gradient(135deg,#171310 0,#24201D 68%,#2C211B 100%);
+  border-bottom:1px solid rgba(232,86,10,.75);
+  box-shadow:0 12px 32px rgba(26,26,26,.18);
+}
+.logo{
+  font-size:19px;
+  letter-spacing:4px;
+  position:relative;
+}
+.logo::after{
+  content:"Беклог · фінмодель";
+  display:block;
+  margin-top:1px;
+  font-family:'Inter',sans-serif;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.7px;
+  color:rgba(255,255,255,.48);
+}
+.hdr-r{gap:12px;}
+.hdr-badge{
+  border-radius:999px;
+  padding:5px 12px;
+  background:var(--brand);
+  box-shadow:0 6px 18px rgba(232,86,10,.28);
+}
+.save-w{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:999px;
+  padding:5px 10px;
+}
+.dot{width:7px;height:7px;box-shadow:0 0 0 3px rgba(26,122,26,.14);}
+.dot.dirty{box-shadow:0 0 0 3px rgba(232,86,10,.16);}
+.btn-reset{
+  border-color:rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:5px 12px;
+  color:rgba(255,255,255,.58);
+}
+.tabs{
+  top:64px;
+  padding:10px 28px 9px;
+  gap:6px;
+  background:rgba(252,251,249,.92);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(14px);
+}
+.tab{
+  min-height:34px;
+  padding:7px 12px;
+  border:1px solid transparent;
+  border-radius:999px;
+  margin-bottom:0;
+  color:#756D68;
+  font-size:10.5px;
+  background:transparent;
+}
+.tab:hover{
+  color:var(--ink);
+  background:var(--surface);
+  border-color:var(--line);
+}
+.tab.active{
+  color:var(--brand);
+  border-color:rgba(232,86,10,.24);
+  background:var(--brand-soft);
+  box-shadow:0 5px 18px rgba(232,86,10,.09);
+}
+.tab.warn-t{color:var(--red);}
+.tab.warn-t.active{
+  color:var(--red);
+  background:var(--red-bg);
+  border-color:#F0C5BF;
+}
+.tab .cnt{
+  padding:2px 7px;
+  background:#EEE8E3;
+  color:#6B625B;
+}
+.tab.active .cnt{background:var(--brand);color:white;}
+.page{
+  max-width:1480px;
+  margin:0 auto;
+  padding:30px 34px 72px;
+}
+.tr-{
+  align-items:center;
+  margin-bottom:20px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(233,227,222,.75);
+}
+.pt{
+  font-size:24px;
+  letter-spacing:0;
+}
+.ps{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:12px;
+}
+.strip{gap:12px;margin-bottom:24px;}
+.sc{
+  position:relative;
+  min-height:104px;
+  padding:17px 18px;
+  border:1px solid var(--line);
+  border-top:1px solid var(--line);
+  border-radius:8px;
+  background:var(--surface);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+}
+.sc::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:var(--g200);
+}
+.sc.or::before{background:var(--brand);}
+.sc.rd::before{background:var(--red);}
+.sc.gn::before{background:var(--green);}
+.sc.bl::before{background:var(--blue);}
+.sc.bk{
+  background:linear-gradient(135deg,#171310,#29221D);
+  border-color:#2C241F;
+}
+.sc.bk::before{background:var(--brand);}
+.sc .sv{
+  font-size:23px;
+  letter-spacing:0;
+  line-height:1.15;
+}
+.sc .sl{
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:.7px;
+}
+.sh{
+  min-height:42px;
+  padding:11px 15px;
+  border:1px solid #211B17;
+  border-radius:8px 8px 0 0;
+  background:linear-gradient(135deg,#191512,#27211D);
+  box-shadow:0 9px 26px rgba(26,26,26,.08);
+}
+.sh .st{font-size:10.5px;letter-spacing:1.2px;}
+.sh .pill{
+  border-radius:999px;
+  padding:3px 9px;
+  background:var(--brand);
+}
+.sh .ml{color:rgba(255,255,255,.52);}
+.tw{
+  border:1px solid var(--line);
+  border-top:none;
+  border-radius:0 0 8px 8px;
+  background:var(--surface);
+  box-shadow:var(--shadow-sm);
+}
+table.t thead tr{
+  background:#F8F4F1;
+  border-bottom:1px solid var(--line);
+}
+table.t thead th{
+  padding:10px 12px;
+  color:#867C75;
+  font-size:9px;
+  letter-spacing:.9px;
+}
+table.t tbody td{
+  padding:11px 12px;
+  border-bottom:1px solid #F0EBE7;
+  font-size:12px;
+}
+table.t tbody tr:nth-child(even) td{background:#FCFAF8;}
+table.t tbody tr:hover td{background:var(--brand-soft)!important;}
+tr.row-neg td{background:#FFF3F1!important;}
+tr.row-warn td{background:#FFF8E8!important;}
+tr.row-zero td{background:#F5F4FF!important;opacity:1;}
+tr.tot-r td{
+  background:linear-gradient(135deg,#171310,#28211D)!important;
+  padding:12px;
+}
+.svc-tag,.tag,.pay{
+  border-radius:999px;
+  padding:3px 9px;
+  font-size:10px;
+}
+.t-pm,.svc-pm{background:#1D1815;border-color:#1D1815;}
+input.ei,.mini-in,.mini-sel{
+  min-height:28px;
+  border-color:#E7DFDA;
+  border-radius:6px;
+  background:#FFFEFD;
+}
+input.ei:hover,input.ei:focus,.mini-in:focus,.mini-sel:focus{
+  border-color:var(--brand);
+  background:var(--brand-soft);
+  box-shadow:0 0 0 3px rgba(232,86,10,.1);
+  outline:none;
+}
+.pct-bar{
+  width:46px;
+  height:6px;
+  background:#E8E0DA;
+}
+.btn-ic{
+  width:26px;
+  height:26px;
+  border-radius:7px;
+  background:#FFFEFD;
+}
+.fb{
+  min-height:32px;
+  padding:7px 13px;
+  border-radius:999px;
+  background:var(--surface);
+  border-color:var(--line);
+  box-shadow:0 1px 0 rgba(26,26,26,.03);
+}
+.fb:hover,.fb.act{
+  background:var(--ink);
+  border-color:var(--ink);
+}
+.fb.add{
+  color:var(--brand);
+  border-color:rgba(232,86,10,.28);
+  background:var(--brand-soft);
+}
+.fb.add:hover{
+  background:var(--brand);
+  border-color:var(--brand);
+}
+.fb.wfb{background:#FFF7F5;}
+.spec-grid{gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));}
+.spec-card,.cb,.lc,.wc{
+  border-color:var(--line);
+  border-radius:8px;
+  background:var(--surface);
+  box-shadow:var(--shadow-sm);
+}
+.spec-card{overflow:hidden;}
+.spec-hdr{
+  padding:14px 16px;
+  background:#FCFAF8;
+  border-bottom-color:var(--line);
+}
+.spec-name-txt{font-size:14px;}
+.spec-amt{font-size:16px;}
+.spec-proj{
+  padding:10px 14px;
+  border-bottom-color:#F0EBE7;
+}
+.spec-foot{
+  padding:10px 14px;
+  background:linear-gradient(135deg,#171310,#28211D);
+}
+.spec-foot-del{
+  border-radius:999px;
+  padding:4px 10px;
+}
+.add-proj-row{
+  padding:10px 14px;
+  background:#FCFAF8;
+}
+.add-proj-row select,.add-proj-row input{
+  min-height:30px;
+  border-color:#E7DFDA;
+  border-radius:6px;
+}
+.add-proj-row button{
+  min-height:30px;
+  border-radius:999px;
+  background:var(--brand);
+  padding:5px 12px;
+}
+.wc{
+  border-left-width:5px;
+  border-radius:8px;
+  padding:15px 16px;
+}
+.modal-bg{background:rgba(23,19,16,.56);backdrop-filter:blur(5px);}
+.modal{
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.24);
+  box-shadow:var(--shadow-md);
+}
+.modal-hdr{
+  padding:16px 20px;
+  background:linear-gradient(135deg,#171310,#28211D);
+}
+.modal-body{padding:22px;}
+.mfr input,.mfr select{
+  min-height:38px;
+  border-radius:7px;
+  border-color:#E7DFDA;
+}
+.mfr input:focus,.mfr select:focus{
+  border-color:var(--brand);
+  box-shadow:0 0 0 3px rgba(232,86,10,.1);
+}
+.modal-foot{
+  padding:14px 20px;
+  background:#FCFAF8;
+}
+.btn-sv,.btn-cn{
+  min-height:36px;
+  border-radius:999px;
+}
+.btn-sv{background:var(--brand);}
+.btn-sv:hover{background:var(--brand-strong);}
+.leads-grid{
+  gap:10px;
+  padding:14px;
+  border-color:var(--line);
+  border-radius:0 0 8px 8px;
+  box-shadow:var(--shadow-sm);
+}
+.lc{
+  padding:12px 13px;
+  border-left-width:4px;
+}
+.costs-2{gap:14px;}
+.cb-hdr{
+  padding:11px 14px;
+  background:linear-gradient(135deg,#171310,#28211D);
+}
+.cb-row{
+  padding:9px 14px;
+  border-bottom-color:#F0EBE7;
+}
+.toast{
+  right:28px;
+  bottom:26px;
+  border-radius:8px;
+  padding:11px 16px;
+  box-shadow:var(--shadow-md);
+}
+@media (max-width:1100px){
+  .s6,.s5,.s4,.s3{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .page{padding:24px 22px 64px;}
+  .tr-{align-items:flex-start;flex-direction:column;gap:12px;}
+  .costs-2{grid-template-columns:1fr;}
+}
+@media (max-width:720px){
+  .hdr{height:auto;min-height:66px;padding:10px 16px;align-items:flex-start;gap:8px;flex-direction:column;}
+  .hdr-r{width:100%;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+  .logo::after{display:none;}
+  .tabs{top:96px;padding:8px 14px;}
+  .page{padding:20px 14px 56px;}
+  .s6,.s5,.s4,.s3{grid-template-columns:1fr;}
+  .sc{min-height:90px;}
+  .pt{font-size:21px;}
+  .m2,.need-row{grid-template-columns:1fr;}
+  .spec-grid{grid-template-columns:1fr;}
+  .modal{width:calc(100vw - 24px);}
+}
+
+/* ══════ INTERFACE CLEANUP ══════ */
+.tab{
+  gap:8px;
+  text-transform:none;
+}
+.tab::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#D6CEC7;
+  flex:0 0 auto;
+}
+.tab.active::before{background:var(--brand);}
+.tab.warn-t::before{background:var(--red);}
+.tab .cnt{
+  min-width:25px;
+  text-align:center;
+}
+table.t thead th{
+  color:#6F6761;
+  background:#F6F2EF;
+}
+table.t tbody tr:nth-child(even) td,
+table.t tbody tr.row-warn td,
+table.t tbody tr.row-neg td,
+table.t tbody tr.row-zero td{
+  background:#FFFEFD!important;
+  opacity:1;
+}
+table.t tbody tr.row-warn td:first-child{box-shadow:inset 4px 0 0 #D9A441;}
+table.t tbody tr.row-neg td:first-child{box-shadow:inset 4px 0 0 var(--red);}
+table.t tbody tr.row-zero td:first-child{box-shadow:inset 4px 0 0 #8E8A86;}
+.svc-tag,.tag,.pay,.status-pill{
+  background:#F7F3F0!important;
+  color:#26211D!important;
+  border:1px solid #DED6D0!important;
+  border-radius:999px;
+  font-family:'Montserrat',sans-serif;
+  font-weight:700;
+  box-shadow:none;
+}
+.svc-smm,.t-smm{border-color:#BFC9D6!important;background:#F8FAFC!important;}
+.svc-tg,.t-target{border-color:#F1B894!important;background:#FFF7F1!important;color:#B94708!important;}
+.svc-ppc,.t-ppc{border-color:#BCD7C0!important;background:#F6FBF6!important;}
+.svc-des{border-color:#D7CCC4!important;background:#FAF7F4!important;}
+.svc-pm,.t-pm{
+  background:#211B17!important;
+  color:#fff!important;
+  border-color:#211B17!important;
+}
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  padding:3px 9px;
+  font-size:10px;
+  white-space:nowrap;
+}
+.status-ok{border-color:#BCD7C0!important;background:#F6FBF6!important;color:var(--green)!important;}
+.status-mid{border-color:#F1D49B!important;background:#FFF9EC!important;color:#8B6400!important;}
+.status-bad{border-color:#E8BDB7!important;background:#FFF6F4!important;color:var(--red)!important;}
+.status-wait{border-color:#D7CCC4!important;background:#FAF7F4!important;color:#5E5752!important;}
+.status-neutral{border-color:#D8D2CC!important;background:#F6F3F0!important;color:#837A73!important;}
+.btn-ic{
+  min-width:32px;
+  width:auto;
+  padding:0 7px;
+  font-size:10px;
+  font-family:'Montserrat',sans-serif;
+  font-weight:700;
+}
+.dash{
+  color:#A9A19A;
+  font-size:15px;
+}
+.lc{
+  background:#FFFEFD;
+  border-left-color:#C7BEB8;
+}
+.lc.conf{
+  background:#FFFEFD;
+  border-left-color:var(--green);
+}
+.lc .la,.lc.conf .la{color:var(--brand);}
+.wc.yw{border-left-color:#D9A441;}
+#s-services table.t tbody tr.row-neg td:first-child,
+#s-services table.t tbody tr.row-warn td:first-child,
+#s-services table.t tbody tr.row-zero td:first-child{
+  box-shadow:none;
+}
+#s-services table.t tbody tr.row-neg td,
+#s-services table.t tbody tr.row-warn td,
+#s-services table.t tbody tr.row-zero td{
+  background:#FFFEFD!important;
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo">DI<em>GG</em>I</div>
+  <div class="hdr-r">
+    <span class="save-w"><span class="dot" id="dot"></span><span id="stxt">Збережено</span></span>
+    <span class="hdr-badge">Червень 2026</span>
+    <button class="btn-reset" onclick="resetAll()">↺ Скинути</button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="showTab('services',this)">Послуги проєктів <span class="cnt" id="cnt-svc">33</span></button>
+  <button class="tab" onclick="showTab('fin',this)">Фінанси <span class="cnt" id="cnt-fin">33</span></button>
+  <button class="tab" onclick="showTab('cashflow',this)">Cash flow <span class="cnt" id="cnt-cash">—</span></button>
+  <button class="tab" onclick="showTab('income-status',this)">Статуси доходу <span class="cnt" id="cnt-income-status">—</span></button>
+  <button class="tab" onclick="showTab('smm',this)">СММ <span class="cnt" id="cnt-smm">—</span></button>
+  <button class="tab" onclick="showTab('target',this)">Таргет / PPC <span class="cnt" id="cnt-tg">—</span></button>
+  <button class="tab" onclick="showTab('pm',this)">PM <span class="cnt" id="cnt-pm">—</span></button>
+  <button class="tab" onclick="showTab('other',this)">Інше <span class="cnt" id="cnt-other">—</span></button>
+  <button class="tab" onclick="showTab('design',this)">Дизайн <span class="cnt" id="cnt-design">—</span></button>
+  <button class="tab" onclick="showTab('designer-pay',this)">ЗП дизайнерів <span class="cnt" id="cnt-designer-pay">—</span></button>
+  <button class="tab" onclick="showTab('leads',this)">Ліди <span class="cnt" id="cnt-leads">—</span></button>
+  <button class="tab" onclick="showTab('scenarios',this)">Сценарії <span class="cnt" id="cnt-scenarios">3</span></button>
+  <button class="tab warn-t" onclick="showTab('miss',this)">Без спеціаліста <span class="cnt" id="cnt-miss">—</span></button>
+</nav>
+
+<div class="page">
+
+<!-- ════ TAB 1: ПОСЛУГИ ════ -->
+<div id="s-services" class="section active">
+  <div class="tr-">
+    <div><h1 class="pt">Послуги проєктів</h1><p class="ps">Які послуги підключені на кожному проєкті · Клік на проєкт для редагування</p></div>
+    <div class="fb-wrap">
+      <button class="fb act" onclick="fSvc('all',this)">Всі</button>
+      <button class="fb wfb" onclick="fSvc('nospec',this)">Неповні</button>
+      <button class="fb add" onclick="openAddModal()">+ Проєкт</button>
+    </div>
+  </div>
+  <div class="sh"><span class="st">Активні проєкти</span><span class="pill" id="svc-pill">33</span><span class="ml">Всього послуг: <b id="svc-total-svcs">—</b></span></div>
+  <div class="tw">
+    <table class="t" style="min-width:900px">
+      <thead><tr>
+        <th style="width:28px"></th>
+        <th style="width:175px">Проєкт</th>
+        <th class="c" style="width:90px">СММ</th>
+        <th class="c" style="width:90px">Таргет</th>
+        <th class="c" style="width:90px">PPC</th>
+        <th class="c" style="width:90px">Дизайн</th>
+        <th class="c" style="width:90px">PM</th>
+        <th style="width:85px" class="r">Дохід ₴</th>
+        <th style="width:85px" class="r">Маржа ₴</th>
+        <th style="width:38px"></th>
+      </tr></thead>
+      <tbody id="svc-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ TAB 2: ФІНАНСИ ════ -->
+<div id="s-fin" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Фінанси проєктів</h1><p class="ps">Червень 2026 · Редагуй суми прямо в таблиці · Клік на назву — повне редагування</p></div>
+    <div class="fb-wrap">
+      <button class="fb act" onclick="fFin('all',this)">Всі</button>
+      <button class="fb wfb" onclick="fFin('neg',this)">Від'ємні</button>
+      <button class="fb wfb" onclick="fFin('low',this)">Низька маржа</button>
+      <button class="fb wfb" onclick="fFin('zero',this)">Без доходу</button>
+      <button class="fb add" onclick="openAddModal()">+ Проєкт</button>
+    </div>
+  </div>
+  <div class="strip s5">
+    <div class="sc or"><span class="sv" id="f-income">—</span><span class="sl">Дохід, грн</span></div>
+    <div class="sc rd"><span class="sv" id="f-costs">—</span><span class="sl">Витрати команди</span></div>
+    <div class="sc gn"><span class="sv" id="f-margin">—</span><span class="sl">Валова маржа</span></div>
+    <div class="sc bl"><span class="sv" id="f-pct">—</span><span class="sl">Маржинальність</span></div>
+    <div class="sc bk"><span class="sv" id="f-saldo">—</span><span class="sl">Чисте сальдо</span></div>
+  </div>
+  <div class="sh"><span class="st">Проєкти</span><span class="pill" id="f-pill">33</span><span class="ml">Дохід: <b id="f-sum">—</b> грн</span></div>
+  <div class="tw">
+    <table class="t" style="min-width:900px">
+      <thead><tr>
+        <th style="width:28px"></th>
+        <th style="width:165px">Проєкт</th>
+        <th class="r" style="width:70px">СММ ₴</th>
+        <th class="r" style="width:68px">Таргет ₴</th>
+        <th class="r" style="width:60px">PPC ₴</th>
+        <th class="r" style="width:65px">Дизайн ₴</th>
+        <th class="r" style="width:68px">Інше ₴</th>
+        <th class="r" style="width:68px">PM ₴</th>
+        <th class="r" style="width:75px">Витрати ₴</th>
+        <th class="r" style="width:80px">Дохід ₴</th>
+        <th class="r" style="width:75px">Маржа ₴</th>
+        <th style="width:58px">%</th>
+        <th class="r" style="width:80px">До цілі</th>
+        <th style="width:38px"></th>
+      </tr></thead>
+      <tbody id="fin-tbody"></tbody>
+    </table>
+  </div>
+  <div class="sh" style="margin-top:22px"><span class="st">Ліди</span><span class="pill">Потенційні</span></div>
+  <div class="leads-grid" id="leads-grid"></div>
+  <div class="costs-2">
+    <div class="cb"><div class="cb-hdr"><span class="ch">Загальні витрати</span><span class="ct">117 000 грн</span></div>
+      <div class="cb-row"><span class="cl">Офіс</span><span class="cv">36 000</span></div>
+      <div class="cb-row"><span class="cl">Прибирання</span><span class="cv">6 000</span></div>
+      <div class="cb-row"><span class="cl">Бухгалтери</span><span class="cv">15 000</span></div>
+      <div class="cb-row"><span class="cl">Діджитал</span><span class="cv">15 000</span></div>
+      <div class="cb-row"><span class="cl">Податки</span><span class="cv">45 000</span></div>
+    </div>
+    <div class="cb"><div class="cb-hdr"><span class="ch">Зарплати (ФОТ)</span><span class="ct" id="fot-total">— грн</span></div>
+      <div class="cb-row"><span class="cl">Юліан + Діана</span><span class="cv">160 000</span></div>
+      <div class="cb-row"><span class="cl">Каріна (Operations)</span><span class="cv">40 000</span></div>
+      <div class="cb-row" style="background:var(--g50)"><span class="cl" style="font-weight:700">+ Дизайн відділ</span><span class="cv" style="color:var(--orange)" id="fot-design">—</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TAB 3: CASH FLOW ════ -->
+<div id="s-cashflow" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Cash flow</h1><p class="ps">Факт оплат цього місяця · Редагуй оплачено та очікується прямо в таблиці</p></div>
+  </div>
+  <div class="strip s5">
+    <div class="sc or"><span class="sv" id="cf-income">—</span><span class="sl">Нараховано</span></div>
+    <div class="sc gn"><span class="sv" id="cf-paid">—</span><span class="sl">Оплачено</span></div>
+    <div class="sc bl"><span class="sv" id="cf-expected">—</span><span class="sl">Очікується</span></div>
+    <div class="sc rd"><span class="sv" id="cf-debt">—</span><span class="sl">Не закрито</span></div>
+    <div class="sc bk"><span class="sv" id="cf-net">—</span><span class="sl">Каса після витрат</span></div>
+  </div>
+  <div class="sh"><span class="st">Оплати по проєктах</span><span class="pill" id="cf-pill">—</span></div>
+  <div class="tw">
+    <table class="t" style="min-width:900px">
+      <thead><tr>
+        <th style="width:28px"></th>
+        <th style="width:190px">Проєкт</th>
+        <th class="r" style="width:100px">Нараховано</th>
+        <th class="r" style="width:100px">Оплачено</th>
+        <th class="r" style="width:100px">Очікується</th>
+        <th class="r" style="width:100px">Не закрито</th>
+        <th style="width:120px">Дата</th>
+        <th style="width:130px">Статус</th>
+      </tr></thead>
+      <tbody id="cashflow-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ TAB 4: СТАТУСИ ДОХОДУ ════ -->
+<div id="s-income-status" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Статуси доходу</h1><p class="ps">Окремий лист для контролю: оплачено, частково, очікується або без доходу</p></div>
+  </div>
+  <div class="strip s4">
+    <div class="sc gn"><span class="sv" id="is-paid">—</span><span class="sl">Оплачено</span></div>
+    <div class="sc or"><span class="sv" id="is-partial">—</span><span class="sl">Частково</span></div>
+    <div class="sc bl"><span class="sv" id="is-expected">—</span><span class="sl">Очікується</span></div>
+    <div class="sc rd"><span class="sv" id="is-noincome">—</span><span class="sl">Без доходу</span></div>
+  </div>
+  <div class="sh"><span class="st">Дохід по проєктах</span><span class="pill" id="is-pill">—</span></div>
+  <div class="tw">
+    <table class="t" style="min-width:820px">
+      <thead><tr>
+        <th style="width:28px"></th>
+        <th style="width:210px">Проєкт</th>
+        <th style="width:150px">Статус</th>
+        <th class="r" style="width:110px">Дохід</th>
+        <th class="r" style="width:110px">Оплачено</th>
+        <th class="r" style="width:110px">Залишок</th>
+        <th>Коментар</th>
+      </tr></thead>
+      <tbody id="income-status-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ TAB 3: СММ ════ -->
+<div id="s-smm" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">СММ спеціалісти</h1><p class="ps">Нарахування по проєктах · Завантаженість 0.5 = половина ставки · × видаляє проєкт зі спеця</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('smm')">+ Додати спеця</button></div>
+  </div>
+  <div class="strip s4">
+    <div class="sc bl"><span class="sv" id="smm-total">—</span><span class="sl">Всього нараховано</span></div>
+    <div class="sc or"><span class="sv" id="smm-count">—</span><span class="sl">СММ спеців</span></div>
+    <div class="sc gn"><span class="sv" id="smm-with">—</span><span class="sl">Проєктів з СММ</span></div>
+    <div class="sc rd"><span class="sv" id="smm-without">—</span><span class="sl">Без СММ</span></div>
+  </div>
+  <div class="spec-grid" id="smm-grid"></div>
+</div>
+
+<!-- ════ TAB 4: ТАРГЕТ/PPC ════ -->
+<div id="s-target" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Таргетологи / PPC</h1><p class="ps">Нарахування по проєктах</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('target')">+ Додати спеця</button></div>
+  </div>
+  <div class="strip s3">
+    <div class="sc or"><span class="sv" id="tg-total">—</span><span class="sl">Всього нараховано</span></div>
+    <div class="sc bl"><span class="sv" id="tg-count">—</span><span class="sl">Спеціалістів</span></div>
+    <div class="sc rd"><span class="sv" id="tg-no">—</span><span class="sl">Без Таргет/PPC</span></div>
+  </div>
+  <div class="spec-grid" id="target-grid"></div>
+</div>
+
+<!-- ════ TAB 5: PM ════ -->
+<div id="s-pm" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Проджект менеджери</h1><p class="ps">Нарахування по проєктах</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('pm')">+ Додати PM</button></div>
+  </div>
+  <div class="strip s3">
+    <div class="sc gn"><span class="sv" id="pm-total">—</span><span class="sl">Всього нараховано</span></div>
+    <div class="sc bl"><span class="sv" id="pm-count">—</span><span class="sl">PM-ів</span></div>
+    <div class="sc rd"><span class="sv" id="pm-no">—</span><span class="sl">Без PM</span></div>
+  </div>
+  <div class="spec-grid" id="pm-grid"></div>
+</div>
+
+<!-- ════ TAB 6: ІНШЕ ════ -->
+<div id="s-other" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Інші послуги та спеціалісти</h1><p class="ps">Додаткові ролі чи послуги які не входять до основних категорій</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('other')">+ Додати</button></div>
+  </div>
+  <div class="strip s3">
+    <div class="sc or"><span class="sv" id="oth-total">—</span><span class="sl">Всього нараховано</span></div>
+    <div class="sc bl"><span class="sv" id="oth-count">—</span><span class="sl">Спеціалістів</span></div>
+    <div class="sc gn"><span class="sv" id="oth-proj">—</span><span class="sl">Проєктів</span></div>
+  </div>
+  <div class="spec-grid" id="other-grid"></div>
+</div>
+
+<!-- ════ TAB 7: ДИЗАЙН ════ -->
+<div id="s-design" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Дизайн відділ</h1><p class="ps">Ставки дизайнерів по проєктах · Перевірка відповідності закладеному бюджету</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('design')">+ Додати дизайнера</button></div>
+  </div>
+  <div class="strip s4">
+    <div class="sc or"><span class="sv" id="des-budget">—</span><span class="sl">Закладено в проєктах</span></div>
+    <div class="sc rd"><span class="sv" id="des-assigned">—</span><span class="sl">Нараховано дизайнерам</span></div>
+    <div class="sc gn"><span class="sv" id="des-diff">—</span><span class="sl">Залишок / Перевитрата</span></div>
+    <div class="sc bl"><span class="sv" id="des-count">—</span><span class="sl">Дизайнерів</span></div>
+  </div>
+  <div class="spec-grid" id="design-grid"></div>
+  <div class="sh" style="margin-top:20px"><span class="st">Проєкти з дизайном</span><span class="pill" id="des-proj-pill">—</span><span class="ml">Загальний дизайн-бюджет: <b id="des-budget-sum">—</b> грн</span></div>
+  <div class="tw">
+    <table class="t" style="min-width:700px">
+      <thead><tr>
+        <th style="width:28px"></th>
+        <th style="width:200px">Проєкт</th>
+        <th class="r" style="width:120px">Бюджет дизайну ₴</th>
+        <th class="r" style="width:120px">Нараховано ₴</th>
+        <th style="width:120px">Відповідність</th>
+        <th style="width:160px">Дизайнер</th>
+        <th style="width:38px"></th>
+      </tr></thead>
+      <tbody id="design-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ TAB 8: ЗП ДИЗАЙНЕРІВ ════ -->
+<div id="s-designer-pay" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Зарплати дизайнерів</h1><p class="ps">Окрема база ФОТ дизайну · ця сума підтягується у фінансові витрати</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('design')">+ Додати дизайнера</button></div>
+  </div>
+  <div class="strip s4">
+    <div class="sc or"><span class="sv" id="dp-total">—</span><span class="sl">ФОТ дизайну</span></div>
+    <div class="sc bl"><span class="sv" id="dp-count">—</span><span class="sl">Дизайнерів</span></div>
+    <div class="sc gn"><span class="sv" id="dp-project-budget">—</span><span class="sl">Бюджет у проєктах</span></div>
+    <div class="sc rd"><span class="sv" id="dp-diff">—</span><span class="sl">Різниця</span></div>
+  </div>
+  <div class="sh"><span class="st">Ставки дизайнерів</span><span class="pill" id="dp-pill">—</span></div>
+  <div class="tw">
+    <table class="t" style="min-width:700px">
+      <thead><tr>
+        <th style="width:28px"></th>
+        <th>Дизайнер</th>
+        <th class="r" style="width:140px">ЗП / міс</th>
+        <th class="r" style="width:140px">Проєктний бюджет</th>
+        <th class="r" style="width:140px">Різниця</th>
+        <th style="width:80px">Дії</th>
+      </tr></thead>
+      <tbody id="designer-pay-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ TAB 8: ЛІДИ ════ -->
+<div id="s-leads" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Ліди</h1><p class="ps">Статус переходу в проєкт · Клік для редагування</p></div>
+    <div class="fb-wrap">
+      <button class="fb act" onclick="fLeads('all',this)">Всі</button>
+      <button class="fb" onclick="fLeads('active',this)">Активні</button>
+      <button class="fb gn-fb" onclick="fLeads('converted',this)">Перейшли</button>
+      <button class="fb wfb" onclick="fLeads('lost',this)">Злились</button>
+      <button class="fb add" onclick="openLeadModal()">+ Лід</button>
+    </div>
+  </div>
+  <div class="strip s4">
+    <div class="sc bl"><span class="sv" id="ld-total">—</span><span class="sl">Всього лідів</span></div>
+    <div class="sc gn"><span class="sv" id="ld-converted">—</span><span class="sl">Стали проєктами</span></div>
+    <div class="sc rd"><span class="sv" id="ld-lost">—</span><span class="sl">Злились</span></div>
+    <div class="sc or"><span class="sv" id="ld-conv-rate">—</span><span class="sl">Конверсія %</span></div>
+  </div>
+  <div id="leads-table-wrap"></div>
+</div>
+
+<!-- ════ TAB 10: СЦЕНАРІЇ ════ -->
+<div id="s-scenarios" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Сценарії</h1><p class="ps">Поточний P&L + прогноз лідів з різною ймовірністю закриття</p></div>
+  </div>
+  <div class="strip s4">
+    <div class="sc or"><span class="sv" id="sc-base-pipe">—</span><span class="sl">Weighted pipeline</span></div>
+    <div class="sc gn"><span class="sv" id="sc-best-net">—</span><span class="sl">Оптимістичне сальдо</span></div>
+    <div class="sc bl"><span class="sv" id="sc-break-even">—</span><span class="sl">До нуля треба</span></div>
+    <div class="sc rd"><span class="sv" id="sc-low-margin">—</span><span class="sl">Низька маржа</span></div>
+  </div>
+  <div class="sh"><span class="st">Прогноз</span><span class="pill">3 сценарії</span></div>
+  <div class="tw">
+    <table class="t" style="min-width:760px">
+      <thead><tr>
+        <th style="width:160px">Сценарій</th>
+        <th class="r">Поточний дохід</th>
+        <th class="r">Прогноз лідів</th>
+        <th class="r">Валовий результат</th>
+        <th class="r">Чисте сальдо</th>
+        <th>Коментар</th>
+      </tr></thead>
+      <tbody id="scenarios-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ TAB 9: БЕЗ СПЕЦЯ ════ -->
+<div id="s-miss" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Без спеціаліста</h1><p class="ps">Проєкти де потрібне призначення</p></div>
+  </div>
+  <div class="strip s5">
+    <div class="sc rd"><span class="sv" id="m-ns">—</span><span class="sl">Без СММ</span></div>
+    <div class="sc rd"><span class="sv" id="m-nt">—</span><span class="sl">Без Таргет/PPC</span></div>
+    <div class="sc rd"><span class="sv" id="m-np">—</span><span class="sl">Без PM</span></div>
+    <div class="sc or"><span class="sv" id="m-ni">—</span><span class="sl">Без доходу</span></div>
+    <div class="sc bk"><span class="sv" id="m-loss">—</span><span class="sl">Збитків грн</span></div>
+  </div>
+  <div id="miss-cards"></div>
+</div>
+
+</div>
+
+<!-- MODAL: EDIT/ADD PROJECT -->
+<div class="modal-bg" id="proj-modal">
+  <div class="modal">
+    <div class="modal-hdr"><span class="mt" id="modal-title">Редагувати проєкт</span><button class="modal-x" onclick="closeModal('proj-modal')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="m-id">
+      <div class="mfr"><label>Назва проєкту</label><input type="text" id="m-name"></div>
+
+      <!-- SMM -->
+      <div style="background:var(--blue-bg);border-radius:4px;padding:12px 14px;margin-bottom:12px;border-left:3px solid var(--blue)">
+        <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">СММ</div>
+        <div class="m2">
+          <div class="mfr" style="margin-bottom:0">
+            <label>Спеціаліст</label>
+            <select id="m-smm" onchange="modalAutoRate('smm')">
+              <option value="">— Не призначено —</option>
+            </select>
+          </div>
+          <div class="mfr" style="margin-bottom:0"><label>СММ ставка ₴</label><input type="number" id="m-smm-c"></div>
+        </div>
+        <div class="m2" style="margin-top:8px">
+          <div class="mfr" style="margin-bottom:0"><label>Хед СММ надбавка ₴</label><input type="number" id="m-hed"></div>
+          <div class="mfr" style="margin-bottom:0"><label>Дизайн ₴</label><input type="number" id="m-design"></div>
+        </div>
+      </div>
+
+      <!-- ТАРГЕТ -->
+      <div style="background:var(--orange-light);border-radius:4px;padding:12px 14px;margin-bottom:12px;border-left:3px solid #C04000">
+        <div style="font-size:10px;font-weight:700;color:#C04000;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Таргет / PPC</div>
+        <div class="m2">
+          <div class="mfr" style="margin-bottom:0">
+            <label>Таргет спеціаліст</label>
+            <select id="m-tg" onchange="modalAutoRate('tg')">
+              <option value="">— Не призначено —</option>
+            </select>
+          </div>
+          <div class="mfr" style="margin-bottom:0"><label>Таргет ставка ₴</label><input type="number" id="m-tg-c"></div>
+        </div>
+        <div class="m2" style="margin-top:8px">
+          <div class="mfr" style="margin-bottom:0">
+            <label>PPC спеціаліст</label>
+            <select id="m-ppc" onchange="modalAutoRate('ppc')">
+              <option value="">— Не призначено —</option>
+            </select>
+          </div>
+          <div class="mfr" style="margin-bottom:0"><label>PPC ставка ₴</label><input type="number" id="m-ppc-c"></div>
+        </div>
+      </div>
+
+      <!-- PM -->
+      <div style="background:var(--g50);border-radius:4px;padding:12px 14px;margin-bottom:12px;border-left:3px solid var(--black)">
+        <div style="font-size:10px;font-weight:700;color:var(--black);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">PM</div>
+        <div class="m2">
+          <div class="mfr" style="margin-bottom:0">
+            <label>PM</label>
+            <select id="m-pm" onchange="modalAutoRate('pm')">
+              <option value="">— Не призначено —</option>
+            </select>
+          </div>
+          <div class="mfr" style="margin-bottom:0"><label>PM ставка ₴</label><input type="number" id="m-pm-c"></div>
+        </div>
+      </div>
+
+      <!-- ФІНАНСИ -->
+      <div class="m2">
+        <div class="mfr"><label>Інші витрати ₴</label><input type="number" id="m-other"></div>
+        <div class="mfr"><label>Дохід ₴</label><input type="number" id="m-income"></div>
+      </div>
+      <div class="m2">
+        <div class="mfr"><label>Оплачено ₴</label><input type="number" id="m-paid"></div>
+        <div class="mfr"><label>Очікується ₴</label><input type="number" id="m-expected"></div>
+      </div>
+      <div class="mfr"><label>Статус доходу</label>
+        <select id="m-income-status">
+          <option value="paid">Оплачено</option>
+          <option value="partial">Частково оплачено</option>
+          <option value="expected">Очікується</option>
+          <option value="noincome">Без доходу</option>
+        </select>
+      </div>
+      <div class="m2">
+        <div class="mfr"><label>Дата оплати</label><input type="text" id="m-pay" placeholder="напр. 15 і 30"></div>
+        <div class="mfr"><label>Нотатки</label><input type="text" id="m-notes"></div>
+      </div>
+      <div class="mfr"><label>Які послуги потрібні</label>
+        <div class="need-row">
+          <label><input type="checkbox" id="m-need-smm" checked> СММ</label>
+          <label><input type="checkbox" id="m-need-tg" checked> Таргет/PPC</label>
+          <label><input type="checkbox" id="m-need-pm" checked> PM</label>
+          <label><input type="checkbox" id="m-need-design" checked> Дизайн</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cn" onclick="closeModal('proj-modal')">Скасувати</button>
+      <button class="btn-sv" onclick="saveModal()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD SPEC -->
+<div class="modal-bg" id="spec-modal">
+  <div class="modal modal-sm">
+    <div class="modal-hdr"><span class="mt">Додати спеціаліста</span><button class="modal-x" onclick="closeModal('spec-modal')">×</button></div>
+    <div class="modal-body">
+      <div class="mfr"><label>Ім'я</label><input type="text" id="sm-name" placeholder="Ім'я Прізвище"></div>
+      <div class="mfr"><label>Роль</label>
+        <select id="sm-role">
+          <option value="smm">СММ</option>
+          <option value="target">Таргет</option>
+          <option value="ppc">PPC</option>
+          <option value="pm">PM</option>
+          <option value="design">Дизайн</option>
+          <option value="other">Інше</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cn" onclick="closeModal('spec-modal')">Скасувати</button>
+      <button class="btn-sv" onclick="saveSpecModal()">Додати</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LEAD -->
+<div class="modal-bg" id="lead-modal">
+  <div class="modal modal-sm" style="width:460px">
+    <div class="modal-hdr"><span class="mt">Лід</span><button class="modal-x" onclick="closeModal('lead-modal')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="lm-id">
+      <div class="mfr"><label>Назва ліда / компанія</label><input type="text" id="lm-name" placeholder="Назва"></div>
+      <div class="m2">
+        <div class="mfr"><label>Потенційний дохід ₴</label><input type="number" id="lm-income" placeholder="0"></div>
+        <div class="mfr"><label>Статус</label>
+          <select id="lm-status">
+            <option value="active">Активний</option>
+            <option value="converted">Став проєктом</option>
+            <option value="lost">Злився</option>
+          </select>
+        </div>
+      </div>
+      <div class="mfr"><label>Ймовірність закриття %</label><input type="number" id="lm-prob" min="0" max="100" placeholder="30"></div>
+      <div class="mfr"><label>Примітка (потрібні послуги)</label><input type="text" id="lm-note" placeholder="СММ + Таргет + Дизайн"></div>
+      <div class="mfr"><label>Причина зливу (якщо злився)</label><input type="text" id="lm-reason" placeholder="Не влаштувала ціна..."></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cn" onclick="closeModal('lead-modal')">Скасувати</button>
+      <button class="btn-sv" onclick="saveLeadModal()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════ DATA ══════
+const DEF_P = [
+  {id:1, name:"Шашлайк",           smm:"Іра Сивик",  smm_c:8000,  hed:1000,  tg:"Оля",      tg_c:5000,  ppc:"Денис",  ppc_c:7000,  design:4000,  other:0,      income:46000,  pm:"Іра",   pm_c:6000,  pay:"30 і 15", cash:false, notes:""},
+  {id:2, name:"Західний Буг",      smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:8000,  other:5000,   income:32000,  pm:"Роман", pm_c:12000, pay:"30",      cash:false, notes:"14k+14k від Романа"},
+  {id:3, name:"Зх Буг Дні Поля",   smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:6000,  other:80000,  income:140000, pm:"Іра",   pm_c:6000,  pay:"29–30",   cash:false, notes:"1/2 зараз, решта до 1.09"},
+  {id:4, name:"Банк Львів",        smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:15000,  income:35000,  pm:"Діана", pm_c:0,     pay:"30",      cash:false, notes:""},
+  {id:5, name:"Yoki",              smm:"Юля",        smm_c:8000,  hed:0,     tg:"Оля",      tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:0,      income:34000,  pm:"Іра",   pm_c:4000,  pay:"15",      cash:false, notes:""},
+  {id:6, name:"Global Mark Вист.", smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:10000, other:0,      income:20000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:7, name:"Global Mark",       smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:10000, other:0,      income:49000,  pm:"Іра",   pm_c:4000,  pay:"—",       cash:false, notes:""},
+  {id:8, name:"7office",           smm:"Іра Сивик",  smm_c:6000,  hed:1000,  tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:4000,   income:30000,  pm:"Діана", pm_c:0,     pay:"15 і 30", cash:true,  notes:"15 — ТОВ Кузня, 30 — готівка"},
+  {id:9, name:"Аудіодім",          smm:"",           smm_c:0,     hed:0,     tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:0,      income:14000,  pm:"Катя",  pm_c:0,     pay:"31 і 15", cash:true,  notes:"готівка"},
+  {id:10,name:"О2 School",         smm:"",           smm_c:0,     hed:0,     tg:"Кіріл",    tg_c:10000, ppc:"Денис",  ppc_c:5000,  design:3000,  other:0,      income:26000,  pm:"Кіріл", pm_c:0,     pay:"15",      cash:false, notes:""},
+  {id:11,name:"Коліжанка",         smm:"Надя",       smm_c:6000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:1000,  other:0,      income:9000,   pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:12,name:"МІСТО",             smm:"Юля",        smm_c:6000,  hed:0,     tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:6000,   income:32000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:13,name:"BRONX",             smm:"Настя",      smm_c:8000,  hed:1000,  tg:"Оля",      tg_c:5000,  ppc:"",       ppc_c:2000,  design:3000,  other:0,      income:22800,  pm:"Каріна",pm_c:4000,  pay:"—",       cash:false, notes:"Маржа нульова"},
+  {id:14,name:"Мар'яна Кавин",     smm:"Надя",       smm_c:8000,  hed:1000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:2000,  other:4000,   income:20000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:15,name:"Meatbusters",       smm:"Анастасія",  smm_c:9000,  hed:1000,  tg:"Кіріл",    tg_c:5000,  ppc:"Денис",  ppc_c:5000,  design:3000,  other:10000,  income:38500,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Зйомки +6000"},
+  {id:16,name:"Labgramm",          smm:"Юля",        smm_c:8000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:3000,  other:0,      income:16000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:17,name:"Вирій",             smm:"Надя",       smm_c:6000,  hed:1000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:3000,  other:0,      income:15260,  pm:"",      pm_c:0,     pay:"30",      cash:false, notes:""},
+  {id:18,name:"Субота",            smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"Денис",  ppc_c:5000,  design:0,     other:0,      income:11000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:19,name:"Ландтех",           smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"Ганна",  ppc_c:8000,  design:0,     other:0,      income:12000,  pm:"Ганна", pm_c:0,     pay:"30",      cash:false, notes:""},
+  {id:20,name:"Lupily",            smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"Ганна",  ppc_c:8000,  design:0,     other:0,      income:11000,  pm:"Ганна", pm_c:0,     pay:"15",      cash:false, notes:""},
+  {id:21,name:"Агросем",           smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:40000,  income:80000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Кешбек"},
+  {id:22,name:"Апартель",          smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:10000,  income:20000,  pm:"Роман", pm_c:2000,  pay:"30",      cash:false, notes:"аутсорс"},
+  {id:23,name:"Лем Стейшн",        smm:"Настя+Юля",  smm_c:28000, hed:0,     tg:"Оля",      tg_c:10000, ppc:"Денис",  ppc_c:10000, design:10000, other:21800,  income:138000, pm:"Катя",  pm_c:18000, pay:"15–30",   cash:false, notes:"Великий проєкт"},
+  {id:24,name:"ЛКП",               smm:"Альона",     smm_c:10000, hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:5000,  other:0,      income:20000,  pm:"Катя",  pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:25,name:"Аптека ДД ББ",      smm:"Анастасія",  smm_c:10000, hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:20000, other:0,      income:60000,  pm:"Іра",   pm_c:4000,  pay:"—",       cash:false, notes:""},
+  {id:26,name:"Візит",             smm:"Альна",      smm_c:15000, hed:2000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:8000,  other:4000,   income:56000,  pm:"Роман", pm_c:10000, pay:"—",       cash:false, notes:""},
+  {id:27,name:"Ай Кідс",           smm:"Альона",     smm_c:6000,  hed:2000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:0,      income:18000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:28,name:"Слово і Голос",     smm:"Ліля",       smm_c:8000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:4000,  other:0,      income:20000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:29,name:"Сако (ІФ)",         smm:"Анастасія",  smm_c:8000,  hed:1000,  tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:0,      income:28000,  pm:"Роман", pm_c:2000,  pay:"—",       cash:false, notes:""},
+  {id:30,name:"Пакорама",          smm:"Іра Сивик",  smm_c:4000,  hed:1000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:3000,  other:0,      income:0,      pm:"Роман", pm_c:4000,  pay:"—",       cash:false, notes:"Без доходу"},
+  {id:31,name:"Ді",                smm:"Іра Сивик",  smm_c:4000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:2000,  other:0,      income:0,      pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Без доходу"},
+  {id:32,name:"Скай Асіст",        smm:"Іра Сивик",  smm_c:4000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:2000,  other:0,      income:0,      pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Без доходу"},
+  {id:33,name:"Діджі",             smm:"Юля+Іра",    smm_c:6000,  hed:1000,  tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:2000,  other:0,      income:0,      pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Без доходу"},
+];
+
+// Спеці — окремо від проєктів, з можливістю додавання/видалення
+// load: 1.0 = 100%, 0.5 = 50%
+const DEF_SPECS = {
+  smm:[
+    {id:"smm1",name:"Іра Сивик"},
+    {id:"smm2",name:"Надя"},
+    {id:"smm3",name:"Вікторія"},
+    {id:"smm4",name:"Юля"},
+    {id:"smm5",name:"Анастасія"},
+    {id:"smm6",name:"Ліля"},
+    {id:"smm7",name:"Альона"},
+    {id:"smm8",name:"Альна"},
+    {id:"smm9",name:"Іра Леськів"},
+    {id:"smm10",name:"Ліля Філатова"},
+  ],
+  target:[
+    {id:"tg1",name:"Оля"},
+    {id:"tg2",name:"Крістіна"},
+    {id:"tg3",name:"Кіріл"},
+  ],
+  ppc:[
+    {id:"ppc1",name:"Денис"},
+    {id:"ppc2",name:"Ганна"},
+  ],
+  pm:[
+    // ТІЛЬКИ ОДНА ІРА — як PM. Іра Леськів — СММ
+    {id:"pm1",name:"Іра"},
+    {id:"pm2",name:"Каріна"},
+    {id:"pm3",name:"Катя"},
+    {id:"pm4",name:"Роман"},
+    {id:"pm5",name:"Діана"},
+    {id:"pm6",name:"Ганна"},
+    {id:"pm7",name:"Кіріл"},
+  ],
+  design:[
+    {id:"d1",name:"Настя",   rate:10000},
+    {id:"d2",name:"Віка",    rate:28000},
+    {id:"d3",name:"Наталя",  rate:42000},
+    {id:"d4",name:"Стас",    rate:40000},
+    {id:"d5",name:"Катя (дизайн)", rate:20000},
+  ],
+  other:[]
+};
+
+// status: 'active'=переговори | 'converted'=став проєктом | 'lost'=злився
+const DEF_LEADS=[
+  {id:"l1", name:"Аптека Доброго Дня", income:65000, note:"тестовий тиждень", status:"active", lost_reason:""},
+  {id:"l2", name:"VRB",                income:25000, note:"Таргет + PM",       status:"active", lost_reason:""},
+  {id:"l3", name:"Clean Bus",          income:11000, note:"СММ + Таргет + Дизайн", status:"active", lost_reason:""},
+  {id:"l4", name:"Rembrant",           income:32000, note:"СММ + Дизайн",      status:"active", lost_reason:""},
+  {id:"l5", name:"Новосад",            income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l6", name:"Ірина Продукти",     income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l7", name:"Ірина Одяг",         income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l8", name:"Галичина",           income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l9", name:"Горіховий Гай",      income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l10",name:"Інвіа Хелс",         income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l11",name:"кава",               income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l12",name:"Шампане",            income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l13",name:"Комо",               income:0,     note:"",                  status:"active", lost_reason:""},
+  {id:"l14",name:"АромоМасла",         income:0,     note:"",                  status:"active", lost_reason:""},
+];
+
+// ══════ STATE ══════
+let P=[], S={}, L=[], nextId=100, nextSid=200, nextLid=300, svcFilter='all', finFilter='all', leadsFilter='all', saveT=null;
+const GENERAL_COSTS=117000;
+const CORE_PAYROLL=200000;
+const TARGET_MARGIN=.4;
+
+function deep(x){return JSON.parse(JSON.stringify(x));}
+function inferIncomeStatus(p){
+  if((p.income||0)===0) return 'noincome';
+  if((p.paid||0)>0 && (p.paid||0)<(p.income||0)) return 'partial';
+  if((p.paid||0)>=(p.income||0)) return 'paid';
+  return 'expected';
+}
+function normalizeProject(p){
+  if(typeof p.notes==='string') p.notes=p.notes.replace(/^\u26A0\s*/,'');
+  if(p.need_smm===undefined) p.need_smm=true;
+  if(p.need_tg===undefined) p.need_tg=true;
+  if(p.need_pm===undefined) p.need_pm=true;
+  if(p.need_design===undefined) p.need_design=true;
+  if(p.paid===undefined){
+    const note=(p.notes||'').toLowerCase();
+    p.paid=note.includes('1/2')?Math.round((p.income||0)/2):(p.income||0);
+  }
+  if(p.expected===undefined) p.expected=Math.max(0,(p.income||0)-(p.paid||0));
+  if(!p.income_status) p.income_status=inferIncomeStatus(p);
+  return p;
+}
+function normalizeLead(l){
+  if(l.prob===undefined) l.prob=l.status==='converted'?100:l.status==='lost'?0:30;
+  return l;
+}
+function normalizeData(){
+  P.forEach(normalizeProject);
+  L.forEach(normalizeLead);
+  (S.design||[]).forEach(d=>{
+    if(d.rate===undefined) d.rate=0;
+    if(!d.projects) d.projects=[];
+    if(!d.loads) d.loads={};
+  });
+}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem('diggi_v3')||'null');
+    if(d){
+      P=d.P||deep(DEF_P); S=d.S||deep(DEF_SPECS);
+      L=d.L||deep(DEF_LEADS);
+      nextId=d.nextId||100; nextSid=d.nextSid||200; nextLid=d.nextLid||300;
+    } else{ P=deep(DEF_P); S=deep(DEF_SPECS); L=deep(DEF_LEADS); }
+  }catch(e){ P=deep(DEF_P); S=deep(DEF_SPECS); L=deep(DEF_LEADS); }
+  normalizeData();
+}
+function save(){
+  clearTimeout(saveT);
+  document.getElementById('dot').className='dot dirty';
+  document.getElementById('stxt').textContent='Змінено...';
+  saveT=setTimeout(()=>{
+    localStorage.setItem('diggi_v3',JSON.stringify({P,S,L,nextId,nextSid,nextLid}));
+    document.getElementById('dot').className='dot';
+    document.getElementById('stxt').textContent='Збережено';
+  },800);
+}
+function resetAll(){
+  if(!confirm('Скинути всі зміни?')) return;
+  P=deep(DEF_P); S=deep(DEF_SPECS); L=deep(DEF_LEADS); nextId=100; nextSid=200; nextLid=300;
+  normalizeData();
+  localStorage.removeItem('diggi_v3');
+  renderAll(); toast('Дані скинуто');
+}
+
+// ══════ CALC ══════
+function costs(p){return (p.smm_c||0)+(p.hed||0)+(p.tg_c||0)+(p.ppc_c||0)+(p.design||0)+(p.other||0)+(p.pm_c||0);}
+function margin(p){return (p.income||0)-costs(p);}
+function mpct(p){return p.income>0?margin(p)/p.income:0;}
+function fmt(n){return new Intl.NumberFormat('uk-UA').format(Math.round(n));}
+function designerPayroll(){return (S.design||[]).reduce((s,d)=>s+(parseInt(d.rate)||0),0);}
+function fixedCosts(){return GENERAL_COSTS+CORE_PAYROLL+designerPayroll();}
+function targetIncome(p){const c=costs(p); return c>0?Math.ceil(c/(1-TARGET_MARGIN)):0;}
+function targetGap(p){return Math.max(0,targetIncome(p)-(p.income||0));}
+function paidAmount(p){return Math.min(p.income||0,parseInt(p.paid)||0);}
+function expectedAmount(p){return Math.max(0,parseInt(p.expected)||0);}
+function debtAmount(p){return Math.max(0,(p.income||0)-paidAmount(p)-expectedAmount(p));}
+function leadWeighted(l,prob){return Math.round((l.income||0)*(prob??(l.prob||0))/100);}
+
+function svcCell(val, cls){
+  if(val) return `<span class="svc-tag ${cls}">${val}</span>`;
+  return `<span class="dash">—</span>`;
+}
+function needCell(needed, val, cls){
+  if(!needed) return `<span class="svc-tag" style="background:var(--g100);color:var(--g600);border-color:var(--g200)">Не потрібно</span>`;
+  return svcCell(val, cls);
+}
+
+// ══════ RENDER SERVICES ══════
+function renderServices(){
+  const tbody=document.getElementById('svc-tbody');
+  tbody.innerHTML='';
+  let vis=0, totalSvcs=0;
+
+  P.forEach((p,i)=>{
+    const m=margin(p), mp=mpct(p);
+    const hasSMM=!!p.smm||p.need_smm===false, hasTG=!!p.tg||p.need_tg===false, hasPPC=!!p.ppc, hasDES=!!p.design||p.need_design===false, hasPM=!!p.pm||p.need_pm===false;
+    const svcCount=[!!p.smm,!!p.tg,!!p.ppc,!!p.design,!!p.pm].filter(Boolean).length;
+    const isFull=hasSMM&&(hasTG||hasPPC||p.need_tg===false)&&hasPM;
+
+    if(svcFilter==='nospec'&&isFull) return;
+    vis++; totalSvcs+=svcCount;
+
+    let rc='';
+    if(!hasSMM&&!hasTG&&!hasPPC) rc='row-neg';
+    else if(!isFull) rc='row-warn';
+    else if(i%2===1) rc='row-even';
+
+    const mCls=m<0?'m-neg':mp>=.4?'m-pos':mp>=.2?'m':'m-zero';
+
+    const tr=document.createElement('tr');
+    tr.className=rc;
+    tr.innerHTML=`
+      <td style="text-align:center;color:var(--g400);font-size:11px">${vis}</td>
+      <td>
+        <span style="font-family:Montserrat;font-weight:700;font-size:13px;cursor:pointer" onclick="openEditModal(${p.id})">${p.name}</span>
+        <span style="display:block;font-size:10px;color:var(--g400)">${p.pay||'—'}</span>
+      </td>
+      <td class="c">${needCell(p.need_smm!==false,p.smm,'svc-smm')}</td>
+      <td class="c">${needCell(p.need_tg!==false,p.tg,'svc-tg')}</td>
+      <td class="c">${svcCell(p.ppc,'svc-ppc')}</td>
+      <td class="c">${p.need_design===false?`<span class="svc-tag" style="background:var(--g100);color:var(--g600);border-color:var(--g200)">Не потрібно</span>`:(p.design?`<span class="svc-tag svc-des">${fmt(p.design)}₴</span>`:`<span class="dash">—</span>`)}</td>
+      <td class="c">${needCell(p.need_pm!==false,p.pm,'svc-pm')}</td>
+      <td class="r"><span class="m">${p.income?fmt(p.income):'—'}</span></td>
+      <td class="r"><span class="m ${mCls}">${p.income||m?fmt(m):'—'}</span></td>
+      <td><div class="ra">
+        <button class="btn-ic" onclick="openEditModal(${p.id})" title="Редагувати">Ред</button>
+        <button class="btn-ic del" onclick="delP(${p.id})" title="Видалити">×</button>
+      </div></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('svc-pill').textContent=vis+' проєктів';
+  document.getElementById('svc-total-svcs').textContent=totalSvcs;
+  document.getElementById('cnt-svc').textContent=P.length;
+}
+
+// ══════ RENDER FINANCES ══════
+function renderFin(){
+  const tbody=document.getElementById('fin-tbody');
+  tbody.innerHTML='';
+  let tI=0,tC=0,vis=0;
+
+  P.forEach((p,i)=>{
+    const c=costs(p),m=margin(p),mp=mpct(p);
+    const gap=targetGap(p);
+    if(finFilter==='neg'&&m>=0) return;
+    if(finFilter==='low'&&!(p.income>0&&mp<TARGET_MARGIN)) return;
+    if(finFilter==='zero'&&p.income!==0) return;
+    vis++;tI+=p.income||0;tC+=c;
+
+    let rc='';
+    if(m<0) rc='row-neg';
+    else if(p.income===0) rc='row-zero';
+    else if(mp<TARGET_MARGIN) rc='row-warn';
+    else if(i%2===1) rc='row-even';
+
+    const pctC=Math.max(0,Math.min(1,mp));
+    const bc=mp>=.4?'var(--green)':mp>=.2?'var(--orange)':'var(--red)';
+    const pc=mp>=.4?'var(--green)':mp>=.2?'var(--orange)':'var(--red)';
+    const mCls=m<0?'m-neg':mp>=.4?'m-pos':mp>=.2?'m':'m-zero';
+
+    const tr=document.createElement('tr');
+    tr.className=rc;
+    tr.innerHTML=`
+      <td style="text-align:center;color:var(--g400);font-size:11px">${vis}</td>
+      <td>
+        <span style="font-family:Montserrat;font-weight:700;font-size:12px;cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px;text-decoration-color:var(--g200)" onclick="openEditModal(${p.id})">${p.name}</span>
+        <span style="display:block;font-size:10px;color:var(--g400)">${p.pm?'PM: '+p.pm:'PM: —'}</span>
+      </td>
+      <td class="r"><input class="ei ${!(p.smm_c+p.hed)?'zero':''}" type="number" value="${(p.smm_c||0)+(p.hed||0)||''}" placeholder="0" style="width:68px" oninput="updN(${p.id},'smm_total',this.value)"></td>
+      <td class="r"><input class="ei ${!p.tg_c?'zero':''}" type="number" value="${p.tg_c||''}" placeholder="0" style="width:64px" oninput="updN(${p.id},'tg_c',this.value)"></td>
+      <td class="r"><input class="ei ${!p.ppc_c?'zero':''}" type="number" value="${p.ppc_c||''}" placeholder="0" style="width:56px" oninput="updN(${p.id},'ppc_c',this.value)"></td>
+      <td class="r"><input class="ei ${!p.design?'zero':''}" type="number" value="${p.design||''}" placeholder="0" style="width:60px" oninput="updN(${p.id},'design',this.value)"></td>
+      <td class="r"><input class="ei ${!p.other?'zero':''}" type="number" value="${p.other||''}" placeholder="0" style="width:62px" oninput="updN(${p.id},'other',this.value)"></td>
+      <td class="r"><input class="ei ${!p.pm_c?'zero':''}" type="number" value="${p.pm_c||''}" placeholder="0" style="width:60px" oninput="updN(${p.id},'pm_c',this.value)"></td>
+      <td class="r"><span class="m" style="color:var(--g600)" id="tc-${p.id}">${fmt(c)}</span></td>
+      <td class="r"><input class="ei" type="number" value="${p.income||''}" placeholder="0" style="color:var(--black);font-weight:700;width:76px" oninput="updN(${p.id},'income',this.value)"></td>
+      <td class="r"><span class="m ${mCls}" id="mg-${p.id}">${p.income||m?fmt(m):'—'}</span></td>
+      <td>
+        <div class="pct-w">
+          <span class="pct-txt" style="color:${pc}">${p.income>0?Math.round(mp*100)+'%':'—'}</span>
+          <div class="pct-bar"><div class="pct-fill" style="width:${Math.round(pctC*100)}%;background:${bc}"></div></div>
+        </div>
+      </td>
+      <td class="r"><span class="m ${gap>0?'m-neg':'m-pos'}">${gap>0?fmt(gap):'—'}</span></td>
+      <td><div class="ra">
+        <button class="btn-ic del" onclick="delP(${p.id})" title="Видалити">×</button>
+      </div></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const tM=tI-tC, tPct=tI>0?Math.round(tM/tI*100):0;
+  tbody.insertAdjacentHTML('beforeend',`<tr class="tot-r"><td colspan="8">ПІДСУМОК · ${vis} проєктів</td><td class="r">${fmt(tC)}</td><td class="r" style="color:var(--orange)">${fmt(tI)}</td><td class="r" style="color:${tM>=0?'#4CAF50':'var(--red)'}">${fmt(tM)}</td><td style="color:var(--orange);font-family:Montserrat;font-weight:700">${tPct}%</td><td></td><td></td></tr>`);
+
+  const saldo=tM-fixedCosts();
+  document.getElementById('f-income').textContent=fmt(tI);
+  document.getElementById('f-costs').textContent=fmt(tC);
+  document.getElementById('f-margin').textContent=fmt(tM);
+  document.getElementById('f-pct').textContent=tPct+'%';
+  const se=document.getElementById('f-saldo');
+  se.textContent=(saldo>=0?'+':'')+fmt(saldo);
+  se.style.color=saldo>=0?'var(--green)':'var(--red)';
+  document.getElementById('f-pill').textContent=vis+' проєктів';
+  document.getElementById('f-sum').textContent=fmt(tI);
+  document.getElementById('cnt-fin').textContent=P.length;
+  renderCostsBlocks();
+}
+
+// ══════ RENDER DEPT CARDS ══════
+// Спеці мають свій список проєктів незалежно від завантаженості
+// Але розрахунок нарахування = ставка × завантаженість
+// Дані про завантаженість зберігаються окремо: S.loads[specId][projId] = 0..1
+
+function getLoad(specId, projId){
+  if(!S.loads) S.loads={};
+  if(!S.loads[specId]) return null; // null = за замовчуванням
+  return S.loads[specId][projId] ?? null;
+}
+function setLoad(specId, projId, val){
+  if(!S.loads) S.loads={};
+  if(!S.loads[specId]) S.loads[specId]={};
+  S.loads[specId][projId]=val;
+}
+
+function renderDept(role){
+  const roleKey = role==='ppc'?'ppc':role==='target'?'target':role;
+  const allSpecs = role==='target'
+    ? [...(S.target||[]).map(s=>({...s,role:'target'})), ...(S.ppc||[]).map(s=>({...s,role:'ppc'}))]
+    : (S[role]||[]).map(s=>({...s,role}));
+
+  const gridId = role==='smm'?'smm-grid':role==='pm'?'pm-grid':'target-grid';
+  const grid=document.getElementById(gridId);
+  if(!grid) return;
+  grid.innerHTML='';
+
+  let grandTotal=0;
+
+  allSpecs.forEach(spec=>{
+    const fn=spec.name.split(' ')[0];
+    const projList=[];
+    let total=0;
+
+    P.forEach(p=>{
+      let baseRate=0, rl='';
+
+      if(spec.role==='smm' && p.smm){
+        const nm=p.smm.toLowerCase();
+        if(nm.includes(fn.toLowerCase())){
+          const isDouble=p.smm.includes('+')||p.smm.includes('|');
+          baseRate=isDouble?Math.round((p.smm_c||0)/2):(p.smm_c||0);
+          if(p.hed>0 && !isDouble) baseRate+=(p.hed||0);
+          rl=isDouble?'СММ ÷2':'СММ';
+        }
+      }
+      if(spec.role==='target' && p.tg && p.tg.toLowerCase().includes(fn.toLowerCase())){
+        baseRate=p.tg_c||0; rl='Таргет';
+      }
+      if(spec.role==='ppc' && p.ppc && p.ppc.toLowerCase().includes(fn.toLowerCase())){
+        baseRate=p.ppc_c||0; rl='PPC';
+      }
+      if(spec.role==='pm' && p.pm && p.pm.toLowerCase().includes(fn.toLowerCase())){
+        baseRate=p.pm_c||0; rl='PM';
+      }
+
+      if(baseRate>0||rl){
+        const storedLoad=getLoad(spec.id,p.id);
+        const load = storedLoad!==null ? storedLoad : 1.0;
+        const earned=Math.round(baseRate*load);
+        projList.push({pid:p.id, name:p.name, role:rl, baseRate, load, earned});
+        total+=earned;
+      }
+    });
+
+    grandTotal+=total;
+
+    const roleCls=spec.role==='smm'?'t-smm':spec.role==='pm'?'t-pm':'t-target';
+    const roleLabel=spec.role==='smm'?'СММ':spec.role==='target'?'Таргет':spec.role==='ppc'?'PPC':'PM';
+
+    // build proj options for add
+    const unusedProjs=P.filter(p=>{
+      if(spec.role==='smm') return !p.smm||!p.smm.toLowerCase().includes(fn.toLowerCase());
+      if(spec.role==='target') return !p.tg||!p.tg.toLowerCase().includes(fn.toLowerCase());
+      if(spec.role==='ppc') return !p.ppc||!p.ppc.toLowerCase().includes(fn.toLowerCase());
+      if(spec.role==='pm') return !p.pm||!p.pm.toLowerCase().includes(fn.toLowerCase());
+      return false;
+    });
+
+    const card=document.createElement('div');
+    card.className='spec-card';
+    card.id=`card-${spec.id}`;
+    card.innerHTML=`
+      <div class="spec-hdr">
+        <div class="spec-hdr-left">
+          <span class="spec-name-txt">${spec.name}</span>
+          <span class="tag ${roleCls}" style="cursor:default">${roleLabel}</span>
+        </div>
+        <div class="spec-right">
+          <span class="spec-amt" id="sa-${spec.id}">${fmt(total)} ₴</span>
+          <span class="spec-cnt">${projList.length} проєктів</span>
+        </div>
+      </div>
+      ${projList.map(sp=>`
+        <div class="spec-proj" id="sp-${spec.id}-${sp.pid}">
+          <span class="spec-proj-name">${sp.name}</span>
+          <span class="spec-proj-load" title="Завантаженість">
+            <input type="number" min="0" max="1" step="0.1" value="${sp.load}"
+              style="width:44px;text-align:center;border:1px solid var(--g200);border-radius:2px;padding:2px 4px;font-size:11px;font-family:Montserrat;font-weight:600;background:transparent;"
+              onchange="updLoad('${spec.id}',${sp.pid},this.value,'${role}')"
+              title="Завантаженість (1=100%, 0.5=50%)">
+          </span>
+          <span class="spec-proj-earn" id="se-${spec.id}-${sp.pid}">${fmt(sp.earned)} ₴</span>
+          <button class="spec-proj-del" onclick="removeSpecFromProj('${spec.id}','${spec.role}',${sp.pid})" title="Прибрати з проєкту">×</button>
+        </div>
+      `).join('')}
+      ${projList.length===0?`<div style="padding:10px 14px;font-size:11px;color:var(--g400);font-style:italic">Немає активних проєктів</div>`:''}
+      <div class="add-proj-row">
+        <select id="apr-${spec.id}">
+          <option value="">+ Додати проєкт...</option>
+          ${unusedProjs.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}
+        </select>
+        <input type="number" id="apl-${spec.id}" placeholder="0.5" min="0" max="1" step="0.1" value="1" title="Завантаженість">
+        <button onclick="addProjToSpec('${spec.id}','${spec.role}','${role}')">+ Додати</button>
+      </div>
+      <div class="spec-foot">
+        <span class="spec-foot-label">Разом ${spec.name}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="spec-foot-amt" id="sfa-${spec.id}">${fmt(total)} ₴</span>
+          <button class="spec-foot-del" onclick="deleteSpec('${spec.id}','${spec.role}')">× Видалити спеця</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // update strip
+  if(role==='smm'){
+    const noSmm=P.filter(p=>p.need_smm!==false&&!p.smm).length;
+    document.getElementById('smm-total').textContent=fmt(grandTotal)+' ₴';
+    document.getElementById('smm-count').textContent=(S.smm||[]).length;
+    document.getElementById('smm-with').textContent=P.filter(p=>p.smm).length;
+    document.getElementById('smm-without').textContent=noSmm;
+    document.getElementById('cnt-smm').textContent=(S.smm||[]).length;
+  }
+  if(role==='target'){
+    const noTg=P.filter(p=>p.need_tg!==false&&!p.tg&&!p.ppc).length;
+    document.getElementById('tg-total').textContent=fmt(grandTotal)+' ₴';
+    document.getElementById('tg-count').textContent=(S.target||[]).length+(S.ppc||[]).length;
+    document.getElementById('tg-no').textContent=noTg;
+    document.getElementById('cnt-tg').textContent=(S.target||[]).length+(S.ppc||[]).length;
+  }
+  if(role==='pm'){
+    const noPm=P.filter(p=>p.need_pm!==false&&!p.pm).length;
+    document.getElementById('pm-total').textContent=fmt(grandTotal)+' ₴';
+    document.getElementById('pm-count').textContent=(S.pm||[]).length;
+    document.getElementById('pm-no').textContent=noPm;
+    document.getElementById('cnt-pm').textContent=(S.pm||[]).length;
+  }
+}
+
+function updLoad(specId, projId, val, role){
+  const load=Math.min(1,Math.max(0,parseFloat(val)||0));
+  setLoad(specId, projId, load);
+  // recalc earned for this row
+  const p=P.find(x=>x.id===projId);
+  if(!p) return;
+  const spec=[...(S.smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
+  if(!spec) return;
+  const fn=spec.name.split(' ')[0].toLowerCase();
+  let baseRate=0;
+  if(role==='smm'&&p.smm&&p.smm.toLowerCase().includes(fn)){
+    const isD=p.smm.includes('+')||p.smm.includes('|');
+    baseRate=isD?Math.round((p.smm_c||0)/2):(p.smm_c||0);
+    if(p.hed>0&&!isD) baseRate+=(p.hed||0);
+  }
+  if(role==='target'&&p.tg&&p.tg.toLowerCase().includes(fn)) baseRate=p.tg_c||0;
+  if(role==='ppc'&&p.ppc&&p.ppc.toLowerCase().includes(fn)) baseRate=p.ppc_c||0;
+  if(role==='pm'&&p.pm&&p.pm.toLowerCase().includes(fn)) baseRate=p.pm_c||0;
+
+  const earned=Math.round(baseRate*load);
+  const earnEl=document.getElementById(`se-${specId}-${projId}`);
+  if(earnEl) earnEl.textContent=fmt(earned)+' ₴';
+
+  // recalc card total
+  recalcCardTotal(specId, role);
+  save();
+}
+
+function recalcCardTotal(specId, role){
+  const spec=[...(S.smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
+  if(!spec) return;
+  const fn=spec.name.split(' ')[0].toLowerCase();
+  let total=0;
+  P.forEach(p=>{
+    let baseRate=0;
+    if(role==='smm'&&p.smm&&p.smm.toLowerCase().includes(fn)){
+      const isD=p.smm.includes('+')||p.smm.includes('|');
+      baseRate=isD?Math.round((p.smm_c||0)/2):(p.smm_c||0);
+      if(p.hed>0&&!isD) baseRate+=(p.hed||0);
+    }
+    if(role==='target'&&p.tg&&p.tg.toLowerCase().includes(fn)) baseRate=p.tg_c||0;
+    if(role==='ppc'&&p.ppc&&p.ppc.toLowerCase().includes(fn)) baseRate=p.ppc_c||0;
+    if(role==='pm'&&p.pm&&p.pm.toLowerCase().includes(fn)) baseRate=p.pm_c||0;
+    if(baseRate>0){
+      const load=getLoad(specId,p.id)??1.0;
+      total+=Math.round(baseRate*load);
+    }
+  });
+  const sa=document.getElementById(`sa-${specId}`);
+  const sfa=document.getElementById(`sfa-${specId}`);
+  if(sa) sa.textContent=fmt(total)+' ₴';
+  if(sfa) sfa.textContent=fmt(total)+' ₴';
+}
+
+function addProjToSpec(specId, specRole, tabRole){
+  const sel=document.getElementById(`apr-${specId}`);
+  const loadInput=document.getElementById(`apl-${specId}`);
+  const projId=parseInt(sel.value);
+  if(!projId){ toast('Обери проєкт'); return; }
+  const load=Math.min(1,Math.max(0,parseFloat(loadInput.value)||1));
+  const p=P.find(x=>x.id===projId);
+  if(!p) return;
+  // assign spec to project
+  const spec=[...(S.smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
+  if(!spec) return;
+  if(specRole==='smm') p.smm=spec.name;
+  if(specRole==='target') p.tg=spec.name;
+  if(specRole==='ppc') p.ppc=spec.name;
+  if(specRole==='pm') p.pm=spec.name;
+  setLoad(specId, projId, load);
+  renderDept(tabRole); save();
+  toast(`${spec.name} → ${p.name} (завант. ${load})`);
+}
+
+function removeSpecFromProj(specId, specRole, projId){
+  const p=P.find(x=>x.id===projId); if(!p) return;
+  if(specRole==='smm'){p.smm='';p.smm_c=0;p.hed=0;}
+  if(specRole==='target'){p.tg='';p.tg_c=0;}
+  if(specRole==='ppc'){p.ppc='';p.ppc_c=0;}
+  if(specRole==='pm'){p.pm='';p.pm_c=0;}
+  renderDept(specRole==='target'||specRole==='ppc'?'target':specRole);
+  renderAll(); save(); toast('Прибрано з проєкту');
+}
+
+function deleteSpec(specId, role){
+  if(!confirm('Видалити спеціаліста?')) return;
+  S[role]=(S[role]||[]).filter(s=>s.id!==specId);
+  if(role==='design') renderAll();
+  else if(role==='other') renderOther();
+  else renderDept(role==='ppc'?'target':role);
+  save(); toast('Спеціаліста видалено');
+}
+
+// ══════ RENDER MISSING ══════
+function renderMissing(){
+  const c=document.getElementById('miss-cards');
+  c.innerHTML='';
+  let ns=0,nt=0,np=0,ni=0,loss=0;
+  P.forEach(p=>{
+    const hs=!!p.smm||p.need_smm===false, ht=!!p.tg||!!p.ppc||p.need_tg===false, hp=!!p.pm||p.need_pm===false, iz=p.income===0;
+    const m=margin(p);
+    if(m<0) loss+=Math.abs(m);
+    if(!hs) ns++; if(!ht) nt++; if(!hp) np++; if(iz) ni++;
+    const miss=[];
+    if(!hs) miss.push(`<span class="tag t-miss">Без СММ</span>`);
+    if(!ht) miss.push(`<span class="tag t-miss">Без Таргет/PPC</span>`);
+    if(!hp) miss.push(`<span class="tag t-miss">Без PM</span>`);
+    if(iz) miss.push(`<span class="tag" style="background:var(--g100);color:var(--g600);border-color:var(--g200)">Без доходу</span>`);
+    if(!miss.length) return;
+    c.insertAdjacentHTML('beforeend',`
+      <div class="wc ${!hs&&!ht?'':'yw'}">
+        <div class="wc-name">${p.name}</div>
+        <div class="wc-inc">${p.income?fmt(p.income)+' ₴':'0 ₴'}</div>
+        <div class="wc-miss">${miss.join('')}</div>
+        <button class="fb" style="margin-left:auto;padding:3px 10px;font-size:10px" onclick="openEditModal(${p.id})">Призначити</button>
+      </div>`);
+  });
+  document.getElementById('m-ns').textContent=ns;
+  document.getElementById('m-nt').textContent=nt;
+  document.getElementById('m-np').textContent=np;
+  document.getElementById('m-ni').textContent=ni;
+  document.getElementById('m-loss').textContent=fmt(loss)+' ₴';
+  document.getElementById('cnt-miss').textContent=ns+nt;
+}
+
+// ══════ LEADS ══════
+function renderLeads(){
+  const g=document.getElementById('leads-grid');
+  if(!g) return;
+  g.innerHTML='';
+  // Show only active leads on finance tab
+  const active=L.filter(l=>l.status==='active'||!l.status);
+  active.forEach(l=>{
+    const c=l.income>0;
+    g.insertAdjacentHTML('beforeend',`<div class="lc ${c?'conf':''}" style="cursor:pointer" onclick="showTab('leads',document.querySelector('[onclick*=\\'leads\\']'))">
+      <div class="ln">${l.name}</div>
+      ${c?`<div class="la">${fmt(l.income)} ₴ · ${l.prob||0}%</div><div style="font-size:10px;color:var(--g600)">weighted: ${fmt(leadWeighted(l))} ₴</div>`:`<div style="font-size:10px;color:var(--g400)">Очікуємо підписання</div>`}
+      ${l.note?`<div style="font-size:10px;color:var(--g600);margin-top:2px">${l.note}</div>`:''}
+    </div>`);
+  });
+}
+
+function renderCostsBlocks(){
+  const ft=document.getElementById('fot-total');
+  const fd=document.getElementById('fot-design');
+  if(ft) ft.textContent=fmt(CORE_PAYROLL+designerPayroll())+' грн';
+  if(fd) fd.textContent=fmt(designerPayroll())+' грн';
+}
+
+function statusBadge(s){
+  if(s==='paid') return '<span class="status-pill status-ok">Оплачено</span>';
+  if(s==='partial') return '<span class="status-pill status-mid">Частково</span>';
+  if(s==='noincome') return '<span class="status-pill status-neutral">Без доходу</span>';
+  return '<span class="status-pill status-wait">Очікується</span>';
+}
+
+function setProjectStatus(id,status){
+  const p=P.find(x=>x.id===id); if(!p) return;
+  p.income_status=status;
+  if(status==='paid'){p.paid=p.income||0;p.expected=0;}
+  if(status==='expected'){p.paid=0;p.expected=p.income||0;}
+  if(status==='noincome'){p.paid=0;p.expected=0;}
+  if(status==='partial'&&!(p.paid>0)){p.paid=Math.round((p.income||0)/2);p.expected=Math.max(0,(p.income||0)-p.paid);}
+  renderAll(); save();
+}
+
+function renderCashflow(){
+  const tbody=document.getElementById('cashflow-tbody'); if(!tbody) return;
+  tbody.innerHTML='';
+  let income=0,paid=0,expected=0,debt=0;
+  P.forEach((p,i)=>{
+    const pa=paidAmount(p), ex=expectedAmount(p), db=debtAmount(p);
+    income+=p.income||0; paid+=pa; expected+=ex; debt+=db;
+    tbody.insertAdjacentHTML('beforeend',`<tr class="${db>0?'row-warn':pa>=p.income&&p.income>0?'':'row-zero'}">
+      <td style="text-align:center;color:var(--g400);font-size:11px">${i+1}</td>
+      <td><span style="font-family:Montserrat;font-weight:700">${p.name}</span></td>
+      <td class="r"><span class="m">${fmt(p.income||0)}</span></td>
+      <td class="r"><input class="mini-in" type="number" value="${pa||''}" oninput="updProjectMoney(${p.id},'paid',this.value)"></td>
+      <td class="r"><input class="mini-in" type="number" value="${ex||''}" oninput="updProjectMoney(${p.id},'expected',this.value)"></td>
+      <td class="r"><span class="m ${db>0?'m-neg':'m-pos'}">${db>0?fmt(db):'—'}</span></td>
+      <td style="font-size:11px;color:var(--g600)">${p.pay||'—'}</td>
+      <td>${statusBadge(p.income_status||inferIncomeStatus(p))}</td>
+    </tr>`);
+  });
+  document.getElementById('cf-income').textContent=fmt(income);
+  document.getElementById('cf-paid').textContent=fmt(paid);
+  document.getElementById('cf-expected').textContent=fmt(expected);
+  document.getElementById('cf-debt').textContent=fmt(debt);
+  const net=paid-fixedCosts();
+  const ne=document.getElementById('cf-net');
+  ne.textContent=(net>=0?'+':'')+fmt(net);
+  ne.style.color=net>=0?'var(--green)':'var(--red)';
+  document.getElementById('cf-pill').textContent=P.length+' проєктів';
+  document.getElementById('cnt-cash').textContent=P.length;
+}
+
+function renderIncomeStatus(){
+  const tbody=document.getElementById('income-status-tbody'); if(!tbody) return;
+  tbody.innerHTML='';
+  const counts={paid:0,partial:0,expected:0,noincome:0};
+  P.forEach((p,i)=>{
+    const st=p.income_status||inferIncomeStatus(p);
+    counts[st]=(counts[st]||0)+1;
+    const left=Math.max(0,(p.income||0)-paidAmount(p));
+    tbody.insertAdjacentHTML('beforeend',`<tr>
+      <td style="text-align:center;color:var(--g400);font-size:11px">${i+1}</td>
+      <td><span style="font-family:Montserrat;font-weight:700">${p.name}</span></td>
+      <td><select class="mini-sel" onchange="setProjectStatus(${p.id},this.value)">
+        <option value="paid" ${st==='paid'?'selected':''}>Оплачено</option>
+        <option value="partial" ${st==='partial'?'selected':''}>Частково</option>
+        <option value="expected" ${st==='expected'?'selected':''}>Очікується</option>
+        <option value="noincome" ${st==='noincome'?'selected':''}>Без доходу</option>
+      </select></td>
+      <td class="r"><span class="m">${fmt(p.income||0)}</span></td>
+      <td class="r"><span class="m ${paidAmount(p)>0?'m-pos':'m-zero'}">${paidAmount(p)?fmt(paidAmount(p)):'—'}</span></td>
+      <td class="r"><span class="m ${left>0?'m-neg':'m-pos'}">${left?fmt(left):'—'}</span></td>
+      <td style="font-size:11px;color:var(--g600)">${p.notes||p.pay||'—'}</td>
+    </tr>`);
+  });
+  document.getElementById('is-paid').textContent=counts.paid||0;
+  document.getElementById('is-partial').textContent=counts.partial||0;
+  document.getElementById('is-expected').textContent=counts.expected||0;
+  document.getElementById('is-noincome').textContent=counts.noincome||0;
+  document.getElementById('is-pill').textContent=P.length+' проєктів';
+  document.getElementById('cnt-income-status').textContent=P.length;
+}
+
+function renderDesignerPay(){
+  const tbody=document.getElementById('designer-pay-tbody'); if(!tbody) return;
+  tbody.innerHTML='';
+  let total=0, projectBudget=P.reduce((s,p)=>s+(p.design||0),0);
+  (S.design||[]).forEach((d,i)=>{
+    const rate=parseInt(d.rate)||0; total+=rate;
+    let assigned=0;
+    (d.projects||[]).forEach(pid=>{const p=P.find(x=>x.id===pid); if(p) assigned+=p.design||0;});
+    const diff=assigned-rate;
+    tbody.insertAdjacentHTML('beforeend',`<tr>
+      <td style="text-align:center;color:var(--g400);font-size:11px">${i+1}</td>
+      <td><span style="font-family:Montserrat;font-weight:700">${d.name}</span></td>
+      <td class="r"><input class="mini-in" type="number" value="${rate||''}" oninput="updDesignerRate('${d.id}',this.value)"></td>
+      <td class="r"><span class="m">${fmt(assigned)}</span></td>
+      <td class="r"><span class="m ${diff>=0?'m-pos':'m-neg'}">${(diff>=0?'+':'')+fmt(diff)}</span></td>
+      <td><button class="btn-ic del" onclick="deleteSpec('${d.id}','design')" title="Видалити">×</button></td>
+    </tr>`);
+  });
+  const diff=projectBudget-total;
+  document.getElementById('dp-total').textContent=fmt(total)+' ₴';
+  document.getElementById('dp-count').textContent=(S.design||[]).length;
+  document.getElementById('dp-project-budget').textContent=fmt(projectBudget)+' ₴';
+  const de=document.getElementById('dp-diff');
+  de.textContent=(diff>=0?'+':'')+fmt(diff)+' ₴';
+  de.style.color=diff>=0?'var(--green)':'var(--red)';
+  document.getElementById('dp-pill').textContent=(S.design||[]).length+' дизайнерів';
+  document.getElementById('cnt-designer-pay').textContent=(S.design||[]).length;
+  renderCostsBlocks();
+}
+
+function renderScenarios(){
+  const tbody=document.getElementById('scenarios-tbody'); if(!tbody) return;
+  tbody.innerHTML='';
+  const income=P.reduce((s,p)=>s+(p.income||0),0);
+  const cost=P.reduce((s,p)=>s+costs(p),0);
+  const baseMargin=income-cost;
+  const active=L.filter(l=>l.status==='active'||!l.status);
+  const basePipe=active.reduce((s,l)=>s+leadWeighted(l),0);
+  const pessPipe=active.reduce((s,l)=>s+leadWeighted(l,Math.max(0,(l.prob||30)-20)),0);
+  const optPipe=active.reduce((s,l)=>s+leadWeighted(l,Math.min(100,(l.prob||30)+20)),0);
+  const rows=[
+    ['Песимістичний',pessPipe,'Менше закриттів або перенесення оплат'],
+    ['Базовий',basePipe,'Ймовірності з листа лідів'],
+    ['Оптимістичний',optPipe,'Вища конверсія активних лідів'],
+  ];
+  rows.forEach(r=>{
+    const gross=baseMargin+r[1];
+    const net=gross-fixedCosts();
+    tbody.insertAdjacentHTML('beforeend',`<tr>
+      <td><span style="font-family:Montserrat;font-weight:700">${r[0]}</span></td>
+      <td class="r"><span class="m">${fmt(income)}</span></td>
+      <td class="r"><span class="m">${fmt(r[1])}</span></td>
+      <td class="r"><span class="m ${gross>=0?'m-pos':'m-neg'}">${fmt(gross)}</span></td>
+      <td class="r"><span class="m ${net>=0?'m-pos':'m-neg'}">${(net>=0?'+':'')+fmt(net)}</span></td>
+      <td style="font-size:11px;color:var(--g600)">${r[2]}</td>
+    </tr>`);
+  });
+  const currentNet=baseMargin-fixedCosts();
+  const breakEven=Math.max(0,-currentNet);
+  document.getElementById('sc-base-pipe').textContent=fmt(basePipe);
+  document.getElementById('sc-best-net').textContent=(baseMargin+optPipe-fixedCosts()>=0?'+':'')+fmt(baseMargin+optPipe-fixedCosts());
+  document.getElementById('sc-break-even').textContent=fmt(breakEven);
+  document.getElementById('sc-low-margin').textContent=P.filter(p=>p.income>0&&mpct(p)<TARGET_MARGIN).length;
+  document.getElementById('cnt-scenarios').textContent='3';
+}
+
+// ══════ MUTATIONS ══════
+function updN(id,field,val){
+  const p=P.find(x=>x.id===id); if(!p) return;
+  const v=parseInt(val)||0;
+  if(field==='smm_total') p.smm_c=Math.max(0,v-(p.hed||0));
+  else p[field]=v;
+  const c=costs(p),m=margin(p),mp=mpct(p);
+  const tc=document.getElementById('tc-'+p.id);
+  const mg=document.getElementById('mg-'+p.id);
+  if(tc) tc.textContent=fmt(c);
+  if(mg){ mg.textContent=p.income||m?fmt(m):'—'; mg.className='m '+(m<0?'m-neg':mp>=.4?'m-pos':mp>=.2?'m':'m-zero'); }
+  save();
+  clearTimeout(window._rt); window._rt=setTimeout(renderAll,600);
+}
+
+function updProjectMoney(id,field,val){
+  const p=P.find(x=>x.id===id); if(!p) return;
+  p[field]=parseInt(val)||0;
+  p.income_status=inferIncomeStatus(p);
+  save();
+  clearTimeout(window._rt); window._rt=setTimeout(renderAll,350);
+}
+
+function updDesignerRate(id,val){
+  const d=(S.design||[]).find(x=>x.id===id); if(!d) return;
+  d.rate=parseInt(val)||0;
+  save();
+  clearTimeout(window._rt); window._rt=setTimeout(renderAll,350);
+}
+
+function delP(id){
+  if(!confirm('Видалити проєкт?')) return;
+  P=P.filter(p=>p.id!==id); renderAll(); save(); toast('Проєкт видалено');
+}
+
+// ══════ MODAL ══════
+// Середні ставки по спецах — підставляються автоматично при виборі
+const AVG_RATES = {
+  smm:{ 'Іра Сивик':6000, 'Надя':7000, 'Юля':7000, 'Анастасія':9000,
+        'Настя':8000, 'Альона':8000, 'Альна':15000, 'Ліля':8000,
+        'Вікторія':6000, 'Іра Леськів':6000, 'Ліля Філатова':8000 },
+  tg:  { 'Оля':5000, 'Крістіна':5000, 'Кіріл':10000 },
+  ppc: { 'Денис':5000, 'Ганна':8000 },
+  pm:  { 'Іра':4000, 'Каріна':4000, 'Катя':4000, 'Роман':4000, 'Діана':0, 'Ганна':0, 'Кіріл':0 },
+};
+
+function populateModalSelects(p){
+  // Build option lists from current S state
+  const smmSel=document.getElementById('m-smm');
+  const tgSel=document.getElementById('m-tg');
+  const ppcSel=document.getElementById('m-ppc');
+  const pmSel=document.getElementById('m-pm');
+
+  const makeOpts=(list, current)=>{
+    let html=`<option value="">— Не призначено —</option>`;
+    list.forEach(s=>{
+      const sel=s.name===current?'selected':'';
+      html+=`<option value="${s.name}" ${sel}>${s.name}</option>`;
+    });
+    return html;
+  };
+
+  smmSel.innerHTML = makeOpts(S.smm||[], p?p.smm:'');
+  tgSel.innerHTML  = makeOpts(S.target||[], p?p.tg:'');
+  ppcSel.innerHTML = makeOpts(S.ppc||[], p?p.ppc:'');
+  pmSel.innerHTML  = makeOpts(S.pm||[], p?p.pm:'');
+}
+
+function modalAutoRate(role){
+  const selId = role==='smm'?'m-smm':role==='tg'?'m-tg':role==='ppc'?'m-ppc':'m-pm';
+  const rateId = role==='smm'?'m-smm-c':role==='tg'?'m-tg-c':role==='ppc'?'m-ppc-c':'m-pm-c';
+  const name = document.getElementById(selId).value;
+  if(!name) return;
+  const rateMap = AVG_RATES[role==='tg'?'tg':role] || {};
+  const rate = rateMap[name];
+  // Only auto-fill if field is empty or zero
+  const rateEl=document.getElementById(rateId);
+  if(rate && (!rateEl.value || parseInt(rateEl.value)===0)){
+    rateEl.value=rate;
+  }
+  // Also set hed default for Юля (head SMM)
+  if(role==='smm'){
+    const hedEl=document.getElementById('m-hed');
+    if(name==='Юля'&&(!hedEl.value||parseInt(hedEl.value)===0)) hedEl.value=1000;
+  }
+}
+
+function openEditModal(id){
+  const p=P.find(x=>x.id===id); if(!p) return;
+  document.getElementById('modal-title').textContent=p.name;
+  document.getElementById('m-id').value=id;
+  document.getElementById('m-name').value=p.name||'';
+  populateModalSelects(p);
+  document.getElementById('m-smm-c').value=p.smm_c||'';
+  document.getElementById('m-hed').value=p.hed||'';
+  document.getElementById('m-tg-c').value=p.tg_c||'';
+  document.getElementById('m-ppc-c').value=p.ppc_c||'';
+  document.getElementById('m-pm-c').value=p.pm_c||'';
+  document.getElementById('m-design').value=p.design||'';
+  document.getElementById('m-other').value=p.other||'';
+  document.getElementById('m-income').value=p.income||'';
+  document.getElementById('m-paid').value=p.paid||'';
+  document.getElementById('m-expected').value=p.expected||'';
+  document.getElementById('m-income-status').value=p.income_status||inferIncomeStatus(p);
+  document.getElementById('m-pay').value=p.pay||'';
+  document.getElementById('m-notes').value=p.notes||'';
+  document.getElementById('m-need-smm').checked=p.need_smm!==false;
+  document.getElementById('m-need-tg').checked=p.need_tg!==false;
+  document.getElementById('m-need-pm').checked=p.need_pm!==false;
+  document.getElementById('m-need-design').checked=p.need_design!==false;
+  document.getElementById('proj-modal').classList.add('open');
+}
+
+function openAddModal(){
+  document.getElementById('modal-title').textContent='Новий проєкт';
+  document.getElementById('m-id').value='';
+  document.getElementById('m-name').value='';
+  populateModalSelects(null);
+  ['m-smm-c','m-hed','m-tg-c','m-ppc-c','m-pm-c','m-design','m-other','m-income','m-paid','m-expected','m-pay','m-notes']
+    .forEach(i=>{ document.getElementById(i).value=''; });
+  document.getElementById('m-income-status').value='expected';
+  ['m-need-smm','m-need-tg','m-need-pm','m-need-design'].forEach(i=>{ document.getElementById(i).checked=true; });
+  document.getElementById('proj-modal').classList.add('open');
+}
+
+function saveModal(){
+  const id=parseInt(document.getElementById('m-id').value)||0;
+  const d={
+    name:document.getElementById('m-name').value||'Без назви',
+    smm:document.getElementById('m-smm').value||'',
+    smm_c:parseInt(document.getElementById('m-smm-c').value)||0,
+    hed:parseInt(document.getElementById('m-hed').value)||0,
+    tg:document.getElementById('m-tg').value||'',
+    tg_c:parseInt(document.getElementById('m-tg-c').value)||0,
+    ppc:document.getElementById('m-ppc').value||'',
+    ppc_c:parseInt(document.getElementById('m-ppc-c').value)||0,
+    pm:document.getElementById('m-pm').value||'',
+    pm_c:parseInt(document.getElementById('m-pm-c').value)||0,
+    design:parseInt(document.getElementById('m-design').value)||0,
+    other:parseInt(document.getElementById('m-other').value)||0,
+    income:parseInt(document.getElementById('m-income').value)||0,
+    paid:parseInt(document.getElementById('m-paid').value)||0,
+    expected:parseInt(document.getElementById('m-expected').value)||0,
+    income_status:document.getElementById('m-income-status').value||'expected',
+    pay:document.getElementById('m-pay').value||'—',
+    notes:document.getElementById('m-notes').value||'',
+    need_smm:document.getElementById('m-need-smm').checked,
+    need_tg:document.getElementById('m-need-tg').checked,
+    need_pm:document.getElementById('m-need-pm').checked,
+    need_design:document.getElementById('m-need-design').checked,
+    cash:false,
+  };
+  if(id){ const i=P.findIndex(p=>p.id===id); if(i>=0) P[i]={...P[i],...d}; }
+  else { nextId++; P.push({id:nextId,...d}); }
+  closeModal('proj-modal'); renderAll(); save(); toast(id?'Оновлено':'Додано');
+}
+
+let _addSpecRole='smm';
+function openAddSpecModal(role){ _addSpecRole=role; document.getElementById('sm-role').value=role; document.getElementById('sm-name').value=''; document.getElementById('spec-modal').classList.add('open'); }
+function saveSpecModal(){
+  const name=document.getElementById('sm-name').value.trim();
+  const role=document.getElementById('sm-role').value;
+  if(!name){alert('Введи ім\'я');return;}
+  if(role==='design'){
+    nextSid++; if(!S.design) S.design=[];
+    S.design.push({id:'des'+nextSid, name, rate:0, projects:[], loads:{}});
+    closeModal('spec-modal'); renderAll(); save(); toast('Дизайнера додано');
+  } else if(role==='other'){
+    nextSid++; if(!S.other) S.other=[];
+    S.other.push({id:'oth'+nextSid, name, role:'other'});
+    closeModal('spec-modal'); renderOther(); save(); toast('Спеціаліста додано');
+  } else {
+    nextSid++; if(!S[role]) S[role]=[];
+    S[role].push({id:'u'+nextSid,name});
+    closeModal('spec-modal');
+    renderDept(role==='ppc'?'target':role); save(); toast('Спеціаліста додано');
+  }
+  if(document.getElementById('proj-modal').classList.contains('open')) populateModalSelects(null);
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg) bg.classList.remove('open');}));
+
+// ══════ NAV ══════
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='smm') renderDept('smm');
+  else if(id==='target') renderDept('target');
+  else if(id==='pm') renderDept('pm');
+  else if(id==='miss') renderMissing();
+  else if(id==='leads') renderLeadsTab();
+  else if(id==='design') renderDesign();
+  else if(id==='designer-pay') renderDesignerPay();
+  else if(id==='cashflow') renderCashflow();
+  else if(id==='income-status') renderIncomeStatus();
+  else if(id==='scenarios') renderScenarios();
+  else if(id==='other') renderOther();
+}
+
+function fSvc(f,btn){
+  svcFilter=f;
+  document.querySelectorAll('#s-services .fb-wrap .fb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act'); renderServices();
+}
+function fFin(f,btn){
+  finFilter=f;
+  document.querySelectorAll('#s-fin .fb-wrap .fb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act'); renderFin();
+}
+
+// ══════ TOAST ══════
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+
+// ══════ RENDER LEADS TAB ══════
+function renderLeadsTab(){
+  const wrap=document.getElementById('leads-table-wrap');
+  if(!wrap) return;
+
+  const filtered=L.filter(l=>{
+    if(leadsFilter==='active') return l.status==='active';
+    if(leadsFilter==='converted') return l.status==='converted';
+    if(leadsFilter==='lost') return l.status==='lost';
+    return true;
+  });
+
+  const total=L.length;
+  const converted=L.filter(l=>l.status==='converted').length;
+  const lost=L.filter(l=>l.status==='lost').length;
+  const convRate=total>0?Math.round(converted/total*100):0;
+
+  document.getElementById('ld-total').textContent=total;
+  document.getElementById('ld-converted').textContent=converted;
+  document.getElementById('ld-lost').textContent=lost;
+  document.getElementById('ld-conv-rate').textContent=convRate+'%';
+  document.getElementById('cnt-leads').textContent=total;
+
+  const statusBadge=(s)=>{
+    if(s==='converted') return '<span class="status-pill status-ok">Проєкт</span>';
+    if(s==='lost') return '<span class="status-pill status-bad">Злився</span>';
+    return '<span class="status-pill status-mid">Активний</span>';
+  };
+
+  let html=`
+  <div style="background:var(--white);border:1px solid var(--g200);border-top:none;border-radius:0 0 4px 4px;overflow:hidden;">
+  <table class="t" style="min-width:700px">
+    <thead><tr>
+      <th style="width:28px"></th>
+      <th style="width:200px">Назва ліда</th>
+      <th class="r" style="width:110px">Потенційний дохід</th>
+      <th class="r" style="width:80px">Шанс</th>
+      <th class="r" style="width:110px">Weighted</th>
+      <th style="width:130px">Статус</th>
+      <th style="width:200px">Примітка / Причина зливу</th>
+      <th style="width:80px">Дії</th>
+    </tr></thead>
+    <tbody>
+  `;
+
+  filtered.forEach((l,i)=>{
+    const bg=l.status==='converted'?'background:var(--green-bg)':l.status==='lost'?'background:var(--red-bg)':i%2===1?'background:var(--g50)':'';
+    html+=`<tr style="${bg}" onmouseover="this.style.background='var(--orange-light)'" onmouseout="this.style.background='${bg.replace('background:','')}'">
+      <td style="text-align:center;color:var(--g400);font-size:11px">${i+1}</td>
+      <td><span style="font-family:Montserrat;font-weight:700;font-size:13px">${l.name}</span></td>
+      <td class="r"><span style="font-family:Montserrat;font-weight:700;font-size:13px;color:${l.income>0?'var(--green)':'var(--g400)'}">${l.income?fmt(l.income)+' ₴':'—'}</span></td>
+      <td class="r"><input class="mini-in" type="number" min="0" max="100" value="${l.prob||0}" oninput="updLeadProb('${l.id}',this.value)" style="width:58px"></td>
+      <td class="r"><span style="font-family:Montserrat;font-weight:700;font-size:13px;color:var(--orange)">${fmt(leadWeighted(l))} ₴</span></td>
+      <td>${statusBadge(l.status)}</td>
+      <td style="font-size:11px;color:var(--g600)">${l.note||l.lost_reason||'—'}</td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="btn-ic" onclick="openLeadModal('${l.id}')" title="Редагувати" style="font-size:10px">Ред</button>
+          <button class="btn-ic" onclick="setLeadStatus('${l.id}','converted')" title="Став проєктом" style="color:var(--green);font-size:10px">Так</button>
+          <button class="btn-ic del" onclick="setLeadStatus('${l.id}','lost')" title="Злився" style="font-size:10px">Ні</button>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  html+=`</tbody></table></div>`;
+  // prepend sh
+  const shHtml=`<div class="sh" style="margin-top:0"><span class="st">Ліди</span><span class="pill">${filtered.length} з ${total}</span></div>`;
+  wrap.innerHTML=shHtml+html;
+}
+
+function fLeads(f,btn){
+  leadsFilter=f;
+  document.querySelectorAll('#s-leads .fb-wrap .fb').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  renderLeadsTab();
+}
+
+function setLeadStatus(id,status){
+  const l=L.find(x=>x.id===id); if(!l) return;
+  if(l.status===status){ l.status='active'; }
+  else { l.status=status; }
+  l.prob=l.status==='converted'?100:l.status==='lost'?0:(l.prob||30);
+  renderLeadsTab(); save();
+  toast(status==='converted'?'Лід став проєктом':'Лід злився');
+}
+
+function updLeadProb(id,val){
+  const l=L.find(x=>x.id===id); if(!l) return;
+  l.prob=Math.max(0,Math.min(100,parseInt(val)||0));
+  save();
+  clearTimeout(window._rt); window._rt=setTimeout(renderAll,350);
+}
+
+function openLeadModal(id){
+  const l=id?L.find(x=>x.id===id):null;
+  // reuse spec modal adapted for leads
+  const bg=document.getElementById('lead-modal');
+  if(!bg) return buildLeadModal(l);
+  document.getElementById('lm-id').value=l?l.id:'';
+  document.getElementById('lm-name').value=l?l.name:'';
+  document.getElementById('lm-income').value=l?l.income||'':'';
+  document.getElementById('lm-prob').value=l?l.prob||0:30;
+  document.getElementById('lm-note').value=l?l.note:'';
+  document.getElementById('lm-reason').value=l?l.lost_reason:'';
+  document.getElementById('lm-status').value=l?l.status:'active';
+  bg.classList.add('open');
+}
+
+function saveLeadModal(){
+  const id=document.getElementById('lm-id').value;
+  const d={
+    name:document.getElementById('lm-name').value||'Без назви',
+    income:parseInt(document.getElementById('lm-income').value)||0,
+    prob:Math.max(0,Math.min(100,parseInt(document.getElementById('lm-prob').value)||0)),
+    note:document.getElementById('lm-note').value||'',
+    lost_reason:document.getElementById('lm-reason').value||'',
+    status:document.getElementById('lm-status').value||'active',
+  };
+  if(id){ const i=L.findIndex(x=>x.id===id); if(i>=0) L[i]={...L[i],...d}; }
+  else { nextLid++; L.push({id:'l'+nextLid,...d}); }
+  closeModal('lead-modal'); renderLeadsTab(); renderLeads(); save();
+  toast(id?'Лід оновлено':'Лід додано');
+}
+
+// ══════ RENDER DESIGN TAB ══════
+function renderDesign(){
+  const grid=document.getElementById('design-grid');
+  if(!grid) return;
+  grid.innerHTML='';
+
+  const designers=S.design||[];
+  let totalAssigned=0;
+  const totalBudget=P.reduce((s,p)=>s+(p.design||0),0);
+
+  designers.forEach(des=>{
+    // Find projects where this designer is assigned (via des.projects array)
+    const desProjIds=(des.projects||[]);
+    const projRows=[];
+    let desTotal=0;
+
+    desProjIds.forEach(pid=>{
+      const p=P.find(x=>x.id===pid);
+      if(!p) return;
+      const load=des.loads&&des.loads[pid]!=null?des.loads[pid]:1;
+      const rate=des.proj_rates&&des.proj_rates[pid]!=null?des.proj_rates[pid]:(p.design||0);
+      const earned=Math.round(rate*load);
+      projRows.push({pid,name:p.name,budget:p.design||0,rate,load,earned});
+      desTotal+=earned;
+    });
+
+    totalAssigned+=desTotal;
+
+    const unusedProjs=P.filter(p=>p.design>0&&!desProjIds.includes(p.id));
+
+    const card=document.createElement('div');
+    card.className='spec-card';
+    card.innerHTML=`
+      <div class="spec-hdr">
+        <div class="spec-hdr-left">
+          <span class="spec-name-txt">${des.name}</span>
+          <span class="tag" style="background:var(--purple-bg);color:var(--purple);border-color:#D0B0E8;cursor:default">Дизайн</span>
+          ${des.rate?`<span style="font-size:10px;color:var(--g400)">Оклад: ${fmt(des.rate)} ₴/міс</span>`:''}
+        </div>
+        <div class="spec-right">
+          <span class="spec-amt">${fmt(desTotal)} ₴</span>
+          <span class="spec-cnt">${projRows.length} проєктів</span>
+        </div>
+      </div>
+      ${projRows.map(r=>`
+        <div class="spec-proj">
+          <span class="spec-proj-name">${r.name}</span>
+          <span class="spec-proj-role">бюджет: ${fmt(r.budget)}₴</span>
+          <span style="width:44px">
+            <input type="number" min="0" max="1" step="0.1" value="${r.load}"
+              style="width:44px;text-align:center;border:1px solid var(--g200);border-radius:2px;padding:2px 4px;font-size:11px;font-family:Montserrat;font-weight:600;background:transparent;"
+              onchange="updDesLoad('${des.id}',${r.pid},this.value)"
+              title="Завантаженість">
+          </span>
+          <span class="spec-proj-earn" id="dse-${des.id}-${r.pid}">${fmt(r.earned)} ₴</span>
+          <button class="spec-proj-del" onclick="removeDesProj('${des.id}',${r.pid})" title="Прибрати">×</button>
+        </div>
+      `).join('')}
+      ${projRows.length===0?'<div style="padding:10px 14px;font-size:11px;color:var(--g400);font-style:italic">Немає призначених проєктів</div>':''}
+      <div class="add-proj-row">
+        <select id="dapr-${des.id}">
+          <option value="">+ Додати проєкт з дизайном...</option>
+          ${unusedProjs.map(p=>`<option value="${p.id}">${p.name} (${fmt(p.design||0)}₴)</option>`).join('')}
+        </select>
+        <input type="number" id="dapl-${des.id}" placeholder="1" min="0" max="1" step="0.1" value="1" title="Завантаженість">
+        <button onclick="addDesProjToSpec('${des.id}')">+ Додати</button>
+      </div>
+      <div class="spec-foot">
+        <span class="spec-foot-label">Разом ${des.name}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="spec-foot-amt" id="dsa-${des.id}">${fmt(desTotal)} ₴</span>
+          <button class="spec-foot-del" onclick="deleteSpec('${des.id}','design')">× Видалити</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // summary
+  const diff=totalBudget-totalAssigned;
+  document.getElementById('des-budget').textContent=fmt(totalBudget)+' ₴';
+  document.getElementById('des-assigned').textContent=fmt(totalAssigned)+' ₴';
+  const diffEl=document.getElementById('des-diff');
+  diffEl.textContent=(diff>=0?'+':'')+fmt(diff)+' ₴';
+  diffEl.style.color=diff>=0?'var(--green)':'var(--red)';
+  document.getElementById('des-count').textContent=designers.length;
+  document.getElementById('cnt-design').textContent=designers.length;
+
+  // projects table
+  const tbody=document.getElementById('design-tbody');
+  if(!tbody) return;
+  tbody.innerHTML='';
+  const projsWithDesign=P.filter(p=>p.design>0);
+  document.getElementById('des-proj-pill').textContent=projsWithDesign.length+' проєктів';
+  document.getElementById('des-budget-sum').textContent=fmt(totalBudget);
+
+  projsWithDesign.forEach((p,i)=>{
+    // find how much is assigned from designers to this project
+    let projAssigned=0;
+    (S.design||[]).forEach(des=>{
+      if((des.projects||[]).includes(p.id)){
+        const load=des.loads&&des.loads[p.id]!=null?des.loads[p.id]:1;
+        const rate=des.proj_rates&&des.proj_rates[p.id]!=null?des.proj_rates[p.id]:(p.design||0);
+        projAssigned+=Math.round(rate*load);
+      }
+    });
+
+    const diff=p.design-projAssigned;
+    const diffTxt=projAssigned===0?'<span style="color:var(--g400);font-size:11px">Не призначено</span>':
+      diff===0?'<span style="color:var(--green);font-weight:700;font-size:11px">Відповідає</span>':
+      diff>0?`<span style="color:var(--orange);font-size:11px">−${fmt(diff)} ₴ залишок</span>`:
+      `<span style="color:var(--red);font-size:11px">+${fmt(Math.abs(diff))} ₴ перевитрата</span>`;
+
+    // find designer name
+    const desNames=(S.design||[]).filter(d=>(d.projects||[]).includes(p.id)).map(d=>d.name).join(', ')||'—';
+
+    tbody.insertAdjacentHTML('beforeend',`<tr ${i%2===1?'style="background:var(--g50)"':''}>
+      <td style="text-align:center;color:var(--g400);font-size:11px">${i+1}</td>
+      <td><span style="font-family:Montserrat;font-weight:700">${p.name}</span></td>
+      <td class="r" style="font-family:Montserrat;font-weight:700">${fmt(p.design)}</td>
+      <td class="r" style="font-family:Montserrat;font-weight:700;color:${projAssigned>0?'var(--black)':'var(--g400)'}">${projAssigned>0?fmt(projAssigned):'—'}</td>
+      <td>${diffTxt}</td>
+      <td style="font-size:11px;color:var(--g600)">${desNames}</td>
+      <td><button class="btn-ic" onclick="openEditModal(${p.id})" title="Редагувати">Ред</button></td>
+    </tr>`);
+  });
+}
+
+function updDesLoad(desId, projId, val){
+  const des=(S.design||[]).find(d=>d.id===desId); if(!des) return;
+  if(!des.loads) des.loads={};
+  des.loads[projId]=Math.min(1,Math.max(0,parseFloat(val)||0));
+  renderDesign(); save();
+}
+
+function removeDesProj(desId, projId){
+  const des=(S.design||[]).find(d=>d.id===desId); if(!des) return;
+  des.projects=(des.projects||[]).filter(id=>id!==projId);
+  renderDesign(); save(); toast('Проєкт прибрано');
+}
+
+function addDesProjToSpec(desId){
+  const des=(S.design||[]).find(d=>d.id===desId); if(!des) return;
+  const sel=document.getElementById('dapr-'+desId);
+  const pid=parseInt(sel.value); if(!pid) return;
+  const load=parseFloat(document.getElementById('dapl-'+desId).value)||1;
+  if(!des.projects) des.projects=[];
+  if(!des.loads) des.loads={};
+  des.projects.push(pid);
+  des.loads[pid]=load;
+  renderDesign(); save(); toast('Проєкт додано дизайнеру');
+}
+
+// ══════ RENDER OTHER TAB ══════
+function renderOther(){
+  const grid=document.getElementById('other-grid');
+  if(!grid) return;
+  renderDept('other');
+  const others=S.other||[];
+  document.getElementById('oth-count').textContent=others.length;
+  document.getElementById('cnt-other').textContent=others.length;
+  if(others.length===0){
+    grid.innerHTML='<div style="padding:20px;color:var(--g400);font-size:12px;font-style:italic;background:var(--white);border:1px solid var(--g200);border-radius:4px">Поки порожньо. Додай спеціаліста або послугу кнопкою вище.</div>';
+  }
+}
+
+// ══════ RENDER ALL ══════
+function renderAll(){
+  renderServices();
+  renderFin();
+  renderLeads();
+  renderMissing();
+  renderCostsBlocks();
+  renderCashflow();
+  renderIncomeStatus();
+  renderDesignerPay();
+  renderScenarios();
+  // update lead counts
+  document.getElementById('cnt-leads').textContent=L.length;
+  // if dept tab is active — re-render it too
+  const at=document.querySelector('.tab.active');
+  if(at){
+    const fn=at.getAttribute('onclick');
+    if(fn.includes("'smm'")) renderDept('smm');
+    else if(fn.includes("'target'")) renderDept('target');
+    else if(fn.includes("'pm'")) renderDept('pm');
+    else if(fn.includes("'leads'")) renderLeadsTab();
+    else if(fn.includes("'design'")) renderDesign();
+    else if(fn.includes("'designer-pay'")) renderDesignerPay();
+    else if(fn.includes("'cashflow'")) renderCashflow();
+    else if(fn.includes("'income-status'")) renderIncomeStatus();
+    else if(fn.includes("'scenarios'")) renderScenarios();
+    else if(fn.includes("'other'")) renderOther();
+  }
+}
+
+load();
+renderAll();
+</script>
+</body>
+</html>
