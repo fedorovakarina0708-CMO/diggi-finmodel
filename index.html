@@ -725,6 +725,401 @@ table.t tbody tr.row-zero td:first-child{box-shadow:inset 4px 0 0 #8E8A86;}
 #s-services table.t tbody tr.row-zero td{
   background:#FFFEFD!important;
 }
+
+/* ══════ FP&A PRODUCT LAYOUT ══════ */
+:root{
+  --nav-w:236px;
+  --canvas:#F7F4F0;
+  --panel:#FFFEFD;
+  --hair:#E5DDD6;
+  --text-soft:#6F6761;
+}
+body{
+  background:var(--canvas);
+}
+.hdr{
+  height:58px;
+  padding:0 24px;
+  z-index:420;
+}
+.logo::after{
+  content:"Finance model";
+}
+.tabs{
+  position:fixed;
+  top:58px;
+  left:0;
+  bottom:0;
+  width:var(--nav-w);
+  padding:18px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  border-right:1px solid var(--hair);
+  border-bottom:none;
+  background:#FFFEFD;
+  box-shadow:10px 0 30px rgba(26,26,26,.04);
+}
+.tab{
+  width:100%;
+  min-height:38px;
+  justify-content:flex-start;
+  border-radius:8px;
+  padding:8px 10px;
+  font-size:10px;
+  line-height:1.15;
+}
+.tab.active{
+  background:#211B17;
+  color:#fff;
+  border-color:#211B17;
+  box-shadow:none;
+}
+.tab.active::before{background:var(--brand);}
+.tab.active .cnt{
+  margin-left:auto;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+}
+.tab .cnt{
+  margin-left:auto;
+}
+.tab.warn-t.active{
+  background:#5C201A;
+  color:#fff;
+  border-color:#5C201A;
+}
+.page{
+  max-width:none;
+  margin:0 0 0 var(--nav-w);
+  padding:26px 28px 72px;
+}
+.overview-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:18px;
+  margin-bottom:18px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--hair);
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  padding:4px 9px;
+  margin-bottom:8px;
+  border:1px solid rgba(232,86,10,.22);
+  border-radius:999px;
+  background:var(--brand-soft);
+  color:var(--brand-strong);
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+.overview-grid{
+  display:grid;
+  grid-template-columns:1.25fr repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:14px;
+}
+.overview-hero,.metric-card,.insight-panel{
+  border:1px solid var(--hair);
+  border-radius:8px;
+  background:var(--panel);
+  box-shadow:0 1px 2px rgba(26,26,26,.04),0 18px 38px rgba(26,26,26,.045);
+}
+.overview-hero{
+  min-height:184px;
+  padding:20px;
+  grid-row:span 2;
+  background:
+    linear-gradient(135deg,rgba(232,86,10,.1),rgba(255,255,255,0) 45%),
+    linear-gradient(145deg,#181310,#2B241F);
+  color:#fff;
+  border-color:#241D19;
+}
+.ov-label,.metric-label{
+  display:block;
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+}
+.ov-label{color:rgba(255,255,255,.58);}
+.ov-main{
+  margin-top:8px;
+  font-family:'Montserrat',sans-serif;
+  font-size:34px;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:0;
+}
+.ov-note{
+  margin-top:8px;
+  min-height:18px;
+  color:rgba(255,255,255,.68);
+  font-size:12px;
+}
+.ov-progress-wrap{
+  margin-top:18px;
+}
+.ov-progress-top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:7px;
+  color:rgba(255,255,255,.62);
+  font-size:11px;
+}
+.ov-progress-top b{
+  color:#fff;
+  font-family:'Montserrat',sans-serif;
+}
+.ov-progress{
+  height:7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  overflow:hidden;
+}
+.ov-progress span{
+  display:block;
+  height:100%;
+  width:0;
+  border-radius:999px;
+  background:var(--brand);
+  transition:width .35s;
+}
+.ov-progress.margin span{
+  background:#42A45B;
+}
+.metric-card{
+  min-height:86px;
+  padding:15px 16px;
+}
+.metric-label{
+  color:var(--text-soft);
+}
+.metric-card strong{
+  display:block;
+  margin-top:7px;
+  font-family:'Montserrat',sans-serif;
+  font-size:21px;
+  line-height:1;
+}
+.metric-card small{
+  display:block;
+  margin-top:7px;
+  color:var(--muted);
+  font-size:11px;
+}
+.overview-panels{
+  display:grid;
+  grid-template-columns:1.35fr .9fr;
+  gap:14px;
+  margin-top:14px;
+}
+.overview-panels.compact{
+  grid-template-columns:1fr 1fr;
+}
+.insight-panel{
+  padding:16px;
+}
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:13px;
+}
+.panel-head h2{
+  font-family:'Montserrat',sans-serif;
+  font-size:13px;
+  line-height:1;
+}
+.panel-head span{
+  color:var(--muted);
+  font-size:11px;
+}
+.bridge-list{
+  display:grid;
+  gap:9px;
+}
+.bridge-row{
+  display:grid;
+  grid-template-columns:116px 1fr 92px;
+  align-items:center;
+  gap:12px;
+  min-height:28px;
+}
+.bridge-label{
+  color:var(--text-soft);
+  font-size:11px;
+  font-weight:700;
+}
+.bridge-track{
+  height:8px;
+  border-radius:999px;
+  background:#EFE9E4;
+  overflow:hidden;
+}
+.bridge-fill{
+  display:block;
+  height:100%;
+  width:0;
+  border-radius:999px;
+  background:#211B17;
+}
+.bridge-fill.neg{background:var(--red);}
+.bridge-fill.pos{background:var(--green);}
+.bridge-fill.brand{background:var(--brand);}
+.bridge-value{
+  text-align:right;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:800;
+}
+.risk-list{
+  display:grid;
+  gap:8px;
+}
+.risk-item{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:center;
+  min-height:42px;
+  padding:10px 11px;
+  border:1px solid #EEE6E0;
+  border-left:4px solid var(--brand);
+  border-radius:8px;
+  background:#FFFEFD;
+}
+.risk-title{
+  font-family:'Montserrat',sans-serif;
+  font-size:11px;
+  font-weight:800;
+}
+.risk-meta{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:10.5px;
+}
+.risk-value{
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:900;
+}
+.scenario-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.scenario-card{
+  min-height:104px;
+  padding:13px;
+  border:1px solid #EEE6E0;
+  border-radius:8px;
+  background:#FCFAF8;
+}
+.scenario-card strong{
+  display:block;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+}
+.scenario-card b{
+  display:block;
+  margin-top:12px;
+  font-family:'Montserrat',sans-serif;
+  font-size:19px;
+}
+.scenario-card small{
+  display:block;
+  margin-top:7px;
+  color:var(--muted);
+  font-size:10.5px;
+}
+.mini-table{
+  display:grid;
+  gap:7px;
+}
+.mini-row{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:12px;
+  align-items:center;
+  min-height:32px;
+  padding:7px 0;
+  border-bottom:1px solid #F0EBE7;
+}
+.mini-row:last-child{border-bottom:none;}
+.mini-name{
+  font-family:'Montserrat',sans-serif;
+  font-size:11px;
+  font-weight:800;
+}
+.mini-muted{
+  color:var(--muted);
+  font-size:10.5px;
+}
+.mini-money{
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:900;
+}
+.sh{
+  background:#211B17;
+}
+.sc{
+  box-shadow:none;
+}
+.tw,.spec-card,.cb,.lc,.wc{
+  box-shadow:none;
+}
+@media (max-width:1220px){
+  .overview-grid{grid-template-columns:1fr 1fr;}
+  .overview-hero{grid-column:1/-1;grid-row:auto;}
+  .overview-panels,.overview-panels.compact{grid-template-columns:1fr;}
+}
+@media (max-width:900px){
+  .tabs{
+    position:sticky;
+    top:66px;
+    width:auto;
+    height:auto;
+    flex-direction:row;
+    left:auto;
+    bottom:auto;
+    padding:8px 14px;
+    overflow-x:auto;
+    border-right:none;
+    border-bottom:1px solid var(--hair);
+  }
+  .tab{
+    width:auto;
+    min-width:max-content;
+  }
+  .page{
+    margin-left:0;
+    padding:20px 14px 56px;
+  }
+  .overview-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .overview-grid{
+    grid-template-columns:1fr;
+  }
+  .scenario-row{
+    grid-template-columns:1fr;
+  }
+  .bridge-row{
+    grid-template-columns:94px 1fr 76px;
+  }
+}
 </style>
 </head>
 <body>
@@ -739,25 +1134,115 @@ table.t tbody tr.row-zero td:first-child{box-shadow:inset 4px 0 0 #8E8A86;}
 </header>
 
 <nav class="tabs">
-  <button class="tab active" onclick="showTab('services',this)">Послуги проєктів <span class="cnt" id="cnt-svc">33</span></button>
-  <button class="tab" onclick="showTab('fin',this)">Фінанси <span class="cnt" id="cnt-fin">33</span></button>
-  <button class="tab" onclick="showTab('cashflow',this)">Cash flow <span class="cnt" id="cnt-cash">—</span></button>
-  <button class="tab" onclick="showTab('income-status',this)">Статуси доходу <span class="cnt" id="cnt-income-status">—</span></button>
-  <button class="tab" onclick="showTab('smm',this)">СММ <span class="cnt" id="cnt-smm">—</span></button>
-  <button class="tab" onclick="showTab('target',this)">Таргет / PPC <span class="cnt" id="cnt-tg">—</span></button>
-  <button class="tab" onclick="showTab('pm',this)">PM <span class="cnt" id="cnt-pm">—</span></button>
-  <button class="tab" onclick="showTab('other',this)">Інше <span class="cnt" id="cnt-other">—</span></button>
-  <button class="tab" onclick="showTab('design',this)">Дизайн <span class="cnt" id="cnt-design">—</span></button>
-  <button class="tab" onclick="showTab('designer-pay',this)">ЗП дизайнерів <span class="cnt" id="cnt-designer-pay">—</span></button>
-  <button class="tab" onclick="showTab('leads',this)">Ліди <span class="cnt" id="cnt-leads">—</span></button>
-  <button class="tab" onclick="showTab('scenarios',this)">Сценарії <span class="cnt" id="cnt-scenarios">3</span></button>
-  <button class="tab warn-t" onclick="showTab('miss',this)">Без спеціаліста <span class="cnt" id="cnt-miss">—</span></button>
+  <button class="tab active" data-tab="overview" onclick="showTab('overview',this)">Огляд <span class="cnt" id="cnt-overview">Live</span></button>
+  <button class="tab" data-tab="services" onclick="showTab('services',this)">Послуги проєктів <span class="cnt" id="cnt-svc">33</span></button>
+  <button class="tab" data-tab="fin" onclick="showTab('fin',this)">Фінанси <span class="cnt" id="cnt-fin">33</span></button>
+  <button class="tab" data-tab="cashflow" onclick="showTab('cashflow',this)">Cash flow <span class="cnt" id="cnt-cash">—</span></button>
+  <button class="tab" data-tab="income-status" onclick="showTab('income-status',this)">Статуси доходу <span class="cnt" id="cnt-income-status">—</span></button>
+  <button class="tab" data-tab="smm" onclick="showTab('smm',this)">СММ <span class="cnt" id="cnt-smm">—</span></button>
+  <button class="tab" data-tab="target" onclick="showTab('target',this)">Таргет / PPC <span class="cnt" id="cnt-tg">—</span></button>
+  <button class="tab" data-tab="pm" onclick="showTab('pm',this)">PM <span class="cnt" id="cnt-pm">—</span></button>
+  <button class="tab" data-tab="other" onclick="showTab('other',this)">Інше <span class="cnt" id="cnt-other">—</span></button>
+  <button class="tab" data-tab="design" onclick="showTab('design',this)">Дизайн <span class="cnt" id="cnt-design">—</span></button>
+  <button class="tab" data-tab="designer-pay" onclick="showTab('designer-pay',this)">ЗП дизайнерів <span class="cnt" id="cnt-designer-pay">—</span></button>
+  <button class="tab" data-tab="leads" onclick="showTab('leads',this)">Ліди <span class="cnt" id="cnt-leads">—</span></button>
+  <button class="tab" data-tab="scenarios" onclick="showTab('scenarios',this)">Сценарії <span class="cnt" id="cnt-scenarios">3</span></button>
+  <button class="tab warn-t" data-tab="miss" onclick="showTab('miss',this)">Без спеціаліста <span class="cnt" id="cnt-miss">—</span></button>
 </nav>
 
 <div class="page">
 
+<!-- ════ TAB 0: ОГЛЯД ════ -->
+<div id="s-overview" class="section active">
+  <div class="overview-head">
+    <div>
+      <span class="eyebrow">Base Scenario · Червень 2026</span>
+      <h1 class="pt">Керівницький огляд</h1>
+      <p class="ps">P&L, cash collection, ризики та сценарії в одному екрані</p>
+    </div>
+    <div class="fb-wrap">
+      <button class="fb add" onclick="jumpTab('fin')">Фінанси</button>
+      <button class="fb" onclick="jumpTab('cashflow')">Cash flow</button>
+      <button class="fb" onclick="jumpTab('scenarios')">Сценарії</button>
+    </div>
+  </div>
+
+  <div class="overview-grid">
+    <section class="overview-hero">
+      <div class="ov-label">Чисте сальдо</div>
+      <div class="ov-main" id="ov-net">—</div>
+      <div class="ov-note" id="ov-net-note">—</div>
+      <div class="ov-progress-wrap">
+        <div class="ov-progress-top"><span>Оплачено</span><b id="ov-paid-ratio">—</b></div>
+        <div class="ov-progress"><span id="ov-paid-bar"></span></div>
+      </div>
+      <div class="ov-progress-wrap">
+        <div class="ov-progress-top"><span>Маржинальність</span><b id="ov-margin-ratio">—</b></div>
+        <div class="ov-progress margin"><span id="ov-margin-bar"></span></div>
+      </div>
+    </section>
+
+    <section class="metric-card">
+      <span class="metric-label">Дохід</span>
+      <strong id="ov-income">—</strong>
+      <small id="ov-paid">— оплачено</small>
+    </section>
+    <section class="metric-card">
+      <span class="metric-label">Валова маржа</span>
+      <strong id="ov-gross">—</strong>
+      <small id="ov-margin">—</small>
+    </section>
+    <section class="metric-card">
+      <span class="metric-label">Фіксовані витрати</span>
+      <strong id="ov-fixed">—</strong>
+      <small>з ФОТ дизайнерів</small>
+    </section>
+    <section class="metric-card">
+      <span class="metric-label">Pipeline</span>
+      <strong id="ov-pipeline">—</strong>
+      <small>weighted active leads</small>
+    </section>
+  </div>
+
+  <div class="overview-panels">
+    <section class="insight-panel">
+      <div class="panel-head">
+        <h2>P&L bridge</h2>
+        <span id="ov-bridge-caption">—</span>
+      </div>
+      <div class="bridge-list" id="ov-bridge"></div>
+    </section>
+
+    <section class="insight-panel">
+      <div class="panel-head">
+        <h2>Attention</h2>
+        <span id="ov-risk-count">—</span>
+      </div>
+      <div class="risk-list" id="ov-risk-list"></div>
+    </section>
+  </div>
+
+  <div class="overview-panels compact">
+    <section class="insight-panel">
+      <div class="panel-head">
+        <h2>Scenario comparison</h2>
+        <span>поточна база + ліди</span>
+      </div>
+      <div class="scenario-row" id="ov-scenarios"></div>
+    </section>
+
+    <section class="insight-panel">
+      <div class="panel-head">
+        <h2>Top margin projects</h2>
+        <span id="ov-top-caption">—</span>
+      </div>
+      <div class="mini-table" id="ov-top-projects"></div>
+    </section>
+  </div>
+</div>
+
 <!-- ════ TAB 1: ПОСЛУГИ ════ -->
-<div id="s-services" class="section active">
+<div id="s-services" class="section">
   <div class="tr-">
     <div><h1 class="pt">Послуги проєктів</h1><p class="ps">Які послуги підключені на кожному проєкті · Клік на проєкт для редагування</p></div>
     <div class="fb-wrap">
@@ -1837,7 +2322,7 @@ function renderLeads(){
   const active=L.filter(l=>l.status==='active'||!l.status);
   active.forEach(l=>{
     const c=l.income>0;
-    g.insertAdjacentHTML('beforeend',`<div class="lc ${c?'conf':''}" style="cursor:pointer" onclick="showTab('leads',document.querySelector('[onclick*=\\'leads\\']'))">
+    g.insertAdjacentHTML('beforeend',`<div class="lc ${c?'conf':''}" style="cursor:pointer" onclick="jumpTab('leads')">
       <div class="ln">${l.name}</div>
       ${c?`<div class="la">${fmt(l.income)} ₴ · ${l.prob||0}%</div><div style="font-size:10px;color:var(--g600)">weighted: ${fmt(leadWeighted(l))} ₴</div>`:`<div style="font-size:10px;color:var(--g400)">Очікуємо підписання</div>`}
       ${l.note?`<div style="font-size:10px;color:var(--g600);margin-top:2px">${l.note}</div>`:''}
@@ -1850,6 +2335,105 @@ function renderCostsBlocks(){
   const fd=document.getElementById('fot-design');
   if(ft) ft.textContent=fmt(CORE_PAYROLL+designerPayroll())+' грн';
   if(fd) fd.textContent=fmt(designerPayroll())+' грн';
+}
+
+function moneySigned(n){
+  return (n>=0?'+':'')+fmt(n)+' ₴';
+}
+
+function bridgeRow(label,value,max,cls=''){
+  const w=max?Math.max(4,Math.min(100,Math.abs(value)/max*100)):0;
+  return `<div class="bridge-row">
+    <div class="bridge-label">${label}</div>
+    <div class="bridge-track"><span class="bridge-fill ${cls}" style="width:${w}%"></span></div>
+    <div class="bridge-value">${fmt(value)} ₴</div>
+  </div>`;
+}
+
+function renderOverview(){
+  const root=document.getElementById('s-overview');
+  if(!root) return;
+
+  const income=P.reduce((s,p)=>s+(p.income||0),0);
+  const cost=P.reduce((s,p)=>s+costs(p),0);
+  const gross=income-cost;
+  const fixed=fixedCosts();
+  const net=gross-fixed;
+  const paid=P.reduce((s,p)=>s+paidAmount(p),0);
+  const expected=P.reduce((s,p)=>s+expectedAmount(p),0);
+  const debt=P.reduce((s,p)=>s+debtAmount(p),0);
+  const marginPct=income>0?Math.round(gross/income*100):0;
+  const paidPct=income>0?Math.round(paid/income*100):0;
+  const active=L.filter(l=>l.status==='active'||!l.status);
+  const basePipe=active.reduce((s,l)=>s+leadWeighted(l),0);
+  const pessPipe=active.reduce((s,l)=>s+leadWeighted(l,Math.max(0,(l.prob||30)-20)),0);
+  const optPipe=active.reduce((s,l)=>s+leadWeighted(l,Math.min(100,(l.prob||30)+20)),0);
+  const low=P.filter(p=>p.income>0&&mpct(p)<TARGET_MARGIN);
+  const missing=P.filter(p=>{
+    const needS=p.need_smm!==false&&!p.smm;
+    const needT=p.need_tg!==false&&!p.tg&&!p.ppc;
+    const needP=p.need_pm!==false&&!p.pm;
+    return needS||needT||needP;
+  });
+
+  document.getElementById('ov-net').textContent=moneySigned(net);
+  document.getElementById('ov-net').style.color=net>=0?'#fff':'#FFB3A7';
+  document.getElementById('ov-net-note').textContent=net>=0?'Модель покриває фіксовані витрати':'До точки беззбитковості треба '+fmt(Math.abs(net))+' ₴';
+  document.getElementById('ov-paid-ratio').textContent=paidPct+'%';
+  document.getElementById('ov-paid-bar').style.width=Math.min(100,paidPct)+'%';
+  document.getElementById('ov-margin-ratio').textContent=marginPct+'%';
+  document.getElementById('ov-margin-bar').style.width=Math.max(0,Math.min(100,marginPct))+'%';
+
+  document.getElementById('ov-income').textContent=fmt(income)+' ₴';
+  document.getElementById('ov-paid').textContent=fmt(paid)+' ₴ оплачено · '+fmt(expected)+' ₴ очікується';
+  document.getElementById('ov-gross').textContent=fmt(gross)+' ₴';
+  document.getElementById('ov-margin').textContent=marginPct+'% маржинальність';
+  document.getElementById('ov-fixed').textContent=fmt(fixed)+' ₴';
+  document.getElementById('ov-pipeline').textContent=fmt(basePipe)+' ₴';
+
+  const bridgeMax=Math.max(income,cost,Math.abs(gross),fixed,Math.abs(net),1);
+  document.getElementById('ov-bridge-caption').textContent=P.length+' проєктів';
+  document.getElementById('ov-bridge').innerHTML=[
+    bridgeRow('Дохід',income,bridgeMax,'brand'),
+    bridgeRow('Прямі витрати',cost,bridgeMax,'neg'),
+    bridgeRow('Валова маржа',gross,bridgeMax,gross>=0?'pos':'neg'),
+    bridgeRow('Фіксовані',fixed,bridgeMax,'neg'),
+    bridgeRow('Чисте сальдо',net,bridgeMax,net>=0?'pos':'neg')
+  ].join('');
+
+  const risks=[];
+  if(net<0) risks.push({t:'Модель в мінусі',m:'Після фіксованих витрат',v:fmt(Math.abs(net))+' ₴'});
+  if(debt>0) risks.push({t:'Є незакриті оплати',m:'Потрібен контроль cash flow',v:fmt(debt)+' ₴'});
+  if(low.length) risks.push({t:'Низька маржа',m:'Проєктів нижче 40%',v:low.length});
+  if(missing.length) risks.push({t:'Не закриті ролі',m:'СММ / таргет / PM',v:missing.length});
+  P.filter(p=>margin(p)<0).slice(0,3).forEach(p=>risks.push({t:p.name,m:'Відʼємна маржа',v:fmt(margin(p))+' ₴'}));
+  document.getElementById('ov-risk-count').textContent=risks.length?risks.length+' сигналів':'OK';
+  document.getElementById('ov-risk-list').innerHTML=risks.length?risks.slice(0,5).map(r=>`<div class="risk-item">
+    <div><div class="risk-title">${r.t}</div><div class="risk-meta">${r.m}</div></div>
+    <div class="risk-value">${r.v}</div>
+  </div>`).join(''):`<div class="risk-item"><div><div class="risk-title">Критичних сигналів немає</div><div class="risk-meta">Перевіряй оновлення оплат і ролей</div></div><div class="risk-value">OK</div></div>`;
+
+  const scenarioRows=[
+    ['Песимістичний',pessPipe,gross+pessPipe-fixed],
+    ['Базовий',basePipe,gross+basePipe-fixed],
+    ['Оптимістичний',optPipe,gross+optPipe-fixed],
+  ];
+  document.getElementById('ov-scenarios').innerHTML=scenarioRows.map(r=>`<div class="scenario-card">
+    <strong>${r[0]}</strong>
+    <small>Pipeline: ${fmt(r[1])} ₴</small>
+    <b class="${r[2]>=0?'m-pos':'m-neg'}">${moneySigned(r[2])}</b>
+    <small>чисте сальдо</small>
+  </div>`).join('');
+
+  const top=P.filter(p=>p.income>0).sort((a,b)=>margin(b)-margin(a)).slice(0,5);
+  document.getElementById('ov-top-caption').textContent=top.length+' проєктів';
+  document.getElementById('ov-top-projects').innerHTML=top.map(p=>`<div class="mini-row">
+    <div><div class="mini-name">${p.name}</div><div class="mini-muted">${Math.round(mpct(p)*100)}% margin</div></div>
+    <div class="mini-muted">${fmt(p.income||0)} ₴</div>
+    <div class="mini-money ${margin(p)>=0?'m-pos':'m-neg'}">${fmt(margin(p))} ₴</div>
+  </div>`).join('');
+
+  document.getElementById('cnt-overview').textContent=net>=0?'OK':'Risk';
 }
 
 function statusBadge(s){
@@ -2179,12 +2763,18 @@ function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg) bg.classList.remove('open');}));
 
 // ══════ NAV ══════
+function jumpTab(id){
+  const btn=document.querySelector(`.tab[data-tab="${id}"]`);
+  if(btn) showTab(id,btn);
+}
+
 function showTab(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('s-'+id).classList.add('active');
   btn.classList.add('active');
-  if(id==='smm') renderDept('smm');
+  if(id==='overview') renderOverview();
+  else if(id==='smm') renderDept('smm');
   else if(id==='target') renderDept('target');
   else if(id==='pm') renderDept('pm');
   else if(id==='miss') renderMissing();
@@ -2504,6 +3094,7 @@ function renderOther(){
 
 // ══════ RENDER ALL ══════
 function renderAll(){
+  renderOverview();
   renderServices();
   renderFin();
   renderLeads();
@@ -2519,7 +3110,8 @@ function renderAll(){
   const at=document.querySelector('.tab.active');
   if(at){
     const fn=at.getAttribute('onclick');
-    if(fn.includes("'smm'")) renderDept('smm');
+    if(fn.includes("'overview'")) renderOverview();
+    else if(fn.includes("'smm'")) renderDept('smm');
     else if(fn.includes("'target'")) renderDept('target');
     else if(fn.includes("'pm'")) renderDept('pm');
     else if(fn.includes("'leads'")) renderLeadsTab();
