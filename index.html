@@ -762,6 +762,26 @@ body{
   background:#FFFEFD;
   box-shadow:10px 0 30px rgba(26,26,26,.04);
 }
+.nav-group{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+.nav-group + .nav-group{
+  margin-top:13px;
+  padding-top:13px;
+  border-top:1px solid var(--hair);
+}
+.nav-group-title{
+  padding:0 10px 4px;
+  color:#9A918A;
+  font-family:'Montserrat',sans-serif;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.9px;
+  line-height:1.2;
+  text-transform:uppercase;
+}
 .tab{
   width:100%;
   min-height:38px;
@@ -790,6 +810,172 @@ body{
   background:#5C201A;
   color:#fff;
   border-color:#5C201A;
+}
+.people-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;
+}
+.worker-card{
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+  min-height:250px;
+  padding:16px;
+  border:1px solid var(--hair);
+  border-radius:8px;
+  background:var(--panel);
+  box-shadow:0 1px 2px rgba(26,26,26,.04),0 16px 34px rgba(26,26,26,.045);
+}
+.worker-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.worker-person{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+}
+.worker-avatar{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:8px;
+  background:#211B17;
+  color:#fff;
+  font-family:'Montserrat',sans-serif;
+  font-size:13px;
+  font-weight:900;
+  flex:0 0 auto;
+}
+.worker-name{
+  color:#181310;
+  font-family:'Montserrat',sans-serif;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.2;
+}
+.worker-role{
+  margin-top:4px;
+  color:var(--text-soft);
+  font-size:11px;
+  font-weight:700;
+}
+.worker-total{
+  text-align:right;
+  white-space:nowrap;
+}
+.worker-total b{
+  display:block;
+  color:#181310;
+  font-family:'Montserrat',sans-serif;
+  font-size:16px;
+  line-height:1;
+}
+.worker-total span{
+  display:block;
+  margin-top:5px;
+  color:#8F857E;
+  font-size:10px;
+}
+.worker-payline{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.pay-mini{
+  padding:9px 10px;
+  border:1px solid #E6DED7;
+  border-radius:8px;
+  background:#FAF7F4;
+}
+.pay-mini span{
+  display:block;
+  color:#8A817A;
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+.pay-mini b{
+  display:block;
+  margin-top:4px;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+}
+.worker-projects{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  margin-top:auto;
+}
+.worker-project{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:8px 10px;
+  border:1px solid #ECE5DF;
+  border-radius:7px;
+  background:#FFFEFD;
+}
+.worker-project span{
+  overflow:hidden;
+  color:#433C36;
+  font-size:12px;
+  font-weight:800;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.worker-project small{
+  color:#877E77;
+  font-size:10px;
+}
+.worker-empty{
+  padding:12px;
+  border:1px dashed #D9D1CA;
+  border-radius:8px;
+  color:#8D847D;
+  background:#FBF8F5;
+  font-size:12px;
+}
+.payroll-tools{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  padding:13px 14px;
+  border:1px solid var(--hair);
+  border-radius:8px;
+  background:#FFFEFD;
+}
+.payroll-note{
+  color:#6F6761;
+  font-size:12px;
+}
+.payroll-note b{
+  color:#211B17;
+  font-family:'Montserrat',sans-serif;
+}
+.payroll-input{
+  width:100%;
+  min-height:34px;
+  border:1px solid #E1D9D2;
+  border-radius:7px;
+  background:#FFFEFD;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:800;
+  text-align:right;
+}
+.payroll-input:focus{
+  outline:none;
+  border-color:var(--brand);
+  box-shadow:0 0 0 3px rgba(232,86,10,.1);
 }
 .page{
   max-width:none;
@@ -1098,6 +1284,23 @@ body{
     border-right:none;
     border-bottom:1px solid var(--hair);
   }
+  .nav-group{
+    flex-direction:row;
+    align-items:center;
+    gap:7px;
+    flex:0 0 auto;
+  }
+  .nav-group + .nav-group{
+    margin-top:0;
+    padding-top:0;
+    padding-left:10px;
+    border-top:none;
+    border-left:1px solid var(--hair);
+  }
+  .nav-group-title{
+    padding:0 4px 0 0;
+    white-space:nowrap;
+  }
   .tab{
     width:auto;
     min-width:max-content;
@@ -1134,20 +1337,33 @@ body{
 </header>
 
 <nav class="tabs">
-  <button class="tab active" data-tab="overview" onclick="showTab('overview',this)">Огляд <span class="cnt" id="cnt-overview">Live</span></button>
-  <button class="tab" data-tab="services" onclick="showTab('services',this)">Послуги проєктів <span class="cnt" id="cnt-svc">33</span></button>
-  <button class="tab" data-tab="fin" onclick="showTab('fin',this)">Фінанси <span class="cnt" id="cnt-fin">33</span></button>
-  <button class="tab" data-tab="cashflow" onclick="showTab('cashflow',this)">Cash flow <span class="cnt" id="cnt-cash">—</span></button>
-  <button class="tab" data-tab="income-status" onclick="showTab('income-status',this)">Статуси доходу <span class="cnt" id="cnt-income-status">—</span></button>
-  <button class="tab" data-tab="smm" onclick="showTab('smm',this)">СММ <span class="cnt" id="cnt-smm">—</span></button>
-  <button class="tab" data-tab="target" onclick="showTab('target',this)">Таргет / PPC <span class="cnt" id="cnt-tg">—</span></button>
-  <button class="tab" data-tab="pm" onclick="showTab('pm',this)">PM <span class="cnt" id="cnt-pm">—</span></button>
-  <button class="tab" data-tab="other" onclick="showTab('other',this)">Інше <span class="cnt" id="cnt-other">—</span></button>
-  <button class="tab" data-tab="design" onclick="showTab('design',this)">Дизайн <span class="cnt" id="cnt-design">—</span></button>
-  <button class="tab" data-tab="designer-pay" onclick="showTab('designer-pay',this)">ЗП дизайнерів <span class="cnt" id="cnt-designer-pay">—</span></button>
-  <button class="tab" data-tab="leads" onclick="showTab('leads',this)">Ліди <span class="cnt" id="cnt-leads">—</span></button>
-  <button class="tab" data-tab="scenarios" onclick="showTab('scenarios',this)">Сценарії <span class="cnt" id="cnt-scenarios">3</span></button>
-  <button class="tab warn-t" data-tab="miss" onclick="showTab('miss',this)">Без спеціаліста <span class="cnt" id="cnt-miss">—</span></button>
+  <div class="nav-group">
+    <div class="nav-group-title">Проєкти</div>
+    <button class="tab active" data-tab="overview" onclick="showTab('overview',this)">Огляд <span class="cnt" id="cnt-overview">Live</span></button>
+    <button class="tab" data-tab="services" onclick="showTab('services',this)">Проєкти <span class="cnt" id="cnt-svc">33</span></button>
+    <button class="tab" data-tab="leads" onclick="showTab('leads',this)">Ліди <span class="cnt" id="cnt-leads">—</span></button>
+    <button class="tab warn-t" data-tab="miss" onclick="showTab('miss',this)">Без спеціаліста <span class="cnt" id="cnt-miss">—</span></button>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">Працівники</div>
+    <button class="tab" data-tab="workers" onclick="showTab('workers',this)">Працівники <span class="cnt" id="cnt-workers">—</span></button>
+    <button class="tab" data-tab="payroll" onclick="showTab('payroll',this)">Зарплати <span class="cnt" id="cnt-payroll">—</span></button>
+    <button class="tab" data-tab="smm" onclick="showTab('smm',this)">СММ <span class="cnt" id="cnt-smm">—</span></button>
+    <button class="tab" data-tab="target" onclick="showTab('target',this)">Таргет / PPC <span class="cnt" id="cnt-tg">—</span></button>
+    <button class="tab" data-tab="pm" onclick="showTab('pm',this)">PM <span class="cnt" id="cnt-pm">—</span></button>
+    <button class="tab" data-tab="design" onclick="showTab('design',this)">Дизайн <span class="cnt" id="cnt-design">—</span></button>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">Фінанси</div>
+    <button class="tab" data-tab="fin" onclick="showTab('fin',this)">Фінанси <span class="cnt" id="cnt-fin">33</span></button>
+    <button class="tab" data-tab="cashflow" onclick="showTab('cashflow',this)">Cash flow <span class="cnt" id="cnt-cash">—</span></button>
+    <button class="tab" data-tab="income-status" onclick="showTab('income-status',this)">Статуси доходу <span class="cnt" id="cnt-income-status">—</span></button>
+    <button class="tab" data-tab="scenarios" onclick="showTab('scenarios',this)">Сценарії <span class="cnt" id="cnt-scenarios">3</span></button>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">Інше</div>
+    <button class="tab" data-tab="other" onclick="showTab('other',this)">Інше <span class="cnt" id="cnt-other">—</span></button>
+  </div>
 </nav>
 
 <div class="page">
@@ -1503,6 +1719,59 @@ body{
   </div>
 </div>
 
+<!-- ════ TAB 9: ПРАЦІВНИКИ ════ -->
+<div id="s-workers" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Працівники</h1><p class="ps">Єдина карта команди · проєкти автоматично підтягуються з ролей у фінмоделі</p></div>
+    <div class="fb-wrap">
+      <button class="fb add" onclick="jumpTab('payroll')">Зарплати</button>
+      <button class="fb" onclick="jumpTab('smm')">Відділи</button>
+    </div>
+  </div>
+  <div class="strip s4">
+    <div class="sc bl"><span class="sv" id="wr-count">—</span><span class="sl">Працівників</span></div>
+    <div class="sc gn"><span class="sv" id="wr-projects">—</span><span class="sl">Проєктних звʼязків</span></div>
+    <div class="sc or"><span class="sv" id="wr-accrued">—</span><span class="sl">Нараховано</span></div>
+    <div class="sc rd"><span class="sv" id="wr-balance">—</span><span class="sl">До виплати</span></div>
+  </div>
+  <div class="people-grid" id="workers-grid"></div>
+</div>
+
+<!-- ════ TAB 10: ЗАРПЛАТИ ════ -->
+<div id="s-payroll" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Зарплати</h1><p class="ps">Нарахування за місяць · аванс 20 числа · зарплата 5 числа · доплати і бонуси</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="jumpTab('workers')">Працівники</button></div>
+  </div>
+  <div class="strip s5">
+    <div class="sc or"><span class="sv" id="pay-accrued">—</span><span class="sl">Нараховано</span></div>
+    <div class="sc bl"><span class="sv" id="pay-advance">—</span><span class="sl">Аванс 20 числа</span></div>
+    <div class="sc gn"><span class="sv" id="pay-salary5">—</span><span class="sl">ЗП 5 числа</span></div>
+    <div class="sc or"><span class="sv" id="pay-bonus">—</span><span class="sl">Доплати / бонуси</span></div>
+    <div class="sc rd"><span class="sv" id="pay-left">—</span><span class="sl">Залишок</span></div>
+  </div>
+  <div class="payroll-tools">
+    <div class="payroll-note"><b>Логіка:</b> сума “нараховано” читається з проєктів і ставок, а виплати заповнюються вручну по кожній людині.</div>
+    <span class="pill" id="pay-pill">—</span>
+  </div>
+  <div class="tw">
+    <table class="t" style="min-width:980px">
+      <thead><tr>
+        <th style="width:30px"></th>
+        <th style="width:190px">Працівник</th>
+        <th style="width:105px">Роль</th>
+        <th class="r" style="width:125px">Нараховано ₴</th>
+        <th class="r" style="width:125px">Аванс 20 ₴</th>
+        <th class="r" style="width:125px">ЗП 5 ₴</th>
+        <th class="r" style="width:125px">Бонус ₴</th>
+        <th class="r" style="width:125px">Залишок ₴</th>
+        <th style="width:170px">Проєкти</th>
+      </tr></thead>
+      <tbody id="payroll-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
 <!-- ════ TAB 8: ЛІДИ ════ -->
 <div id="s-leads" class="section">
   <div class="tr-">
@@ -1854,6 +2123,8 @@ function normalizeLead(l){
   return l;
 }
 function normalizeData(){
+  if(!S.loads) S.loads={};
+  if(!S.payroll) S.payroll={};
   P.forEach(normalizeProject);
   L.forEach(normalizeLead);
   (S.design||[]).forEach(d=>{
@@ -1897,13 +2168,88 @@ function margin(p){return (p.income||0)-costs(p);}
 function mpct(p){return p.income>0?margin(p)/p.income:0;}
 function fmt(n){return new Intl.NumberFormat('uk-UA').format(Math.round(n));}
 function designerPayroll(){return (S.design||[]).reduce((s,d)=>s+(parseInt(d.rate)||0),0);}
-function fixedCosts(){return GENERAL_COSTS+CORE_PAYROLL+designerPayroll();}
+function fixedCosts(){return GENERAL_COSTS+CORE_PAYROLL+designerPayroll()+payrollBonusTotal();}
 function targetIncome(p){const c=costs(p); return c>0?Math.ceil(c/(1-TARGET_MARGIN)):0;}
 function targetGap(p){return Math.max(0,targetIncome(p)-(p.income||0));}
 function paidAmount(p){return Math.min(p.income||0,parseInt(p.paid)||0);}
 function expectedAmount(p){return Math.max(0,parseInt(p.expected)||0);}
 function debtAmount(p){return Math.max(0,(p.income||0)-paidAmount(p)-expectedAmount(p));}
 function leadWeighted(l,prob){return Math.round((l.income||0)*(prob??(l.prob||0))/100);}
+
+const ROLE_LABELS={smm:'СММ',target:'Таргет',ppc:'PPC',pm:'PM',design:'Дизайн',other:'Інше'};
+
+function firstName(name){
+  return String(name||'').trim().split(/\s+/)[0].toLowerCase();
+}
+function initials(name){
+  return String(name||'')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(x=>x[0])
+    .join('')
+    .toUpperCase() || '—';
+}
+function workerKey(w){return `${w.role}:${w.id}`;}
+function payrollEntry(key){
+  if(!S.payroll) S.payroll={};
+  if(!S.payroll[key]) S.payroll[key]={advance:0,salary5:0,bonus:0};
+  if(S.payroll[key].advance===undefined) S.payroll[key].advance=0;
+  if(S.payroll[key].salary5===undefined) S.payroll[key].salary5=0;
+  if(S.payroll[key].bonus===undefined) S.payroll[key].bonus=0;
+  return S.payroll[key];
+}
+function allWorkers(){
+  const roles=['smm','target','ppc','pm','design','other'];
+  return roles.flatMap(role=>(S[role]||[]).map(x=>({...x,role,key:`${role}:${x.id}`})));
+}
+function payrollBonusTotal(){
+  return Object.values(S.payroll||{}).reduce((s,p)=>s+(parseInt(p.bonus)||0),0);
+}
+function assignmentForProject(worker,p){
+  const fn=firstName(worker.name);
+  let baseRate=0, roleLabel='';
+  if(worker.role==='smm' && p.smm && p.smm.toLowerCase().includes(fn)){
+    const isDouble=p.smm.includes('+')||p.smm.includes('|');
+    baseRate=isDouble?Math.round((p.smm_c||0)/2):(p.smm_c||0);
+    if(p.hed>0 && !isDouble) baseRate+=(p.hed||0);
+    roleLabel=isDouble?'СММ ÷2':'СММ';
+  }
+  if(worker.role==='target' && p.tg && p.tg.toLowerCase().includes(fn)){
+    baseRate=p.tg_c||0; roleLabel='Таргет';
+  }
+  if(worker.role==='ppc' && p.ppc && p.ppc.toLowerCase().includes(fn)){
+    baseRate=p.ppc_c||0; roleLabel='PPC';
+  }
+  if(worker.role==='pm' && p.pm && p.pm.toLowerCase().includes(fn)){
+    baseRate=p.pm_c||0; roleLabel='PM';
+  }
+  if(!baseRate && !roleLabel) return null;
+  const storedLoad=getLoad(worker.id,p.id);
+  const load=storedLoad!==null?storedLoad:1;
+  return {pid:p.id,name:p.name,role:roleLabel,baseRate,load,earned:Math.round(baseRate*load)};
+}
+function employeeAssignments(worker){
+  if(worker.role==='design'){
+    return (worker.projects||[]).map(pid=>{
+      const p=P.find(x=>x.id===pid);
+      if(!p) return null;
+      const load=(worker.loads&&worker.loads[pid]!==undefined)?worker.loads[pid]:1;
+      const baseRate=p.design||0;
+      return {pid:p.id,name:p.name,role:'Дизайн',baseRate,load,earned:Math.round(baseRate*load)};
+    }).filter(Boolean);
+  }
+  return P.map(p=>assignmentForProject(worker,p)).filter(Boolean);
+}
+function employeeAccrued(worker){
+  if(worker.role==='design') return parseInt(worker.rate)||0;
+  return employeeAssignments(worker).reduce((s,a)=>s+a.earned,0);
+}
+function payrollLeft(worker){
+  const key=workerKey(worker);
+  const pay=payrollEntry(key);
+  return employeeAccrued(worker)+(parseInt(pay.bonus)||0)-(parseInt(pay.advance)||0)-(parseInt(pay.salary5)||0);
+}
 
 function svcCell(val, cls){
   if(val) return `<span class="svc-tag ${cls}">${val}</span>`;
@@ -2333,7 +2679,7 @@ function renderLeads(){
 function renderCostsBlocks(){
   const ft=document.getElementById('fot-total');
   const fd=document.getElementById('fot-design');
-  if(ft) ft.textContent=fmt(CORE_PAYROLL+designerPayroll())+' грн';
+  if(ft) ft.textContent=fmt(CORE_PAYROLL+designerPayroll()+payrollBonusTotal())+' грн';
   if(fd) fd.textContent=fmt(designerPayroll())+' грн';
 }
 
@@ -2540,8 +2886,108 @@ function renderDesignerPay(){
   de.textContent=(diff>=0?'+':'')+fmt(diff)+' ₴';
   de.style.color=diff>=0?'var(--green)':'var(--red)';
   document.getElementById('dp-pill').textContent=(S.design||[]).length+' дизайнерів';
-  document.getElementById('cnt-designer-pay').textContent=(S.design||[]).length;
+  const cntDesignerPay=document.getElementById('cnt-designer-pay');
+  if(cntDesignerPay) cntDesignerPay.textContent=(S.design||[]).length;
   renderCostsBlocks();
+}
+
+function renderWorkers(){
+  const grid=document.getElementById('workers-grid'); if(!grid) return;
+  const workers=allWorkers();
+  let totalAccrued=0, totalLeft=0, totalLinks=0;
+
+  grid.innerHTML=workers.map(w=>{
+    const key=workerKey(w);
+    const pay=payrollEntry(key);
+    const assignments=employeeAssignments(w);
+    const accrued=employeeAccrued(w);
+    const left=payrollLeft(w);
+    totalAccrued+=accrued+(parseInt(pay.bonus)||0);
+    totalLeft+=left;
+    totalLinks+=assignments.length;
+    const visible=assignments.slice(0,4);
+    const rest=assignments.length-visible.length;
+    return `<article class="worker-card">
+      <div class="worker-top">
+        <div class="worker-person">
+          <div class="worker-avatar">${initials(w.name)}</div>
+          <div>
+            <div class="worker-name">${w.name}</div>
+            <div class="worker-role">${ROLE_LABELS[w.role]||w.role} · ${assignments.length} проєктів</div>
+          </div>
+        </div>
+        <div class="worker-total">
+          <b>${fmt(accrued)} ₴</b>
+          <span>нараховано</span>
+        </div>
+      </div>
+      <div class="worker-payline">
+        <div class="pay-mini"><span>Аванс</span><b>${fmt(parseInt(pay.advance)||0)} ₴</b></div>
+        <div class="pay-mini"><span>5 число</span><b>${fmt(parseInt(pay.salary5)||0)} ₴</b></div>
+        <div class="pay-mini"><span>Бонус</span><b>${fmt(parseInt(pay.bonus)||0)} ₴</b></div>
+      </div>
+      <div class="worker-projects">
+        ${visible.length?visible.map(a=>`<div class="worker-project">
+          <span>${a.name}</span>
+          <small>${fmt(a.earned)} ₴</small>
+        </div>`).join(''):`<div class="worker-empty">Поки немає привʼязаних проєктів</div>`}
+        ${rest>0?`<div class="worker-empty">Ще ${rest} проєктів у зарплатному розрахунку</div>`:''}
+      </div>
+    </article>`;
+  }).join('');
+
+  document.getElementById('wr-count').textContent=workers.length;
+  document.getElementById('wr-projects').textContent=totalLinks;
+  document.getElementById('wr-accrued').textContent=fmt(totalAccrued);
+  const balance=document.getElementById('wr-balance');
+  balance.textContent=fmt(totalLeft);
+  balance.style.color=totalLeft>=0?'var(--red)':'var(--green)';
+  document.getElementById('cnt-workers').textContent=workers.length;
+}
+
+function renderPayroll(){
+  const tbody=document.getElementById('payroll-tbody'); if(!tbody) return;
+  tbody.innerHTML='';
+  const workers=allWorkers();
+  let accruedTotal=0, advanceTotal=0, salary5Total=0, bonusTotal=0, leftTotal=0;
+
+  workers.forEach((w,i)=>{
+    const key=workerKey(w);
+    const pay=payrollEntry(key);
+    const assignments=employeeAssignments(w);
+    const accrued=employeeAccrued(w);
+    const advance=parseInt(pay.advance)||0;
+    const salary5=parseInt(pay.salary5)||0;
+    const bonus=parseInt(pay.bonus)||0;
+    const left=accrued+bonus-advance-salary5;
+    accruedTotal+=accrued;
+    advanceTotal+=advance;
+    salary5Total+=salary5;
+    bonusTotal+=bonus;
+    leftTotal+=left;
+
+    tbody.insertAdjacentHTML('beforeend',`<tr>
+      <td style="text-align:center;color:var(--g400);font-size:11px">${i+1}</td>
+      <td><span style="font-family:Montserrat;font-weight:800">${w.name}</span></td>
+      <td><span class="tag">${ROLE_LABELS[w.role]||w.role}</span></td>
+      <td class="r"><span class="m">${fmt(accrued)}</span></td>
+      <td class="r"><input class="payroll-input" type="number" value="${advance||''}" oninput="updPayroll('${key}','advance',this.value)"></td>
+      <td class="r"><input class="payroll-input" type="number" value="${salary5||''}" oninput="updPayroll('${key}','salary5',this.value)"></td>
+      <td class="r"><input class="payroll-input" type="number" value="${bonus||''}" oninput="updPayroll('${key}','bonus',this.value)"></td>
+      <td class="r"><span class="m ${left>0?'m-neg':'m-pos'}">${fmt(left)}</span></td>
+      <td style="font-size:11px;color:var(--g600)">${assignments.length?assignments.length+' проєктів':'—'}</td>
+    </tr>`);
+  });
+
+  document.getElementById('pay-accrued').textContent=fmt(accruedTotal);
+  document.getElementById('pay-advance').textContent=fmt(advanceTotal);
+  document.getElementById('pay-salary5').textContent=fmt(salary5Total);
+  document.getElementById('pay-bonus').textContent=fmt(bonusTotal);
+  const leftEl=document.getElementById('pay-left');
+  leftEl.textContent=fmt(leftTotal);
+  leftEl.style.color=leftTotal>=0?'var(--red)':'var(--green)';
+  document.getElementById('pay-pill').textContent=workers.length+' працівників';
+  document.getElementById('cnt-payroll').textContent=workers.length;
 }
 
 function renderScenarios(){
@@ -2606,6 +3052,13 @@ function updProjectMoney(id,field,val){
 function updDesignerRate(id,val){
   const d=(S.design||[]).find(x=>x.id===id); if(!d) return;
   d.rate=parseInt(val)||0;
+  save();
+  clearTimeout(window._rt); window._rt=setTimeout(renderAll,350);
+}
+
+function updPayroll(key,field,val){
+  const pay=payrollEntry(key);
+  pay[field]=parseInt(val)||0;
   save();
   clearTimeout(window._rt); window._rt=setTimeout(renderAll,350);
 }
@@ -2755,7 +3208,12 @@ function saveSpecModal(){
     nextSid++; if(!S[role]) S[role]=[];
     S[role].push({id:'u'+nextSid,name});
     closeModal('spec-modal');
-    renderDept(role==='ppc'?'target':role); save(); toast('Спеціаліста додано');
+    renderAll();
+    if(['smm','target','ppc','pm'].includes(role)) renderDept(role==='ppc'?'target':role);
+    if(role==='design') renderDesign();
+    if(role==='other') renderOther();
+    save();
+    toast('Спеціаліста додано');
   }
   if(document.getElementById('proj-modal').classList.contains('open')) populateModalSelects(null);
 }
@@ -2781,6 +3239,8 @@ function showTab(id,btn){
   else if(id==='leads') renderLeadsTab();
   else if(id==='design') renderDesign();
   else if(id==='designer-pay') renderDesignerPay();
+  else if(id==='workers') renderWorkers();
+  else if(id==='payroll') renderPayroll();
   else if(id==='cashflow') renderCashflow();
   else if(id==='income-status') renderIncomeStatus();
   else if(id==='scenarios') renderScenarios();
@@ -3103,6 +3563,8 @@ function renderAll(){
   renderCashflow();
   renderIncomeStatus();
   renderDesignerPay();
+  renderWorkers();
+  renderPayroll();
   renderScenarios();
   // update lead counts
   document.getElementById('cnt-leads').textContent=L.length;
@@ -3117,6 +3579,8 @@ function renderAll(){
     else if(fn.includes("'leads'")) renderLeadsTab();
     else if(fn.includes("'design'")) renderDesign();
     else if(fn.includes("'designer-pay'")) renderDesignerPay();
+    else if(fn.includes("'workers'")) renderWorkers();
+    else if(fn.includes("'payroll'")) renderPayroll();
     else if(fn.includes("'cashflow'")) renderCashflow();
     else if(fn.includes("'income-status'")) renderIncomeStatus();
     else if(fn.includes("'scenarios'")) renderScenarios();
