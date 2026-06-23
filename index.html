@@ -1349,6 +1349,7 @@ body{
     <button class="tab" data-tab="workers" onclick="showTab('workers',this)">Працівники <span class="cnt" id="cnt-workers">—</span></button>
     <button class="tab" data-tab="payroll" onclick="showTab('payroll',this)">Зарплати <span class="cnt" id="cnt-payroll">—</span></button>
     <button class="tab" data-tab="smm" onclick="showTab('smm',this)">СММ <span class="cnt" id="cnt-smm">—</span></button>
+    <button class="tab" data-tab="head-smm" onclick="showTab('head-smm',this)">Head SMM <span class="cnt" id="cnt-head-smm">—</span></button>
     <button class="tab" data-tab="target" onclick="showTab('target',this)">Таргет / PPC <span class="cnt" id="cnt-tg">—</span></button>
     <button class="tab" data-tab="pm" onclick="showTab('pm',this)">PM <span class="cnt" id="cnt-pm">—</span></button>
     <button class="tab" data-tab="design" onclick="showTab('design',this)">Дизайн <span class="cnt" id="cnt-design">—</span></button>
@@ -1411,7 +1412,7 @@ body{
     <section class="metric-card">
       <span class="metric-label">Фіксовані витрати</span>
       <strong id="ov-fixed">—</strong>
-      <small>з ФОТ дизайнерів</small>
+      <small>з ФОТ дизайнерів і COO</small>
     </section>
     <section class="metric-card">
       <span class="metric-label">Pipeline</span>
@@ -1469,11 +1470,12 @@ body{
   </div>
   <div class="sh"><span class="st">Активні проєкти</span><span class="pill" id="svc-pill">33</span><span class="ml">Всього послуг: <b id="svc-total-svcs">—</b></span></div>
   <div class="tw">
-    <table class="t" style="min-width:900px">
+    <table class="t" style="min-width:980px">
       <thead><tr>
         <th style="width:28px"></th>
         <th style="width:175px">Проєкт</th>
         <th class="c" style="width:90px">СММ</th>
+        <th class="c" style="width:90px">Head SMM</th>
         <th class="c" style="width:90px">Таргет</th>
         <th class="c" style="width:90px">PPC</th>
         <th class="c" style="width:90px">Дизайн</th>
@@ -1508,11 +1510,12 @@ body{
   </div>
   <div class="sh"><span class="st">Проєкти</span><span class="pill" id="f-pill">33</span><span class="ml">Дохід: <b id="f-sum">—</b> грн</span></div>
   <div class="tw">
-    <table class="t" style="min-width:900px">
+    <table class="t" style="min-width:980px">
       <thead><tr>
         <th style="width:28px"></th>
         <th style="width:165px">Проєкт</th>
         <th class="r" style="width:70px">СММ ₴</th>
+        <th class="r" style="width:70px">Head ₴</th>
         <th class="r" style="width:68px">Таргет ₴</th>
         <th class="r" style="width:60px">PPC ₴</th>
         <th class="r" style="width:65px">Дизайн ₴</th>
@@ -1617,6 +1620,20 @@ body{
     <div class="sc rd"><span class="sv" id="smm-without">—</span><span class="sl">Без СММ</span></div>
   </div>
   <div class="spec-grid" id="smm-grid"></div>
+</div>
+
+<!-- ════ TAB 3B: HEAD SMM ════ -->
+<div id="s-head-smm" class="section">
+  <div class="tr-">
+    <div><h1 class="pt">Head SMM</h1><p class="ps">Окреме нарахування за Head SMM · не додається до зарплати основного СММ</p></div>
+    <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('head_smm')">+ Додати Head SMM</button></div>
+  </div>
+  <div class="strip s3">
+    <div class="sc or"><span class="sv" id="head-smm-total">—</span><span class="sl">Всього нараховано</span></div>
+    <div class="sc bl"><span class="sv" id="head-smm-count">—</span><span class="sl">Head SMM</span></div>
+    <div class="sc gn"><span class="sv" id="head-smm-proj">—</span><span class="sl">Проєктів</span></div>
+  </div>
+  <div class="spec-grid" id="head-smm-grid"></div>
 </div>
 
 <!-- ════ TAB 4: ТАРГЕТ/PPC ════ -->
@@ -1751,7 +1768,7 @@ body{
     <div class="sc rd"><span class="sv" id="pay-left">—</span><span class="sl">Залишок</span></div>
   </div>
   <div class="payroll-tools">
-    <div class="payroll-note"><b>Логіка:</b> сума “нараховано” читається з проєктів і ставок, а виплати заповнюються вручну по кожній людині.</div>
+    <div class="payroll-note" id="payroll-note"><b>Логіка:</b> сума “нараховано” читається з проєктів і ставок, а виплати заповнюються вручну по кожній людині.</div>
     <span class="pill" id="pay-pill">—</span>
   </div>
   <div class="tw">
@@ -1858,7 +1875,15 @@ body{
           <div class="mfr" style="margin-bottom:0"><label>СММ ставка ₴</label><input type="number" id="m-smm-c"></div>
         </div>
         <div class="m2" style="margin-top:8px">
-          <div class="mfr" style="margin-bottom:0"><label>Хед СММ надбавка ₴</label><input type="number" id="m-hed"></div>
+          <div class="mfr" style="margin-bottom:0">
+            <label>Head SMM</label>
+            <select id="m-head-smm">
+              <option value="">— Не призначено —</option>
+            </select>
+          </div>
+          <div class="mfr" style="margin-bottom:0"><label>Head SMM ставка ₴</label><input type="number" id="m-hed"></div>
+        </div>
+        <div class="m2" style="margin-top:8px">
           <div class="mfr" style="margin-bottom:0"><label>Дизайн ₴</label><input type="number" id="m-design"></div>
         </div>
       </div>
@@ -1946,6 +1971,7 @@ body{
       <div class="mfr"><label>Роль</label>
         <select id="sm-role">
           <option value="smm">СММ</option>
+          <option value="head_smm">Head SMM</option>
           <option value="target">Таргет</option>
           <option value="ppc">PPC</option>
           <option value="pm">PM</option>
@@ -1995,7 +2021,7 @@ body{
 // ══════ DATA ══════
 const DEF_P = [
   {id:1, name:"Шашлайк",           smm:"Іра Сивик",  smm_c:8000,  hed:1000,  tg:"Оля",      tg_c:5000,  ppc:"Денис",  ppc_c:7000,  design:4000,  other:0,      income:46000,  pm:"Іра",   pm_c:6000,  pay:"30 і 15", cash:false, notes:""},
-  {id:2, name:"Західний Буг",      smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:8000,  other:5000,   income:32000,  pm:"Роман", pm_c:12000, pay:"30",      cash:false, notes:"14k+14k від Романа"},
+  {id:2, name:"Західний Буг",      smm:"",           smm_c:0,     hed:0,     head_smm:"",   tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:8000,  other:13000,  income:32000,  pm:"Іра",   pm_c:4000,  pay:"30",      cash:false, notes:"копірайтер Аня 5k · маркетолог Роман 8k"},
   {id:3, name:"Зх Буг Дні Поля",   smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:6000,  other:80000,  income:140000, pm:"Іра",   pm_c:6000,  pay:"29–30",   cash:false, notes:"1/2 зараз, решта до 1.09"},
   {id:4, name:"Банк Львів",        smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:15000,  income:35000,  pm:"Діана", pm_c:0,     pay:"30",      cash:false, notes:""},
   {id:5, name:"Yoki",              smm:"Юля",        smm_c:8000,  hed:0,     tg:"Оля",      tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:0,      income:34000,  pm:"Іра",   pm_c:4000,  pay:"15",      cash:false, notes:""},
@@ -2006,27 +2032,27 @@ const DEF_P = [
   {id:10,name:"О2 School",         smm:"",           smm_c:0,     hed:0,     tg:"Кіріл",    tg_c:10000, ppc:"Денис",  ppc_c:5000,  design:3000,  other:0,      income:26000,  pm:"Кіріл", pm_c:0,     pay:"15",      cash:false, notes:""},
   {id:11,name:"Коліжанка",         smm:"Надя",       smm_c:6000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:1000,  other:0,      income:9000,   pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
   {id:12,name:"МІСТО",             smm:"Юля",        smm_c:6000,  hed:0,     tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:6000,   income:32000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
-  {id:13,name:"BRONX",             smm:"Настя",      smm_c:8000,  hed:1000,  tg:"Оля",      tg_c:5000,  ppc:"",       ppc_c:2000,  design:3000,  other:0,      income:22800,  pm:"Каріна",pm_c:4000,  pay:"—",       cash:false, notes:"Маржа нульова"},
+  {id:13,name:"BRONX",             smm:"Настя",      smm_c:8000,  hed:1000,  head_smm:"Юля",tg:"Оля",      tg_c:5000,  ppc:"",       ppc_c:0,     design:3000,  other:0,      income:22800,  pm:"Каріна",pm_c:4000,  pay:"—",       cash:false, notes:""},
   {id:14,name:"Мар'яна Кавин",     smm:"Надя",       smm_c:8000,  hed:1000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:2000,  other:4000,   income:20000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
-  {id:15,name:"Meatbusters",       smm:"Анастасія",  smm_c:9000,  hed:1000,  tg:"Кіріл",    tg_c:5000,  ppc:"Денис",  ppc_c:5000,  design:3000,  other:10000,  income:38500,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Зйомки +6000"},
+  {id:15,name:"Meatbusters",       smm:"Анастасія",  smm_c:9000,  hed:1000,  head_smm:"Юля",tg:"Кіріл",    tg_c:5000,  ppc:"Денис",  ppc_c:5000,  design:3000,  other:8000,   income:38500,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"кешбек 4k · зйомки 4k"},
   {id:16,name:"Labgramm",          smm:"Юля",        smm_c:8000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:3000,  other:0,      income:16000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
   {id:17,name:"Вирій",             smm:"Надя",       smm_c:6000,  hed:1000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:3000,  other:0,      income:15260,  pm:"",      pm_c:0,     pay:"30",      cash:false, notes:""},
   {id:18,name:"Субота",            smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"Денис",  ppc_c:5000,  design:0,     other:0,      income:11000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
   {id:19,name:"Ландтех",           smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"Ганна",  ppc_c:8000,  design:0,     other:0,      income:12000,  pm:"Ганна", pm_c:0,     pay:"30",      cash:false, notes:""},
   {id:20,name:"Lupily",            smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"Ганна",  ppc_c:8000,  design:0,     other:0,      income:11000,  pm:"Ганна", pm_c:0,     pay:"15",      cash:false, notes:""},
   {id:21,name:"Агросем",           smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:40000,  income:80000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Кешбек"},
-  {id:22,name:"Апартель",          smm:"",           smm_c:0,     hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:10000,  income:20000,  pm:"Роман", pm_c:2000,  pay:"30",      cash:false, notes:"аутсорс"},
+  {id:22,name:"Апартель",          smm:"",           smm_c:0,     hed:0,     head_smm:"",   tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:8000,   income:20000,  pm:"Іра",   pm_c:2000,  pay:"30",      cash:false, notes:"аутсорс дизайн"},
   {id:23,name:"Лем Стейшн",        smm:"Настя+Юля",  smm_c:28000, hed:0,     tg:"Оля",      tg_c:10000, ppc:"Денис",  ppc_c:10000, design:10000, other:21800,  income:138000, pm:"Катя",  pm_c:18000, pay:"15–30",   cash:false, notes:"Великий проєкт"},
   {id:24,name:"ЛКП",               smm:"Альона",     smm_c:10000, hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:5000,  other:0,      income:20000,  pm:"Катя",  pm_c:0,     pay:"—",       cash:false, notes:""},
-  {id:25,name:"Аптека ДД ББ",      smm:"Анастасія",  smm_c:10000, hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:20000, other:0,      income:60000,  pm:"Іра",   pm_c:4000,  pay:"—",       cash:false, notes:""},
-  {id:26,name:"Візит",             smm:"Альна",      smm_c:15000, hed:2000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:8000,  other:4000,   income:56000,  pm:"Роман", pm_c:10000, pay:"—",       cash:false, notes:""},
+  {id:25,name:"Аптека ДД ББ",      smm:"",           smm_c:0,     hed:0,     head_smm:"",   tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:20000, other:0,      income:60000,  pm:"Іра",   pm_c:4000,  pay:"—",       cash:false, notes:""},
+  {id:26,name:"Візит",             smm:"Альна",      smm_c:10000, hed:5000,  head_smm:"Юля",tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:8000,  other:4000,   income:56000,  pm:"Роман", pm_c:10000, pay:"—",       cash:false, notes:"копірайтер Аня 4k"},
   {id:27,name:"Ай Кідс",           smm:"Альона",     smm_c:6000,  hed:2000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:0,     other:0,      income:18000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
-  {id:28,name:"Слово і Голос",     smm:"Ліля",       smm_c:8000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:4000,  other:0,      income:20000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
+  {id:28,name:"Слово і Голос",     smm:"Ліля",       smm_c:10000, hed:0,     head_smm:"",   tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:4000,  other:0,      income:20000,  pm:"",      pm_c:0,     pay:"—",       cash:false, notes:""},
   {id:29,name:"Сако (ІФ)",         smm:"Анастасія",  smm_c:8000,  hed:1000,  tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:4000,  other:0,      income:28000,  pm:"Роман", pm_c:2000,  pay:"—",       cash:false, notes:""},
   {id:30,name:"Пакорама",          smm:"Іра Сивик",  smm_c:4000,  hed:1000,  tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:3000,  other:0,      income:0,      pm:"Роман", pm_c:4000,  pay:"—",       cash:false, notes:"Без доходу"},
   {id:31,name:"Ді",                smm:"Іра Сивик",  smm_c:4000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:2000,  other:0,      income:0,      pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Без доходу"},
   {id:32,name:"Скай Асіст",        smm:"Іра Сивик",  smm_c:4000,  hed:0,     tg:"",         tg_c:0,     ppc:"",       ppc_c:0,     design:2000,  other:0,      income:0,      pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Без доходу"},
-  {id:33,name:"Діджі",             smm:"Юля+Іра",    smm_c:6000,  hed:1000,  tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:2000,  other:0,      income:0,      pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Без доходу"},
+  {id:33,name:"Діджі",             smm:"Юля+Іра",    smm_c:6000,  hed:0,     head_smm:"",   tg:"Крістіна", tg_c:5000,  ppc:"",       ppc_c:0,     design:2000,  other:0,      income:0,      pm:"",      pm_c:0,     pay:"—",       cash:false, notes:"Без доходу"},
 ];
 
 // Спеці — окремо від проєктів, з можливістю додавання/видалення
@@ -2043,6 +2069,9 @@ const DEF_SPECS = {
     {id:"smm8",name:"Альна"},
     {id:"smm9",name:"Іра Леськів"},
     {id:"smm10",name:"Ліля Філатова"},
+  ],
+  head_smm:[
+    {id:"hs1",name:"Юля"},
   ],
   target:[
     {id:"tg1",name:"Оля"},
@@ -2070,7 +2099,10 @@ const DEF_SPECS = {
     {id:"d4",name:"Стас",    rate:40000},
     {id:"d5",name:"Катя (дизайн)", rate:20000},
   ],
-  other:[]
+  other:[],
+  coo:[
+    {id:"coo1",name:"COO", rate:40000, share:.1},
+  ]
 };
 
 // status: 'active'=переговори | 'converted'=став проєктом | 'lost'=злився
@@ -2093,9 +2125,22 @@ const DEF_LEADS=[
 
 // ══════ STATE ══════
 let P=[], S={}, L=[], nextId=100, nextSid=200, nextLid=300, svcFilter='all', finFilter='all', leadsFilter='all', saveT=null;
+const DATA_VERSION=4;
 const GENERAL_COSTS=117000;
-const CORE_PAYROLL=200000;
+const CORE_PAYROLL=160000;
+const COO_BASE=40000;
+const COO_SHARE=.1;
 const TARGET_MARGIN=.4;
+const PROJECT_V4_UPDATES={
+  2:{other:13000,pm:"Іра",pm_c:4000,notes:"копірайтер Аня 5k · маркетолог Роман 8k"},
+  13:{ppc:"",ppc_c:0,head_smm:"Юля",notes:""},
+  15:{other:8000,head_smm:"Юля",notes:"кешбек 4k · зйомки 4k"},
+  22:{other:8000,pm:"Іра",pm_c:2000,notes:"аутсорс дизайн"},
+  25:{smm:"",smm_c:0,head_smm:""},
+  26:{smm_c:10000,hed:5000,head_smm:"Юля",notes:"копірайтер Аня 4k"},
+  28:{smm_c:10000,head_smm:""},
+  33:{hed:0,head_smm:""},
+};
 
 function deep(x){return JSON.parse(JSON.stringify(x));}
 function inferIncomeStatus(p){
@@ -2106,6 +2151,7 @@ function inferIncomeStatus(p){
 }
 function normalizeProject(p){
   if(typeof p.notes==='string') p.notes=p.notes.replace(/^\u26A0\s*/,'');
+  if(p.head_smm===undefined) p.head_smm=(p.hed||0)>0?'Юля':'';
   if(p.need_smm===undefined) p.need_smm=true;
   if(p.need_tg===undefined) p.need_tg=true;
   if(p.need_pm===undefined) p.need_pm=true;
@@ -2125,6 +2171,8 @@ function normalizeLead(l){
 function normalizeData(){
   if(!S.loads) S.loads={};
   if(!S.payroll) S.payroll={};
+  if(!S.head_smm) S.head_smm=deep(DEF_SPECS.head_smm);
+  if(!S.coo) S.coo=deep(DEF_SPECS.coo);
   P.forEach(normalizeProject);
   L.forEach(normalizeLead);
   (S.design||[]).forEach(d=>{
@@ -2133,6 +2181,16 @@ function normalizeData(){
     if(!d.loads) d.loads={};
   });
 }
+function migrateData(version){
+  if((version||0)<4){
+    Object.entries(PROJECT_V4_UPDATES).forEach(([id,patch])=>{
+      const p=P.find(x=>String(x.id)===String(id));
+      if(p) Object.assign(p,patch);
+    });
+    if(!S.head_smm) S.head_smm=deep(DEF_SPECS.head_smm);
+    if(!S.coo) S.coo=deep(DEF_SPECS.coo);
+  }
+}
 function load(){
   try{
     const d=JSON.parse(localStorage.getItem('diggi_v3')||'null');
@@ -2140,6 +2198,7 @@ function load(){
       P=d.P||deep(DEF_P); S=d.S||deep(DEF_SPECS);
       L=d.L||deep(DEF_LEADS);
       nextId=d.nextId||100; nextSid=d.nextSid||200; nextLid=d.nextLid||300;
+      migrateData(d.version||0);
     } else{ P=deep(DEF_P); S=deep(DEF_SPECS); L=deep(DEF_LEADS); }
   }catch(e){ P=deep(DEF_P); S=deep(DEF_SPECS); L=deep(DEF_LEADS); }
   normalizeData();
@@ -2149,7 +2208,7 @@ function save(){
   document.getElementById('dot').className='dot dirty';
   document.getElementById('stxt').textContent='Змінено...';
   saveT=setTimeout(()=>{
-    localStorage.setItem('diggi_v3',JSON.stringify({P,S,L,nextId,nextSid,nextLid}));
+    localStorage.setItem('diggi_v3',JSON.stringify({P,S,L,nextId,nextSid,nextLid,version:DATA_VERSION}));
     document.getElementById('dot').className='dot';
     document.getElementById('stxt').textContent='Збережено';
   },800);
@@ -2168,7 +2227,10 @@ function margin(p){return (p.income||0)-costs(p);}
 function mpct(p){return p.income>0?margin(p)/p.income:0;}
 function fmt(n){return new Intl.NumberFormat('uk-UA').format(Math.round(n));}
 function designerPayroll(){return (S.design||[]).reduce((s,d)=>s+(parseInt(d.rate)||0),0);}
-function fixedCosts(){return GENERAL_COSTS+CORE_PAYROLL+designerPayroll()+payrollBonusTotal();}
+function grossProfit(){return P.reduce((s,p)=>s+(p.income||0),0)-P.reduce((s,p)=>s+costs(p),0);}
+function cooProfitBase(){return Math.max(0,grossProfit()-GENERAL_COSTS-CORE_PAYROLL-designerPayroll()-COO_BASE);}
+function cooBonus(){return Math.round(cooProfitBase()*COO_SHARE);}
+function fixedCosts(){return GENERAL_COSTS+CORE_PAYROLL+COO_BASE+designerPayroll()+cooBonus()+payrollBonusTotal();}
 function targetIncome(p){const c=costs(p); return c>0?Math.ceil(c/(1-TARGET_MARGIN)):0;}
 function targetGap(p){return Math.max(0,targetIncome(p)-(p.income||0));}
 function paidAmount(p){return Math.min(p.income||0,parseInt(p.paid)||0);}
@@ -2176,7 +2238,7 @@ function expectedAmount(p){return Math.max(0,parseInt(p.expected)||0);}
 function debtAmount(p){return Math.max(0,(p.income||0)-paidAmount(p)-expectedAmount(p));}
 function leadWeighted(l,prob){return Math.round((l.income||0)*(prob??(l.prob||0))/100);}
 
-const ROLE_LABELS={smm:'СММ',target:'Таргет',ppc:'PPC',pm:'PM',design:'Дизайн',other:'Інше'};
+const ROLE_LABELS={smm:'СММ',head_smm:'Head SMM',target:'Таргет',ppc:'PPC',pm:'PM',design:'Дизайн',other:'Інше',coo:'COO'};
 
 function firstName(name){
   return String(name||'').trim().split(/\s+/)[0].toLowerCase();
@@ -2200,7 +2262,7 @@ function payrollEntry(key){
   return S.payroll[key];
 }
 function allWorkers(){
-  const roles=['smm','target','ppc','pm','design','other'];
+  const roles=['smm','head_smm','target','ppc','pm','design','other','coo'];
   return roles.flatMap(role=>(S[role]||[]).map(x=>({...x,role,key:`${role}:${x.id}`})));
 }
 function payrollBonusTotal(){
@@ -2212,8 +2274,10 @@ function assignmentForProject(worker,p){
   if(worker.role==='smm' && p.smm && p.smm.toLowerCase().includes(fn)){
     const isDouble=p.smm.includes('+')||p.smm.includes('|');
     baseRate=isDouble?Math.round((p.smm_c||0)/2):(p.smm_c||0);
-    if(p.hed>0 && !isDouble) baseRate+=(p.hed||0);
     roleLabel=isDouble?'СММ ÷2':'СММ';
+  }
+  if(worker.role==='head_smm' && p.hed && p.head_smm && p.head_smm.toLowerCase().includes(fn)){
+    baseRate=p.hed||0; roleLabel='Head SMM';
   }
   if(worker.role==='target' && p.tg && p.tg.toLowerCase().includes(fn)){
     baseRate=p.tg_c||0; roleLabel='Таргет';
@@ -2230,6 +2294,9 @@ function assignmentForProject(worker,p){
   return {pid:p.id,name:p.name,role:roleLabel,baseRate,load,earned:Math.round(baseRate*load)};
 }
 function employeeAssignments(worker){
+  if(worker.role==='coo'){
+    return [{pid:'coo-profit',name:'10% від прибутку',role:'COO',baseRate:cooProfitBase(),load:COO_SHARE,earned:cooBonus()}];
+  }
   if(worker.role==='design'){
     return (worker.projects||[]).map(pid=>{
       const p=P.find(x=>x.id===pid);
@@ -2242,6 +2309,7 @@ function employeeAssignments(worker){
   return P.map(p=>assignmentForProject(worker,p)).filter(Boolean);
 }
 function employeeAccrued(worker){
+  if(worker.role==='coo') return COO_BASE+cooBonus();
   if(worker.role==='design') return parseInt(worker.rate)||0;
   return employeeAssignments(worker).reduce((s,a)=>s+a.earned,0);
 }
@@ -2269,7 +2337,7 @@ function renderServices(){
   P.forEach((p,i)=>{
     const m=margin(p), mp=mpct(p);
     const hasSMM=!!p.smm||p.need_smm===false, hasTG=!!p.tg||p.need_tg===false, hasPPC=!!p.ppc, hasDES=!!p.design||p.need_design===false, hasPM=!!p.pm||p.need_pm===false;
-    const svcCount=[!!p.smm,!!p.tg,!!p.ppc,!!p.design,!!p.pm].filter(Boolean).length;
+    const svcCount=[!!p.smm,!!p.head_smm,!!p.tg,!!p.ppc,!!p.design,!!p.pm].filter(Boolean).length;
     const isFull=hasSMM&&(hasTG||hasPPC||p.need_tg===false)&&hasPM;
 
     if(svcFilter==='nospec'&&isFull) return;
@@ -2291,6 +2359,7 @@ function renderServices(){
         <span style="display:block;font-size:10px;color:var(--g400)">${p.pay||'—'}</span>
       </td>
       <td class="c">${needCell(p.need_smm!==false,p.smm,'svc-smm')}</td>
+      <td class="c">${p.hed?svcCell(p.head_smm||'Юля','svc-smm'):`<span class="dash">—</span>`}</td>
       <td class="c">${needCell(p.need_tg!==false,p.tg,'svc-tg')}</td>
       <td class="c">${svcCell(p.ppc,'svc-ppc')}</td>
       <td class="c">${p.need_design===false?`<span class="svc-tag" style="background:var(--g100);color:var(--g600);border-color:var(--g200)">Не потрібно</span>`:(p.design?`<span class="svc-tag svc-des">${fmt(p.design)}₴</span>`:`<span class="dash">—</span>`)}</td>
@@ -2343,7 +2412,8 @@ function renderFin(){
         <span style="font-family:Montserrat;font-weight:700;font-size:12px;cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px;text-decoration-color:var(--g200)" onclick="openEditModal(${p.id})">${p.name}</span>
         <span style="display:block;font-size:10px;color:var(--g400)">${p.pm?'PM: '+p.pm:'PM: —'}</span>
       </td>
-      <td class="r"><input class="ei ${!(p.smm_c+p.hed)?'zero':''}" type="number" value="${(p.smm_c||0)+(p.hed||0)||''}" placeholder="0" style="width:68px" oninput="updN(${p.id},'smm_total',this.value)"></td>
+      <td class="r"><input class="ei ${!p.smm_c?'zero':''}" type="number" value="${p.smm_c||''}" placeholder="0" style="width:68px" oninput="updN(${p.id},'smm_c',this.value)"></td>
+      <td class="r"><input class="ei ${!p.hed?'zero':''}" type="number" value="${p.hed||''}" placeholder="0" style="width:62px" oninput="updN(${p.id},'hed',this.value)"></td>
       <td class="r"><input class="ei ${!p.tg_c?'zero':''}" type="number" value="${p.tg_c||''}" placeholder="0" style="width:64px" oninput="updN(${p.id},'tg_c',this.value)"></td>
       <td class="r"><input class="ei ${!p.ppc_c?'zero':''}" type="number" value="${p.ppc_c||''}" placeholder="0" style="width:56px" oninput="updN(${p.id},'ppc_c',this.value)"></td>
       <td class="r"><input class="ei ${!p.design?'zero':''}" type="number" value="${p.design||''}" placeholder="0" style="width:60px" oninput="updN(${p.id},'design',this.value)"></td>
@@ -2367,7 +2437,7 @@ function renderFin(){
   });
 
   const tM=tI-tC, tPct=tI>0?Math.round(tM/tI*100):0;
-  tbody.insertAdjacentHTML('beforeend',`<tr class="tot-r"><td colspan="8">ПІДСУМОК · ${vis} проєктів</td><td class="r">${fmt(tC)}</td><td class="r" style="color:var(--orange)">${fmt(tI)}</td><td class="r" style="color:${tM>=0?'#4CAF50':'var(--red)'}">${fmt(tM)}</td><td style="color:var(--orange);font-family:Montserrat;font-weight:700">${tPct}%</td><td></td><td></td></tr>`);
+  tbody.insertAdjacentHTML('beforeend',`<tr class="tot-r"><td colspan="9">ПІДСУМОК · ${vis} проєктів</td><td class="r">${fmt(tC)}</td><td class="r" style="color:var(--orange)">${fmt(tI)}</td><td class="r" style="color:${tM>=0?'#4CAF50':'var(--red)'}">${fmt(tM)}</td><td style="color:var(--orange);font-family:Montserrat;font-weight:700">${tPct}%</td><td></td><td></td></tr>`);
 
   const saldo=tM-fixedCosts();
   document.getElementById('f-income').textContent=fmt(tI);
@@ -2405,7 +2475,7 @@ function renderDept(role){
     ? [...(S.target||[]).map(s=>({...s,role:'target'})), ...(S.ppc||[]).map(s=>({...s,role:'ppc'}))]
     : (S[role]||[]).map(s=>({...s,role}));
 
-  const gridId = role==='smm'?'smm-grid':role==='pm'?'pm-grid':'target-grid';
+  const gridId = role==='smm'?'smm-grid':role==='head_smm'?'head-smm-grid':role==='pm'?'pm-grid':'target-grid';
   const grid=document.getElementById(gridId);
   if(!grid) return;
   grid.innerHTML='';
@@ -2425,8 +2495,14 @@ function renderDept(role){
         if(nm.includes(fn.toLowerCase())){
           const isDouble=p.smm.includes('+')||p.smm.includes('|');
           baseRate=isDouble?Math.round((p.smm_c||0)/2):(p.smm_c||0);
-          if(p.hed>0 && !isDouble) baseRate+=(p.hed||0);
           rl=isDouble?'СММ ÷2':'СММ';
+        }
+      }
+      if(spec.role==='head_smm' && p.hed && p.head_smm){
+        const nm=p.head_smm.toLowerCase();
+        if(nm.includes(fn.toLowerCase())){
+          baseRate=p.hed||0;
+          rl='Head SMM';
         }
       }
       if(spec.role==='target' && p.tg && p.tg.toLowerCase().includes(fn.toLowerCase())){
@@ -2450,12 +2526,13 @@ function renderDept(role){
 
     grandTotal+=total;
 
-    const roleCls=spec.role==='smm'?'t-smm':spec.role==='pm'?'t-pm':'t-target';
-    const roleLabel=spec.role==='smm'?'СММ':spec.role==='target'?'Таргет':spec.role==='ppc'?'PPC':'PM';
+    const roleCls=spec.role==='smm'||spec.role==='head_smm'?'t-smm':spec.role==='pm'?'t-pm':'t-target';
+    const roleLabel=spec.role==='smm'?'СММ':spec.role==='head_smm'?'Head SMM':spec.role==='target'?'Таргет':spec.role==='ppc'?'PPC':'PM';
 
     // build proj options for add
     const unusedProjs=P.filter(p=>{
       if(spec.role==='smm') return !p.smm||!p.smm.toLowerCase().includes(fn.toLowerCase());
+      if(spec.role==='head_smm') return !p.head_smm||!p.head_smm.toLowerCase().includes(fn.toLowerCase());
       if(spec.role==='target') return !p.tg||!p.tg.toLowerCase().includes(fn.toLowerCase());
       if(spec.role==='ppc') return !p.ppc||!p.ppc.toLowerCase().includes(fn.toLowerCase());
       if(spec.role==='pm') return !p.pm||!p.pm.toLowerCase().includes(fn.toLowerCase());
@@ -2518,6 +2595,12 @@ function renderDept(role){
     document.getElementById('smm-without').textContent=noSmm;
     document.getElementById('cnt-smm').textContent=(S.smm||[]).length;
   }
+  if(role==='head_smm'){
+    document.getElementById('head-smm-total').textContent=fmt(grandTotal)+' ₴';
+    document.getElementById('head-smm-count').textContent=(S.head_smm||[]).length;
+    document.getElementById('head-smm-proj').textContent=P.filter(p=>p.head_smm&&p.hed).length;
+    document.getElementById('cnt-head-smm').textContent=(S.head_smm||[]).length;
+  }
   if(role==='target'){
     const noTg=P.filter(p=>p.need_tg!==false&&!p.tg&&!p.ppc).length;
     document.getElementById('tg-total').textContent=fmt(grandTotal)+' ₴';
@@ -2540,15 +2623,15 @@ function updLoad(specId, projId, val, role){
   // recalc earned for this row
   const p=P.find(x=>x.id===projId);
   if(!p) return;
-  const spec=[...(S.smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
+  const spec=[...(S.smm||[]),...(S.head_smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
   if(!spec) return;
   const fn=spec.name.split(' ')[0].toLowerCase();
   let baseRate=0;
   if(role==='smm'&&p.smm&&p.smm.toLowerCase().includes(fn)){
     const isD=p.smm.includes('+')||p.smm.includes('|');
     baseRate=isD?Math.round((p.smm_c||0)/2):(p.smm_c||0);
-    if(p.hed>0&&!isD) baseRate+=(p.hed||0);
   }
+  if(role==='head_smm'&&p.head_smm&&p.head_smm.toLowerCase().includes(fn)) baseRate=p.hed||0;
   if(role==='target'&&p.tg&&p.tg.toLowerCase().includes(fn)) baseRate=p.tg_c||0;
   if(role==='ppc'&&p.ppc&&p.ppc.toLowerCase().includes(fn)) baseRate=p.ppc_c||0;
   if(role==='pm'&&p.pm&&p.pm.toLowerCase().includes(fn)) baseRate=p.pm_c||0;
@@ -2563,7 +2646,7 @@ function updLoad(specId, projId, val, role){
 }
 
 function recalcCardTotal(specId, role){
-  const spec=[...(S.smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
+  const spec=[...(S.smm||[]),...(S.head_smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
   if(!spec) return;
   const fn=spec.name.split(' ')[0].toLowerCase();
   let total=0;
@@ -2572,8 +2655,8 @@ function recalcCardTotal(specId, role){
     if(role==='smm'&&p.smm&&p.smm.toLowerCase().includes(fn)){
       const isD=p.smm.includes('+')||p.smm.includes('|');
       baseRate=isD?Math.round((p.smm_c||0)/2):(p.smm_c||0);
-      if(p.hed>0&&!isD) baseRate+=(p.hed||0);
     }
+    if(role==='head_smm'&&p.head_smm&&p.head_smm.toLowerCase().includes(fn)) baseRate=p.hed||0;
     if(role==='target'&&p.tg&&p.tg.toLowerCase().includes(fn)) baseRate=p.tg_c||0;
     if(role==='ppc'&&p.ppc&&p.ppc.toLowerCase().includes(fn)) baseRate=p.ppc_c||0;
     if(role==='pm'&&p.pm&&p.pm.toLowerCase().includes(fn)) baseRate=p.pm_c||0;
@@ -2597,9 +2680,13 @@ function addProjToSpec(specId, specRole, tabRole){
   const p=P.find(x=>x.id===projId);
   if(!p) return;
   // assign spec to project
-  const spec=[...(S.smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
+  const spec=[...(S.smm||[]),...(S.head_smm||[]),...(S.target||[]),...(S.ppc||[]),...(S.pm||[])].find(s=>s.id===specId);
   if(!spec) return;
   if(specRole==='smm') p.smm=spec.name;
+  if(specRole==='head_smm'){
+    p.head_smm=spec.name;
+    if(!p.hed) p.hed=1000;
+  }
   if(specRole==='target') p.tg=spec.name;
   if(specRole==='ppc') p.ppc=spec.name;
   if(specRole==='pm') p.pm=spec.name;
@@ -2610,7 +2697,8 @@ function addProjToSpec(specId, specRole, tabRole){
 
 function removeSpecFromProj(specId, specRole, projId){
   const p=P.find(x=>x.id===projId); if(!p) return;
-  if(specRole==='smm'){p.smm='';p.smm_c=0;p.hed=0;}
+  if(specRole==='smm'){p.smm='';p.smm_c=0;}
+  if(specRole==='head_smm'){p.head_smm='';p.hed=0;}
   if(specRole==='target'){p.tg='';p.tg_c=0;}
   if(specRole==='ppc'){p.ppc='';p.ppc_c=0;}
   if(specRole==='pm'){p.pm='';p.pm_c=0;}
@@ -2679,7 +2767,7 @@ function renderLeads(){
 function renderCostsBlocks(){
   const ft=document.getElementById('fot-total');
   const fd=document.getElementById('fot-design');
-  if(ft) ft.textContent=fmt(CORE_PAYROLL+designerPayroll()+payrollBonusTotal())+' грн';
+  if(ft) ft.textContent=fmt(CORE_PAYROLL+COO_BASE+cooBonus()+designerPayroll()+payrollBonusTotal())+' грн';
   if(fd) fd.textContent=fmt(designerPayroll())+' грн';
 }
 
@@ -2975,7 +3063,9 @@ function renderPayroll(){
       <td class="r"><input class="payroll-input" type="number" value="${salary5||''}" oninput="updPayroll('${key}','salary5',this.value)"></td>
       <td class="r"><input class="payroll-input" type="number" value="${bonus||''}" oninput="updPayroll('${key}','bonus',this.value)"></td>
       <td class="r"><span class="m ${left>0?'m-neg':'m-pos'}">${fmt(left)}</span></td>
-      <td style="font-size:11px;color:var(--g600)">${assignments.length?assignments.length+' проєктів':'—'}</td>
+      <td style="font-size:11px;color:var(--g600)">${w.role==='coo'
+        ? `40 000 + 10% × ${fmt(cooProfitBase())}`
+        : (assignments.length?assignments.length+' проєктів':'—')}</td>
     </tr>`);
   });
 
@@ -2986,6 +3076,8 @@ function renderPayroll(){
   const leftEl=document.getElementById('pay-left');
   leftEl.textContent=fmt(leftTotal);
   leftEl.style.color=leftTotal>=0?'var(--red)':'var(--green)';
+  const note=document.getElementById('payroll-note');
+  if(note) note.innerHTML=`<b>COO:</b> ${fmt(COO_BASE)} ₴ + 10% від прибутку. Формула: max(0, валова маржа ${fmt(grossProfit())} - загальні ${fmt(GENERAL_COSTS)} - О+Ді ${fmt(CORE_PAYROLL)} - дизайн ${fmt(designerPayroll())} - база COO ${fmt(COO_BASE)}) × 10% = ${fmt(cooBonus())} ₴.`;
   document.getElementById('pay-pill').textContent=workers.length+' працівників';
   document.getElementById('cnt-payroll').textContent=workers.length;
 }
@@ -3032,6 +3124,7 @@ function updN(id,field,val){
   const v=parseInt(val)||0;
   if(field==='smm_total') p.smm_c=Math.max(0,v-(p.hed||0));
   else p[field]=v;
+  if(field==='hed' && v>0 && !p.head_smm) p.head_smm='Юля';
   const c=costs(p),m=margin(p),mp=mpct(p);
   const tc=document.getElementById('tc-'+p.id);
   const mg=document.getElementById('mg-'+p.id);
@@ -3082,6 +3175,7 @@ const AVG_RATES = {
 function populateModalSelects(p){
   // Build option lists from current S state
   const smmSel=document.getElementById('m-smm');
+  const headSmmSel=document.getElementById('m-head-smm');
   const tgSel=document.getElementById('m-tg');
   const ppcSel=document.getElementById('m-ppc');
   const pmSel=document.getElementById('m-pm');
@@ -3096,6 +3190,7 @@ function populateModalSelects(p){
   };
 
   smmSel.innerHTML = makeOpts(S.smm||[], p?p.smm:'');
+  headSmmSel.innerHTML = makeOpts(S.head_smm||[], p?p.head_smm:'');
   tgSel.innerHTML  = makeOpts(S.target||[], p?p.tg:'');
   ppcSel.innerHTML = makeOpts(S.ppc||[], p?p.ppc:'');
   pmSel.innerHTML  = makeOpts(S.pm||[], p?p.pm:'');
@@ -3112,11 +3207,6 @@ function modalAutoRate(role){
   const rateEl=document.getElementById(rateId);
   if(rate && (!rateEl.value || parseInt(rateEl.value)===0)){
     rateEl.value=rate;
-  }
-  // Also set hed default for Юля (head SMM)
-  if(role==='smm'){
-    const hedEl=document.getElementById('m-hed');
-    if(name==='Юля'&&(!hedEl.value||parseInt(hedEl.value)===0)) hedEl.value=1000;
   }
 }
 
@@ -3164,6 +3254,7 @@ function saveModal(){
     name:document.getElementById('m-name').value||'Без назви',
     smm:document.getElementById('m-smm').value||'',
     smm_c:parseInt(document.getElementById('m-smm-c').value)||0,
+    head_smm:document.getElementById('m-head-smm').value||'',
     hed:parseInt(document.getElementById('m-hed').value)||0,
     tg:document.getElementById('m-tg').value||'',
     tg_c:parseInt(document.getElementById('m-tg-c').value)||0,
@@ -3185,6 +3276,7 @@ function saveModal(){
     need_design:document.getElementById('m-need-design').checked,
     cash:false,
   };
+  if(d.hed && !d.head_smm) d.head_smm='Юля';
   if(id){ const i=P.findIndex(p=>p.id===id); if(i>=0) P[i]={...P[i],...d}; }
   else { nextId++; P.push({id:nextId,...d}); }
   closeModal('proj-modal'); renderAll(); save(); toast(id?'Оновлено':'Додано');
@@ -3209,7 +3301,7 @@ function saveSpecModal(){
     S[role].push({id:'u'+nextSid,name});
     closeModal('spec-modal');
     renderAll();
-    if(['smm','target','ppc','pm'].includes(role)) renderDept(role==='ppc'?'target':role);
+    if(['smm','head_smm','target','ppc','pm'].includes(role)) renderDept(role==='ppc'?'target':role);
     if(role==='design') renderDesign();
     if(role==='other') renderOther();
     save();
@@ -3233,6 +3325,7 @@ function showTab(id,btn){
   btn.classList.add('active');
   if(id==='overview') renderOverview();
   else if(id==='smm') renderDept('smm');
+  else if(id==='head-smm') renderDept('head_smm');
   else if(id==='target') renderDept('target');
   else if(id==='pm') renderDept('pm');
   else if(id==='miss') renderMissing();
@@ -3568,12 +3661,14 @@ function renderAll(){
   renderScenarios();
   // update lead counts
   document.getElementById('cnt-leads').textContent=L.length;
+  document.getElementById('cnt-head-smm').textContent=(S.head_smm||[]).length;
   // if dept tab is active — re-render it too
   const at=document.querySelector('.tab.active');
   if(at){
     const fn=at.getAttribute('onclick');
     if(fn.includes("'overview'")) renderOverview();
     else if(fn.includes("'smm'")) renderDept('smm');
+    else if(fn.includes("'head-smm'")) renderDept('head_smm');
     else if(fn.includes("'target'")) renderDept('target');
     else if(fn.includes("'pm'")) renderDept('pm');
     else if(fn.includes("'leads'")) renderLeadsTab();
