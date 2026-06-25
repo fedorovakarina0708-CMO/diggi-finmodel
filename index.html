@@ -1717,6 +1717,65 @@ table.t tbody tr:hover td{background:#FCF8F5!important;}
   padding:14px 20px;
   background:#FBF7F4;
 }
+.design-pay-summary{
+  display:grid;
+  grid-template-columns:1.4fr 1fr .65fr;
+  gap:12px;
+  margin-bottom:18px;
+  padding:16px 18px;
+  border:1px solid var(--hair);
+  border-left:4px solid var(--brand);
+  border-radius:10px;
+  background:#FFFEFD;
+}
+.design-pay-summary > div{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:0;
+}
+.design-summary-label{
+  color:#8A817A;
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.55px;
+  text-transform:uppercase;
+}
+.design-pay-summary strong{
+  color:#181310;
+  font-family:'Montserrat',sans-serif;
+  font-size:22px;
+  font-weight:900;
+  line-height:1.1;
+}
+#s-design #design-grid{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+#s-design .spec-card{
+  width:100%;
+}
+#s-design .spec-hdr{
+  min-height:66px;
+}
+#s-design .spec-right,
+#s-design .add-proj-row,
+#s-design .spec-foot{
+  display:none;
+}
+#s-design .designer-paybox{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+}
+@media (max-width:900px){
+  .design-pay-summary{
+    grid-template-columns:1fr;
+  }
+  #s-design .designer-paybox{
+    grid-template-columns:repeat(2,minmax(150px,1fr));
+  }
+}
 </style>
 </head>
 <body>
@@ -2078,11 +2137,19 @@ table.t tbody tr:hover td{background:#FCF8F5!important;}
     <div><h1 class="pt">Дизайн відділ</h1><p class="ps">Ставки дизайнерів по проєктах · Перевірка відповідності закладеному бюджету</p></div>
     <div class="fb-wrap"><button class="fb add" onclick="openAddSpecModal('design')">+ Додати дизайнера</button></div>
   </div>
-  <div class="strip s4">
-    <div class="sc or"><span class="sv" id="des-budget">—</span><span class="sl">Закладено в проєктах</span></div>
-    <div class="sc rd"><span class="sv" id="des-assigned">—</span><span class="sl">Нараховано дизайнерам</span></div>
-    <div class="sc gn"><span class="sv" id="des-diff">—</span><span class="sl">Залишок / Перевитрата</span></div>
-    <div class="sc bl"><span class="sv" id="des-count">—</span><span class="sl">Дизайнерів</span></div>
+  <div class="design-pay-summary">
+    <div>
+      <span class="design-summary-label">ЗП дизайнерів за місяць</span>
+      <strong id="des-payroll-total">—</strong>
+    </div>
+    <div>
+      <span class="design-summary-label">Доплати за понаднормові</span>
+      <strong id="des-overtime-total">—</strong>
+    </div>
+    <div>
+      <span class="design-summary-label">Дизайнерів</span>
+      <strong id="des-count">—</strong>
+    </div>
   </div>
   <div class="spec-grid" id="design-grid"></div>
   <div class="sh" style="margin-top:20px"><span class="st">Проєкти з дизайном</span><span class="pill" id="des-proj-pill">—</span><span class="ml">Загальний дизайн-бюджет: <b id="des-budget-sum">—</b> грн</span></div>
@@ -3903,8 +3970,9 @@ function renderDesign(){
   grid.innerHTML='';
 
   const designers=S.design||[];
-  let totalAssigned=0;
   const totalBudget=P.reduce((s,p)=>s+(p.design||0),0);
+  let totalPayroll=0;
+  let totalOvertime=0;
 
   designers.forEach(des=>{
     // Find projects where this designer is assigned (via des.projects array)
@@ -3922,14 +3990,13 @@ function renderDesign(){
       desTotal+=earned;
     });
 
-    totalAssigned+=desTotal;
-
-    const unusedProjs=P.filter(p=>p.design>0&&!desProjIds.includes(p.id));
     const baseRate=parseInt(des.rate)||0;
     const overtimeHours=parseFloat(des.overtime_hours)||0;
     const overtimeRate=parseInt(des.overtime_rate)||0;
     const overtimePay=designerOvertimePay(des);
     const totalPay=designerTotalPay(des);
+    totalPayroll+=totalPay;
+    totalOvertime+=overtimePay;
 
     const card=document.createElement('div');
     card.className='spec-card';
@@ -3939,10 +4006,6 @@ function renderDesign(){
           <span class="spec-name-txt">${des.name}</span>
           <span class="tag" style="background:var(--purple-bg);color:var(--purple);border-color:#D0B0E8;cursor:default">Дизайн</span>
           <span style="font-size:10px;color:var(--g400)">ЗП: ${fmt(totalPay)} ₴/міс</span>
-        </div>
-        <div class="spec-right">
-          <span class="spec-amt">${fmt(desTotal)} ₴</span>
-          <span class="spec-cnt">${projRows.length} проєктів</span>
         </div>
       </div>
       <div class="designer-paybox">
@@ -3982,32 +4045,15 @@ function renderDesign(){
         </div>
       `).join('')}
       ${projRows.length===0?'<div style="padding:10px 14px;font-size:11px;color:var(--g400);font-style:italic">Немає призначених проєктів</div>':''}
-      <div class="add-proj-row">
-        <select id="dapr-${des.id}">
-          <option value="">+ Додати проєкт з дизайном...</option>
-          ${unusedProjs.map(p=>`<option value="${p.id}">${p.name} (${fmt(p.design||0)}₴)</option>`).join('')}
-        </select>
-        <input type="number" id="dapl-${des.id}" placeholder="1" min="0" max="1" step="0.1" value="1" title="Завантаженість">
-        <button onclick="addDesProjToSpec('${des.id}')">+ Додати</button>
-      </div>
-      <div class="spec-foot">
-        <span class="spec-foot-label">Разом ${des.name}</span>
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="spec-foot-amt" id="dsa-${des.id}">${fmt(desTotal)} ₴</span>
-          <button class="spec-foot-del" onclick="deleteSpec('${des.id}','design')">× Видалити</button>
-        </div>
-      </div>
     `;
     grid.appendChild(card);
   });
 
   // summary
-  const diff=totalBudget-totalAssigned;
-  document.getElementById('des-budget').textContent=fmt(totalBudget)+' ₴';
-  document.getElementById('des-assigned').textContent=fmt(totalAssigned)+' ₴';
-  const diffEl=document.getElementById('des-diff');
-  diffEl.textContent=(diff>=0?'+':'')+fmt(diff)+' ₴';
-  diffEl.style.color=diff>=0?'var(--green)':'var(--red)';
+  const payTotalEl=document.getElementById('des-payroll-total');
+  const overtimeTotalEl=document.getElementById('des-overtime-total');
+  if(payTotalEl) payTotalEl.textContent=fmt(totalPayroll)+' ₴';
+  if(overtimeTotalEl) overtimeTotalEl.textContent=fmt(totalOvertime)+' ₴';
   document.getElementById('des-count').textContent=designers.length;
   document.getElementById('cnt-design').textContent=designers.length;
 
